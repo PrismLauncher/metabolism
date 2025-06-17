@@ -47,7 +47,7 @@ Generation for...
 - ❌ Forge
 - ✅ Quilt
 - ❌ LiteLoader
-- ❌ Mojang Java
+- ☑️ Mojang Java (should be good)
 - ❌ Adoptium
 - ❌ Azul Zulu
 

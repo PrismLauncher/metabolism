@@ -3,7 +3,7 @@ import { HTTPCacheMode, type HTTPClient } from "#core/httpClient.ts";
 import { defineProvider } from "#core/provider.ts";
 import { PistonVersion } from "#schema/pistonMeta/pistonVersion.ts";
 import { PistonVersionManifest, PistonVersionRef } from "#schema/pistonMeta/pistonVersionManifest.ts";
-import { sortBy } from "es-toolkit";
+import { orderBy } from "es-toolkit";
 import { OMNIARCHIVE_MAPPINGS } from "./omniarchiveMappings.ts";
 
 export default defineProvider({
@@ -11,7 +11,7 @@ export default defineProvider({
 
 	async provide(http): Promise<PistonVersion[]> {
 		return Promise.all([pistonMetaVersions(http), omniarchiveVersions(http)])
-			.then(versions => sortBy(versions.flat(), [version => -version.releaseTime]));
+			.then(versions => orderBy(versions.flat(), [version => version.releaseTime], ["desc"]));
 	}
 });
 

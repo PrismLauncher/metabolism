@@ -26,6 +26,8 @@ export interface VersionFile {
 	libraries?: VersionFileLibrary[];
 	mavenFiles?: VersionFileLibrary[];
 	assetIndex?: PistonAssetIndexRef;
+
+	runtimes?: VersionFileRuntime[];
 }
 
 export type VersionFileArtifact = Omit<PistonArtifact, "path">;
@@ -65,4 +67,27 @@ export enum VersionFileTrait {
 	UseOnlineFixes = "legacyServices",
 	QuickPlaySingleplayerAware = "feature:is_quick_play_singleplayer",
 	QuickPlayMultiplayerAware = "feature:is_quick_play_multiplayer",
+}
+
+export interface VersionFileRuntime {
+	name: string;
+	runtimeOS: string;
+
+	version: {
+		name: string;
+		major: number;
+		minor?: number;
+		security?: number;
+		build?: number;
+	};
+	releaseTime: string;
+	vendor: string;
+	packageType: string;
+
+	downloadType: "manifest" | "archive";
+	checksum: {
+		type: "sha256" | "sha1";
+		hash: string;
+	};
+	url: string;
 }
