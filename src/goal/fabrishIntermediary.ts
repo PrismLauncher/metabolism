@@ -1,8 +1,8 @@
 import { FABRIC_MAVEN } from "#common/constants/urls.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
-import fabricIntermediaryVersions, { type FabricIntermediaryVersion } from "#provider/fabricIntermediaryVersions.ts";
+import { fabricIntermediaryVersions, type FabricIntermediaryVersion } from "#provider/fabricIntermediaryVersions.ts";
 
-export default defineGoal({
+const fabricIntermediary = defineGoal({
 	id: "net.fabricmc.intermediary",
 	name: "Fabric Intermediary",
 	provider: fabricIntermediaryVersions,
@@ -10,6 +10,8 @@ export default defineGoal({
 	generate: data => data.map(transformVersion),
 	recommend: () => true,
 });
+
+export default [fabricIntermediary];
 
 function transformVersion(version: FabricIntermediaryVersion): VersionOutput {
 	return {
