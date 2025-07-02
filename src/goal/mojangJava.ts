@@ -49,7 +49,7 @@ function* flattenInfo(info: PistonJavaRuntimeInfo): Generator<FullRuntimeInfo> {
 }
 function transformRuntime(entry: FullRuntimeInfo): VersionFileRuntime {
 	const os = entry.os === "mac-os" || !entry.os.includes("-")
-		? entry.os + "x64"
+		? entry.os + "-x64"
 		: entry.os;
 
 	return {
