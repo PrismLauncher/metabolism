@@ -68,6 +68,14 @@ export const PistonAssetIndexRef = z.object({
 
 export type PistonAssetIndexRef = z.output<typeof PistonAssetIndexRef>;
 
+export const PistonLoggingAsset = z.object({
+	argument: z.string(),
+	file: PistonArtifact.omit({ path: true }).extend({ id: z.string() }),
+	type: z.string(),
+});
+
+export type PistonLoggingAsset = z.output<typeof PistonLoggingAsset>;
+
 
 export const PistonArgument = z.union([
 	z.string(),
@@ -93,11 +101,7 @@ export const PistonVersion = z.object({
 	}).optional(),
 	libraries: z.array(PistonLibrary),
 	logging: z.object({
-		client: z.object({
-			argument: z.string(),
-			file: PistonArtifact.omit({ path: true }).extend({ id: z.string() }),
-			type: z.string(),
-		}).optional(),
+		client: PistonLoggingAsset.optional(),
 	}).optional(),
 	mainClass: z.string().nullable().optional().transform(x => x ?? undefined),
 	minecraftArguments: z.string().optional(),

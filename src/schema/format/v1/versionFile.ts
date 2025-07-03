@@ -1,4 +1,4 @@
-import { PistonArtifact, PistonLibrary, type PistonAssetIndexRef } from "#schema/pistonMeta/pistonVersion.ts";
+import { PistonArtifact, PistonLibrary, type PistonLoggingAsset, type PistonAssetIndexRef } from "#schema/pistonMeta/pistonVersion.ts";
 
 export interface VersionFile {
 	uid: string;
@@ -23,6 +23,7 @@ export interface VersionFile {
 	minecraftArguments?: string;
 
 	mainJar?: VersionFileLibrary;
+	logging?: PistonLoggingAsset;
 	libraries?: VersionFileLibrary[];
 	mavenFiles?: VersionFileLibrary[];
 	assetIndex?: PistonAssetIndexRef;
