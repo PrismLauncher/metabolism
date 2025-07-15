@@ -9,7 +9,7 @@ export default defineProvider({
 
 	async provide(http): Promise<AzulJavaPackages[]> {
 		const versions = AzulJavaVersions.parse(
-			(await http.getCached(new URL("zulu/packages?availability=GA&latest=true&os=windows&arch=x64&archive_type=zip&javafx_bundled=false&java_package_type=jre", RUNTIMES_URL), "azul-java-windows-versions.json")).json()
+			(await http.getCached(new URL("zulu/packages?availability=GA&latest=true&os=windows&arch=x64&archive_type=zip&javafx_bundled=false&java_package_type=jre", RUNTIMES_URL), "java-windows-versions.json")).json()
 		);
 
 		const majorJavaVersions = [...new Set([...versions.map(x => x.java_version[0])])];
