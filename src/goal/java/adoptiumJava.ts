@@ -46,9 +46,11 @@ function isAvailableBinary(binary: AdoptiumJavaBinary): boolean {
 	if (binary.os != "linux" && binary.os != "windows" && binary.os != "mac") {
 		return false;
 	}
+
 	if (binary.architecture != "x64" && binary.architecture != "x86" && binary.architecture != "aarch64" && binary.architecture != "arm") {
 		return false;
 	}
+
 	return true;
 }
 
