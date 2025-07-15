@@ -16,7 +16,11 @@ export default defineProvider({
 		);
 
 		return Promise.all(releases.available_releases.map(async version => {
-			const response = await http.getCached(new URL(`assets/feature_releases/${version}/ga?image_type=jre`, RUNTIMES_URL), `adoptium-java-runtime-${version}.json`)
+			const options = new URLSearchParams({
+				image_type: "jre",
+			});
+
+			const response = await http.getCached(new URL(`assets/feature_releases/${version}/ga?${options}`, RUNTIMES_URL), `adoptium-java-runtime-${version}.json`)
 				.catch(() => {
 					logger.error(`Failed to get Adoptium JRE ${version} with General Access Version`);
 					return null;
@@ -25,7 +29,7 @@ export default defineProvider({
 			if (!response) {
 				return null;
 			}
-			
+
 			return AdoptiumJavaRuntimeEntries.parse(response?.json())
 		}));
 	},
