@@ -43,11 +43,11 @@ export default defineGoal({
 });
 
 function isAvailablePackage(entry: AzulJavaPackage): boolean {
-	if (entry.os != "linux" && entry.os != "windows" && entry.os != "macos") {
+	if (entry.os !== "linux" && entry.os !== "windows" && entry.os !== "macos") {
 		return false;
 	}
 
-	if (entry.arch != "x86" && entry.arch != "arm") {
+	if (entry.arch !== "x86" && entry.arch !== "arm") {
 		return false;
 	}
 
@@ -56,18 +56,18 @@ function isAvailablePackage(entry: AzulJavaPackage): boolean {
 
 function getOSType(entry: AzulJavaPackage): string {
 	let osName = entry.os;
-	if (osName == "macos") {
+	if (osName === "macos") {
 		osName = 'mac-os';
 	}
 
 	let architecture = entry.arch;
-	if (architecture == "arm") {
+	if (architecture === "arm") {
 		architecture = "arm" + entry.hw_bitness;
 	}
-	if (architecture == "x86") {
+	if (architecture === "x86") {
 		architecture = "x" + entry.hw_bitness;
 	}
-	
+
 	return `${osName}-${architecture}`;
 }
 

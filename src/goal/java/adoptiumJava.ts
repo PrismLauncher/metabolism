@@ -43,11 +43,11 @@ export default defineGoal({
 });
 
 function isAvailableBinary(binary: AdoptiumJavaBinary): boolean {
-	if (binary.os != "linux" && binary.os != "windows" && binary.os != "mac") {
+	if (binary.os !== "linux" && binary.os !== "windows" && binary.os !== "mac") {
 		return false;
 	}
 
-	if (binary.architecture != "x64" && binary.architecture != "x86" && binary.architecture != "aarch64" && binary.architecture != "arm") {
+	if (binary.architecture !== "x64" && binary.architecture !== "x86" && binary.architecture !== "aarch64" && binary.architecture !== "arm") {
 		return false;
 	}
 
@@ -56,15 +56,15 @@ function isAvailableBinary(binary: AdoptiumJavaBinary): boolean {
 
 function getOSType(binary: AdoptiumJavaBinary): string {
 	let osName = binary.os;
-	if (osName == "mac") {
+	if (osName === "mac") {
 		osName = 'mac-os';
 	}
 
 	let architecture = binary.architecture;
-	if (architecture == "aarch64") {
+	if (architecture === "aarch64") {
 		architecture = "arm64";
 	}
-	if (architecture == "arm") {
+	if (architecture === "arm") {
 		architecture = "arm32";
 	}
 
