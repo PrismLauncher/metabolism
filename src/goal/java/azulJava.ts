@@ -42,24 +42,24 @@ export default defineGoal({
 });
 
 function isAvailablePackage(entry: AzulJavaPackage): boolean {
-	if (entry.os != 'linux' && entry.os != 'windows' && entry.os != 'macos') return false;
-	if (entry.arch != 'x86' && entry.arch != 'arm') return false;
-	return true
+	if (entry.os != "linux" && entry.os != "windows" && entry.os != "macos") return false;
+	if (entry.arch != "x86" && entry.arch != "arm") return false;
+	return true;
 }
 
 function getOSType(entry: AzulJavaPackage): string {
 	let osName = entry.os;
-	if (osName == 'macos') osName = 'mac-os';
+	if (osName == "macos") osName = 'mac-os';
 
 	let architecture = entry.arch;
-	if (architecture == 'arm') architecture = 'arm' + entry.hw_bitness;
-	if (architecture == 'x86') architecture = 'x' + entry.hw_bitness;
+	if (architecture == "arm") architecture = "arm" + entry.hw_bitness;
+	if (architecture == "x86") architecture = "x" + entry.hw_bitness;
 	return `${osName}-${architecture}`;
 }
 
 function transformRuntime(entry: AzulJavaPackage): VersionFileRuntime {
 	const name = `azul_${entry.product}_jre${entry.java_version[0]}.${entry.java_version[1]}.${entry.java_version[2]}`;
-	const vendor = 'azul';
+	const vendor = "azul";
 	const downloadType = "archive";
 	const packageType = "jre";
 	const releaseTime = entry.build_date.toISOString();
