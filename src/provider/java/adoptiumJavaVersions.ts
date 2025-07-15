@@ -12,7 +12,7 @@ export default defineProvider({
 
 	async provide(http): Promise<(AdoptiumJavaRuntimeEntries | null)[]> {
 		const releases = AdoptiumJavaReleases.parse(
-			(await http.getCached(new URL("info/available_releases", RUNTIMES_URL), "adoptium-java-available_releases.json")).json()
+			(await http.getCached(new URL("info/available_releases", RUNTIMES_URL), "available-releases.json")).json()
 		);
 
 		return Promise.all(releases.available_releases.map(async version => {
