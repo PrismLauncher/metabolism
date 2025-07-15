@@ -1,6 +1,6 @@
 import type { Goal } from "#core/goal.ts";
 import type { Provider } from "#core/provider.ts";
-import { readdir } from "node:fs/promises";
+import { exists, readdir } from "node:fs/promises";
 import path from "node:path";
 
 export const GOALS = await importGoals();
@@ -15,8 +15,13 @@ async function* importValues(dir: string): AsyncGenerator<any, void, unknown> {
 
 		let importPath = path.join(entry.parentPath, entry.name);
 
-		if (entry.isDirectory())
+		if (entry.isDirectory()) {
 			importPath = path.join(importPath, "index.ts");
+			if (!(await exists(importPath))) {
+				yield* importValues(dir + "/" + entry.name);
+				continue;
+			}
+		}
 
 		const relativePath = path.relative(".", importPath);
 		const defaultExport = await import(importPath).then(module => module.default);
