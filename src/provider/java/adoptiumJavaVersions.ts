@@ -22,7 +22,10 @@ export default defineProvider({
 					return null;
 				});
 
-			if (!response) return null;
+			if (!response) {
+				return null;
+			}
+			
 			return AdoptiumJavaRuntimeEntries.parse(response?.json())
 		}));
 	},

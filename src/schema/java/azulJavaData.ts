@@ -1,10 +1,8 @@
 import { z } from "zod/v4";
 
-export const AzulJavaVersions = z.array(z.object(
-	{
-		java_version: z.array(z.int()).max(4)
-	}
-));
+export const AzulJavaVersions = z.array(z.object({
+	java_version: z.array(z.int()).max(4)
+}));
 
 export type AzulJavaVersions = z.output<typeof AzulJavaVersions>;
 

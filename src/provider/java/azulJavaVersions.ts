@@ -12,7 +12,8 @@ export default defineProvider({
 			(await http.getCached(new URL("zulu/packages?availability=GA&latest=true&os=windows&arch=x64&archive_type=zip&javafx_bundled=false&java_package_type=jre", RUNTIMES_URL), "azul-java-windows-versions.json")).json()
 		);
 
-		return Promise.all([...new Set([...versions.map(x => x.java_version[0])])].map(async version => {
+		const majorJavaVersions = [...new Set([...versions.map(x => x.java_version[0])])];
+		return Promise.all(majorJavaVersions.map(async version => {
 			const response = await http.getCached(new URL(`zulu/packages/?java_version=${version}&archive_type=zip&java_package_type=jre&latest=true&release_status=ga&javafx_bundled=false&include_fields=sha256_hash,build_date,os,arch,hw_bitness`, RUNTIMES_URL), `azul-java-runtime-${version}.json`)
 			return AzulJavaPackages.parse(response.json())
 		}));

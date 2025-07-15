@@ -15,8 +15,11 @@ export default defineGoal({
 
 		const majorVersions: Map<number, AdoptiumJavaRuntimeEntries> = new Map;
 
-		for (const entry of info.flat())
-			if (entry) setIfAbsent(majorVersions, entry.version_data.major, []).push(entry);
+		for (const entry of info.flat()) {
+			if (entry && entry.binaries.filter(x => isAvailableBinary(x)).length > 0) {
+				setIfAbsent(majorVersions, entry.version_data.major, []).push(entry);
+			}
+		}
 
 		for (const [majorVersion, entries] of majorVersions) {
 			majorVersions.set(
@@ -40,18 +43,29 @@ export default defineGoal({
 });
 
 function isAvailableBinary(binary: AdoptiumJavaBinary): boolean {
-	if (binary.os != "linux" && binary.os != "windows" && binary.os != "mac") return false;
-	if (binary.architecture != "x64" && binary.architecture != "x86" && binary.architecture != "aarch64" && binary.architecture != "arm") return false;
+	if (binary.os != "linux" && binary.os != "windows" && binary.os != "mac") {
+		return false;
+	}
+	if (binary.architecture != "x64" && binary.architecture != "x86" && binary.architecture != "aarch64" && binary.architecture != "arm") {
+		return false;
+	}
 	return true;
 }
 
 function getOSType(binary: AdoptiumJavaBinary): string {
 	let osName = binary.os;
-	if (osName == "mac") osName = 'mac-os';
+	if (osName == "mac") {
+		osName = 'mac-os';
+	}
 
 	let architecture = binary.architecture;
-	if (architecture == "aarch64") architecture = "arm64";
-	if (architecture == "arm") architecture = "arm32";
+	if (architecture == "aarch64") {
+		architecture = "arm64";
+	}
+	if (architecture == "arm") {
+		architecture = "arm32";
+	}
+
 	return `${osName}-${architecture}`;
 }
 
@@ -65,7 +79,10 @@ function transformRuntime(entry: AdoptiumJavaRuntimeEntry): VersionFileRuntime[]
 	const releaseTime = entry.timestamp.toISOString();
 
 	for (const binary of entry.binaries) {
-		if (!isAvailableBinary(binary)) continue;
+		if (!isAvailableBinary(binary)) {
+			continue;
+		}
+
 		result.push({
 			name,
 			runtimeOS: getOSType(binary),
