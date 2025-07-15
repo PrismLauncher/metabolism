@@ -16,11 +16,14 @@ async function* importValues(dir: string): AsyncGenerator<any, void, unknown> {
 		let importPath = path.join(entry.parentPath, entry.name);
 
 		if (entry.isDirectory()) {
-			importPath = path.join(importPath, "index.ts");
-			if (!(await exists(importPath))) {
-				yield* importValues(dir + "/" + entry.name);
+			const indexPath = path.join(importPath, "index.ts");
+
+			if (!(await exists(indexPath))) {
+				yield* importValues(importPath);
 				continue;
 			}
+
+			importPath = indexPath;
 		}
 
 		const relativePath = path.relative(".", importPath);

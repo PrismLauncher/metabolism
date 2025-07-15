@@ -9,7 +9,7 @@ export default defineProvider({
 
 	async provide(http) {
 		const info = PistonJavaRuntimeInfo.parse(
-			(await http.getCached(RUNTIMES_URL, "mojang-java-runtime-all.json")).json()
+			(await http.getCached(RUNTIMES_URL, "java-runtime-all.json")).json()
 		);
 
 		return info;
