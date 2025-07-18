@@ -10,7 +10,7 @@ const logger = moduleLogger();
 export default defineProvider({
 	id: "adoptium-java",
 
-	async provide(http): Promise<(AdoptiumJavaRuntimeEntries | null)[]> {
+	async provide(http): Promise<AdoptiumJavaRuntimeEntries[]> {
 		const releases = AdoptiumJavaReleases.parse(
 			(await http.getCached(new URL("info/available_releases", RUNTIMES_URL), "available-releases.json")).json()
 		);
