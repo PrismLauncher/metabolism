@@ -75,7 +75,7 @@ export interface VersionFileRuntime {
 	runtimeOS: string;
 
 	version: {
-		name: string;
+		name?: string;
 		major: number;
 		minor?: number;
 		security?: number;

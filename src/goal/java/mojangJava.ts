@@ -1,6 +1,6 @@
 import { setIfAbsent } from "#common/general.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
-import mojangJavaVersions from "#provider/mojangJavaVersions.ts";
+import mojangJavaVersions from "#provider/java/mojangJavaVersions.ts";
 import type { VersionFileRuntime } from "#schema/format/v1/versionFile.ts";
 import type { PistonJavaRuntimeEntry, PistonJavaRuntimeInfo } from "#schema/pistonMeta/pistonJavaRuntimeInfo.ts";
 import { orderBy } from "es-toolkit";
