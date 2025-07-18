@@ -15,7 +15,7 @@ export default defineProvider({
 			(await http.getCached(new URL("info/available_releases", RUNTIMES_URL), "available-releases.json")).json()
 		);
 
-		return Promise.all(releases.available_releases.map(async version => {
+		return Promise.all(releases.available_releases.flatMap(async version => {
 			const options = new URLSearchParams({
 				image_type: "jre",
 			});
