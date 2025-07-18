@@ -27,7 +27,7 @@ export default defineProvider({
 				});
 
 			if (!response) {
-				return null;
+				return [];
 			}
 
 			return AdoptiumJavaRuntimeEntries.parse(response?.json())
