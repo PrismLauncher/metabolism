@@ -15,8 +15,8 @@ export default defineGoal({
 
 		const majorVersions: Map<number, AdoptiumJavaRuntimeEntries> = new Map;
 
-		for (const entry of info.flat()) {
-			if (entry && entry.binaries.filter(x => isAvailableBinary(x)).length > 0) {
+		for (const entry of info) {
+			if (entry.binaries.some(x => isAvailableBinary(x))) {
 				setIfAbsent(majorVersions, entry.version_data.major, []).push(entry);
 			}
 		}
