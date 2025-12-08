@@ -10,8 +10,8 @@
 	"scripts": {
 		"start": "node --experimental-strip-types --experimental-transform-types ./src/core/impl/main.ts",
 		"typecheck": "tsc",
-		"lint": "eslint 'src/**/*.ts'",
-		"reformat": "prettier 'src/**/*.ts' --write"
+		"lint": "eslint",
+		"reformat": "prettier . --write"
 	},
 	"license": "MIT",
 	"packageManager": "pnpm@10.22.0",

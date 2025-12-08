@@ -1,15 +1,14 @@
 {
-    "include": ["src/**/*.ts", "*.d.ts"],
-    "compilerOptions": {
-        "noEmit": true,
-        "strict": true,
-        "noImplicitAny": false,
-        "noUncheckedIndexedAccess": true,
-        "module": "NodeNext",
-        "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "allowImportingTsExtensions": true,
-        "verbatimModuleSyntax": true,
-		"skipLibCheck": true,
+	"compilerOptions": {
+		"noEmit": true,
+		"strict": true,
+		"noImplicitAny": false,
+		"noUncheckedIndexedAccess": true,
+		"module": "NodeNext",
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"allowImportingTsExtensions": true,
+		"verbatimModuleSyntax": true,
+		"skipLibCheck": true
 	}
 }

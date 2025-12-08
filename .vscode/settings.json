@@ -1,13 +1,12 @@
 {
-    "editor.formatOnSave": true,
-    "files.trimTrailingWhitespace": true,
-    "[typescript]": {
-		"editor.defaultFormatter": "vscode.typescript-language-features"
-	},
-    "typescript.preferences.quoteStyle": "double",
+	"editor.formatOnSave": true,
+	"files.trimTrailingWhitespace": true,
+	"typescript.preferences.quoteStyle": "double",
 	"typescript.format.semicolons": "insert",
-	"typescript.preferences.autoImportSpecifierExcludeRegexes": ["^zod/(v3|v4|v4-mini)$"],
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": "explicit"
-    }
+	"typescript.preferences.autoImportSpecifierExcludeRegexes": [
+		"^zod/(v3|v4|v4-mini)$"
+	],
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "explicit"
+	}
 }
