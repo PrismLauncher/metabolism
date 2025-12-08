@@ -1,6 +1,6 @@
 import { setIfAbsent } from "#common/general.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
-import adoptiumJavaVersions from "#provider/java/adoptiumJavaVersions.ts";
+import adoptiumJavaVersions from "#provider/adoptiumJavaVersions.ts";
 import type { VersionFileRuntime } from "#schema/format/v1/versionFile.ts";
 import type { AdoptiumJavaBinary, AdoptiumJavaRuntimeEntries, AdoptiumJavaRuntimeEntry } from "#schema/java/adoptiumJavaData.ts";
 import { orderBy } from "es-toolkit";

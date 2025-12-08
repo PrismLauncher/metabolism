@@ -1,6 +1,6 @@
 import { setIfAbsent } from "#common/general.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
-import azulJavaVersions from "#provider/java/azulJavaVersions.ts";
+import azulJavaVersions from "#provider/azulJavaVersions.ts";
 import type { VersionFileRuntime } from "#schema/format/v1/versionFile.ts";
 import type { AzulJavaPackage, AzulJavaPackages } from "#schema/java/azulJavaData.ts";
 import { orderBy } from "es-toolkit";
