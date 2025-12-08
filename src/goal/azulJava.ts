@@ -64,8 +64,8 @@ function getOSType(entry: AzulJavaPackage): string {
 	if (architecture === "arm") {
 		architecture = "arm" + entry.hw_bitness;
 	}
-	if (architecture === "x86") {
-		architecture = "x" + entry.hw_bitness;
+	if (architecture === "x86" && entry.hw_bitness === 64) {
+		architecture = "x64";
 	}
 
 	return `${osName}-${architecture}`;
