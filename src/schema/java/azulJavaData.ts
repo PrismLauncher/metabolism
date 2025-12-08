@@ -5,7 +5,7 @@ export const AzulJavaPackage = z.object({
 	build_date: z.coerce.date(),
 	download_url: z.string(),
 	hw_bitness: z.int(),
-	java_version: z.array(z.int()).nonempty().max(4),
+	java_version: z.array(z.int()).min(3).max(4),
 	os: z.string(),
 	product: z.string(),
 	sha256_hash: z.string()

@@ -30,8 +30,9 @@ export async function sync(providers: Set<Provider>, options: RunnerOptions): Pr
 	const dependents: Map<Provider, Goal[]> = new Map;
 
 	for (const goal of GOALS.values()) {
-		if (!providers.has(goal.provider))
+		if (!providers.has(goal.provider)) {
 			continue;
+		}
 
 		setIfAbsent(dependents, goal.provider, []).push(goal);
 	}
@@ -39,7 +40,7 @@ export async function sync(providers: Set<Provider>, options: RunnerOptions): Pr
 	await run(providers, dependents, options);
 }
 
-export async function build(goals: Iterable<Goal>, options: RunnerOptions) {
+export async function build(goals: Iterable<Goal>, options: RunnerOptions): Promise<void> {
 	const providers: Set<Provider> = new Set;
 	const dependents: Map<Provider, Goal[]> = new Map;
 
@@ -111,17 +112,20 @@ async function runGoal(goal: Goal, data: unknown, options: RunnerOptions): Promi
 	let anyRecommended = false;
 
 	const indexVersions = await Promise.all(outputs.map(async (output): Promise<PackageIndexFileVersion> => {
-		if (output.version === "index" || output.version.includes("/") || output.version.includes("\\"))
+		if (output.version === "index" || output.version.includes("/") || output.version.includes("\\")) {
 			throw new Error(`Invalid version: '${output.version}'`);
+		}
 
 		const outputPath = path.join(outputDir, output.version + ".json");
 
-		if (outputPath.includes("\0"))
+		if (outputPath.includes("\0")) {
 			throw new Error("Version contains null bytes");
+		}
 
 		// should never happen - swiss cheese
-		if (!outputPath.startsWith(outputDir))
+		if (!outputPath.startsWith(outputDir)) {
 			throw new Error(`Version '${output.version}' escapes output directory`);
+		}
 
 		const recommended = goal.recommend(!anyRecommended, output);
 		anyRecommended ||= recommended;
@@ -180,23 +184,29 @@ function generateVersionFile(goal: Goal, output: VersionOutput): VersionFile {
 	};
 
 	// trim
-	if (file.requires?.length === 0)
+	if (file.requires?.length === 0) {
 		delete file.requires;
+	}
 
-	if (file["+traits"]?.length === 0)
+	if (file["+traits"]?.length === 0) {
 		delete file["+traits"];
+	}
 
-	if (file["+tweakers"]?.length === 0)
+	if (file["+tweakers"]?.length === 0) {
 		delete file["+tweakers"];
+	}
 
-	if (file.compatibleJavaMajors?.length === 0)
+	if (file.compatibleJavaMajors?.length === 0) {
 		delete file.compatibleJavaMajors;
+	}
 
-	if (file["+jvmArgs"]?.length === 0)
+	if (file["+jvmArgs"]?.length === 0) {
 		delete file["+jvmArgs"];
+	}
 
-	if (file.libraries?.length === 0)
+	if (file.libraries?.length === 0) {
 		delete file.libraries;
+	}
 
 	return file;
 }

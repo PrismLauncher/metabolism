@@ -17,8 +17,9 @@ export const PistonJavaRuntimeEntry = z.object({
 	}).transform((version, context) => {
 		let match = version.name.match(LEGACY_VERSION_PATTERN);
 
-		if (!match)
+		if (!match) {
 			match = version.name.match(VERSION_PATTERN);
+		}
 
 		if (!match) {
 			context.addIssue(`Got '${version.name}' - must match ${VERSION_PATTERN} or ${LEGACY_VERSION_PATTERN}`);
@@ -28,10 +29,11 @@ export const PistonJavaRuntimeEntry = z.object({
 		const parsed = mapValues(match.groups!, x => {
 			const parsed = parseInt(x);
 
-			if (isNaN(parsed))
+			if (isNaN(parsed)) {
 				return undefined;
-			else
+			} else {
 				return parsed;
+			}
 		}) as Omit<VersionFileRuntime["version"], "name">;
 
 		return { ...version, parsed };

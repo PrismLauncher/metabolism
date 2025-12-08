@@ -72,7 +72,7 @@ function getOSType(entry: AzulJavaPackage): string {
 }
 
 function transformRuntime(entry: AzulJavaPackage): VersionFileRuntime {
-	const name = `azul_${entry.product}_jre${entry.java_version[0]}.${entry.java_version[1]}.${entry.java_version[2]}`;
+	const name = `azul_${entry.product}_jre${entry.java_version[0]!}.${entry.java_version[1]!}.${entry.java_version[2]!}`;
 	const vendor = "azul";
 	const downloadType = "archive";
 	const packageType = "jre";

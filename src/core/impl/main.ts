@@ -44,22 +44,24 @@ command.command("all").alias("a")
 
 command.parse();
 
-function parseProviders(id: string, result: Set<Provider> = new Set) {
+function parseProviders(id: string, result: Set<Provider> = new Set): Set<Provider> {
 	const provider = PROVIDERS.get(id);
 
-	if (!provider)
+	if (!provider) {
 		throw new InvalidArgumentError("");
+	}
 
 	result.add(provider);
 
 	return result;
 }
 
-function parseGoals(id: string, result: Set<Goal> = new Set) {
+function parseGoals(id: string, result: Set<Goal> = new Set): Set<Goal> {
 	const goal = GOALS.get(id);
 
-	if (!goal)
+	if (!goal) {
 		throw new InvalidArgumentError("");
+	}
 
 	result.add(goal);
 

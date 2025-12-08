@@ -24,13 +24,15 @@ const quiltLoader = defineGoal({
 		if (info.version.includes("-")) {
 			let suffix = info.version.substring(info.version.lastIndexOf("-") + 1);
 
-			if (info.separator && suffix.includes(info.separator))
+			if (info.separator && suffix.includes(info.separator)) {
 				suffix = suffix.substring(0, suffix.indexOf(info.separator));
+			}
 
-			if (suffix === "pre")
+			if (suffix === "pre") {
 				type = "prerelease";
-			else if (suffix.length !== 0)
+			} else if (suffix.length !== 0) {
 				type = suffix;
+			}
 		}
 
 		return { ...transformVersion(info, QUILT_MAVEN), type };

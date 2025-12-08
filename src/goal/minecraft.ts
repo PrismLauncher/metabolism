@@ -42,11 +42,13 @@ function transformVersion(version: PistonVersion): VersionOutput {
 			.map(x => x.features)
 			.filter(x => typeof x === "object");
 
-		if (featureObjects.some(x => x.is_quick_play_singleplayer))
+		if (featureObjects.some(x => x.is_quick_play_singleplayer)) {
 			traits.push(VersionFileTrait.QuickPlaySingleplayerAware);
+		}
 
-		if (featureObjects.some(x => x.is_quick_play_multiplayer))
+		if (featureObjects.some(x => x.is_quick_play_multiplayer)) {
 			traits.push(VersionFileTrait.QuickPlayMultiplayerAware);
+		}
 	}
 
 	return {
@@ -75,30 +77,34 @@ function transformVersion(version: PistonVersion): VersionOutput {
 	};
 }
 
-function processLWJGL(lib: PistonLibrary, requires: VersionFileDependency[], traits: VersionFileTrait[]) {
-	if (isLWJGL2Dependency(lib.name))
+function processLWJGL(lib: PistonLibrary, requires: VersionFileDependency[], traits: VersionFileTrait[]): boolean {
+	if (isLWJGL2Dependency(lib.name)) {
 		return true;
+	}
 
 	const lwjgl2 = isLWJGL2(lib.name);
 	const lwjgl3 = isLWJGL3(lib.name);
 
 	if (lwjgl2 || lwjgl3) {
 		// determine version based on non-pltaform-specific libraries in case the version varies
-		if (isPlatformLibrary(lib))
+		if (isPlatformLibrary(lib)) {
 			return true;
+		}
 
 		const uid = lwjgl3 ? "org.lwjgl3" : "org.lwjgl";
 		const existing = requires.find(x => x.uid === uid);
 
 		if (existing) {
-			if (existing.suggests !== lib.name.version)
-				throw new Error(`Multiple versions of LWJGL specified! (both '${existing.suggests}' and '${lib.name.version}' present)`);
-			else
+			if (existing.suggests !== lib.name.version) {
+				throw new Error(`Multiple versions of LWJGL specified! (both '${existing.suggests!}' and '${lib.name.version}' present)`);
+			} else {
 				return true;
+			}
 		}
 
-		if (lwjgl3)
+		if (lwjgl3) {
 			traits.push(VersionFileTrait.UseFirstThreadOnMacOS);
+		}
 
 		requires.push({ uid, suggests: lib.name.version });
 		return true;

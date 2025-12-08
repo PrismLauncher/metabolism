@@ -15,8 +15,9 @@ export default defineGoal({
 
 		const majorVersions: Map<number, FullRuntimeInfo[]> = new Map;
 
-		for (const entry of flattenInfo(info))
+		for (const entry of flattenInfo(info)) {
 			setIfAbsent(majorVersions, entry.version.parsed.major, []).push(entry);
+		}
 
 		for (const [majorVersion, entries] of majorVersions) {
 			majorVersions.set(
@@ -42,10 +43,13 @@ export default defineGoal({
 type FullRuntimeInfo = PistonJavaRuntimeEntry & { os: string; name: string; };
 
 function* flattenInfo(info: PistonJavaRuntimeInfo): Generator<FullRuntimeInfo> {
-	for (const [os, entriesByName] of Object.entries(info))
-		for (const [name, entries] of Object.entries(entriesByName))
-			for (const entry of entries)
+	for (const [os, entriesByName] of Object.entries(info)) {
+		for (const [name, entries] of Object.entries(entriesByName)) {
+			for (const entry of entries) {
 				yield { ...entry, os, name };
+			}
+		}
+	}
 }
 function transformRuntime(entry: FullRuntimeInfo): VersionFileRuntime {
 	const os = entry.os === "mac-os" || !entry.os.includes("-")

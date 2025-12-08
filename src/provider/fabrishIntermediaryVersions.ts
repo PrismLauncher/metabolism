@@ -28,8 +28,9 @@ async function provide(http: HTTPClient, meta: string | URL, maven: string | URL
 			version.version + ".jar"
 		);
 
-		if (!infoResponse.lastModified)
+		if (!infoResponse.lastModified) {
 			throw new Error("Missing Last-Modified header");
+		}
 
 		return {
 			...version,

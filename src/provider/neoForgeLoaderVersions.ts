@@ -54,11 +54,13 @@ async function provide(http: HTTPClient, group: string, artifact: string): Promi
 			]
 		));
 
-		if (!versionJSON)
+		if (!versionJSON) {
 			throw new Error("Missing version.json for " + version);
+		}
 
-		if (!installProfileJSON)
+		if (!installProfileJSON) {
 			throw new Error("Missing install_profile.json for " + version);
+		}
 
 		const versionData = ForgeVersionData.parse(JSON.parse(versionJSON));
 		const installProfile = ForgeInstallProfile.parse(JSON.parse(installProfileJSON));

@@ -21,7 +21,7 @@ const CacheEntryMeta = z.object({
 type CacheEntryMeta = z.output<typeof CacheEntryMeta>;
 type CacheEntryMetaRaw = z.input<typeof CacheEntryMeta>;
 
-interface CacheEntryInfo extends Omit<CacheEntryMeta, "sha1"> { }
+type CacheEntryInfo = Omit<CacheEntryMeta, "sha1">;
 
 export interface CacheEntry extends CacheEntryInfo {
 	body?: { sha1: Buffer; value: string; };
@@ -64,8 +64,9 @@ export class DiskCache {
 		} finally {
 			lock.release();
 
-			if (!lock.isLocked)
+			if (!lock.isLocked) {
 				this.locks.delete(key);
+			}
 		}
 	}
 
@@ -81,8 +82,9 @@ export class DiskCache {
 			for (const [i, lock] of locks.entries()) {
 				const key = keys[i]!;
 
-				if (!lock.isLocked)
+				if (!lock.isLocked) {
 					this.locks.delete(key);
+				}
 			}
 		}
 	}
@@ -95,34 +97,39 @@ export class CacheEntryAccessor {
 	constructor(dir: string, key: string) {
 		this.path = path.join(dir, key);
 
-		if (!this.path.startsWith(dir))
+		if (!this.path.startsWith(dir)) {
 			throw new Error(`Key escapes base directory: '${key}'`);
+		}
 	}
 
 	async read(): Promise<CacheEntry | null> {
 		const metaJSON = await readFileIfExists(this.path + META_SUFFIX, FILE_ENCODING);
 
-		if (metaJSON === null)
+		if (metaJSON === null) {
 			return null;
+		}
 
 		try {
 			var meta = CacheEntryMeta.parse(JSON.parse(metaJSON));
 		} catch (error) {
-			if (!(error instanceof SyntaxError || error instanceof ZodError))
+			if (!(error instanceof SyntaxError || error instanceof ZodError)) {
 				throw error;
+			}
 
 			logger.warn(`Corrupt cache entry (${error.message})`);
 
 			return null;
 		}
 
-		if (!meta.sha1)
+		if (!meta.sha1) {
 			return meta;
+		}
 
 		const body = await readFileIfExists(this.path, FILE_ENCODING);
 
-		if (body === null)
+		if (body === null) {
 			return null;
+		}
 
 		const digestBuffer = await digest("sha-1", body);
 
@@ -153,10 +160,11 @@ export class CacheEntryAccessor {
 
 		await writeFile(this.path + META_SUFFIX, JSON.stringify(metaRaw), FILE_ENCODING);
 
-		if (entry.body)
+		if (entry.body) {
 			await writeFile(this.path, entry.body.value);
-		else
+		} else {
 			await deleteFileIfExists(this.path);
+		}
 
 		return {
 			...entry,

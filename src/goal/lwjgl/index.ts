@@ -70,10 +70,11 @@ function generate(data: PistonVersion[], conflictUIDs: string[], filter: Version
 				version.used ||= !isPlatformLibrary(lib);
 
 				target = version.modules;
-			} else if (filterDep(lib.name))
+			} else if (filterDep(lib.name)) {
 				target = sharedDeps;
-			else
+			} else {
 				continue;
+			}
 
 			const module = setIfAbsent(
 				target,
@@ -88,22 +89,25 @@ function generate(data: PistonVersion[], conflictUIDs: string[], filter: Version
 				if (classifier) {
 					const platform = mapClassifier(classifier);
 
-					if (platform)
+					if (platform) {
 						setIfAbsent(module.nativeCode, platform, { ...artifact, classifier });
-					else
-						logger.warn(`Could not determine platform from LWJGL classifier: '${lib.name.classifier}'`);
+					} else {
+						logger.warn(`Could not determine platform from LWJGL classifier: '${classifier}'`);
+					}
 
 					continue;
-				} else
+				} else {
 					module.javaCode = artifact;
+				}
 			}
 
 			const classifierLookup = lib.downloads?.classifiers;
 
 			if (lib.natives && !isEmpty(classifierLookup)) {
 				for (const [platform, classifier] of Object.entries(lib.natives)) {
-					if (!Object.hasOwn(classifierLookup, classifier))
+					if (!Object.hasOwn(classifierLookup, classifier)) {
 						continue;
+					}
 
 					const artifact = transformPistonArtifact(classifierLookup[classifier]!);
 
@@ -121,18 +125,20 @@ function generate(data: PistonVersion[], conflictUIDs: string[], filter: Version
 
 	sharedDeps.values().forEach(patchModule);
 
-	for (const version of versions.values())
+	for (const version of versions.values()) {
 		version.modules.forEach(patchModule);
+	}
 
 	const conflicts: VersionFileDependency[] = conflictUIDs.map(uid => ({ uid }));
 	const result = versions.entries()
 		.filter(([_, version]) => version.used)
 		.map(([versionKey, version]): VersionOutput => {
 			const transformModule = (module: LWJGLModule): VersionFileLibrary[] => {
-				if (version.preferSplit)
+				if (version.preferSplit) {
 					return transformModuleSplit(module);
-				else
+				} else {
 					return transformModuleMerged(module);
+				}
 			};
 
 			return {
@@ -156,20 +162,23 @@ function generate(data: PistonVersion[], conflictUIDs: string[], filter: Version
 function patchModule(module: LWJGLModule): void {
 	const name = module.baseName.value;
 
-	if (!Object.hasOwn(LWJGL_EXTRA_NATIVES, name))
+	if (!Object.hasOwn(LWJGL_EXTRA_NATIVES, name)) {
 		return;
+	}
 
 	const patches = LWJGL_EXTRA_NATIVES[name]!;
 
-	for (const [platform, artifact] of Object.entries(patches))
+	for (const [platform, artifact] of Object.entries(patches)) {
 		setIfAbsent(module.nativeCode, platform as keyof typeof LWJGL_EXTRA_NATIVES[string], artifact);
+	}
 }
 
 function transformModuleMerged(module: LWJGLModule): VersionFileLibrary[] {
 	const result: VersionFileLibrary[] = [];
 
-	if (module.javaCode !== undefined)
+	if (module.javaCode !== undefined) {
 		result.push({ name: module.baseName.value, downloads: { artifact: module.javaCode } });
+	}
 
 	if (!isEmpty(module.nativeCode)) {
 		const classifiers = Object.fromEntries(
@@ -191,8 +200,9 @@ function transformModuleMerged(module: LWJGLModule): VersionFileLibrary[] {
 function transformModuleSplit(module: LWJGLModule): VersionFileLibrary[] {
 	const result: VersionFileLibrary[] = [];
 
-	if (module.javaCode !== undefined)
+	if (module.javaCode !== undefined) {
 		result.push({ name: module.baseName.value, downloads: { artifact: module.javaCode } });
+	}
 
 	for (const [platform, artifact] of module.nativeCode) {
 		result.push({
@@ -211,15 +221,17 @@ function transformModuleSplit(module: LWJGLModule): VersionFileLibrary[] {
 function mapClassifier(classifier: string): VersionFilePlatform | undefined {
 	const prefix = "natives-";
 
-	if (!classifier.startsWith(prefix))
+	if (!classifier.startsWith(prefix)) {
 		return undefined;
+	}
 
 	classifier = classifier.substring(prefix.length);
 
 	const optionalSuffix = "-patch";
 
-	if (classifier.endsWith(optionalSuffix))
+	if (classifier.endsWith(optionalSuffix)) {
 		classifier = classifier.slice(0, -optionalSuffix.length);
+	}
 
 	switch (classifier) {
 		case "windows":

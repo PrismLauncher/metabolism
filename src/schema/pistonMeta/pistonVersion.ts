@@ -49,15 +49,6 @@ export const PistonLibrary = z.object({
 
 export type PistonLibrary = z.output<typeof PistonLibrary>;
 
-export function parsePistonLibraryName(name: string) {
-	const [groupID, artifactID, version, classifier] = name.split(":", 4);
-
-	if (!groupID || !artifactID || !version)
-		throw new Error(`Malformed library name: '${name}'`);
-
-	return { groupID, artifactID, version, classifier };
-}
-
 export const PistonAssetIndexRef = z.object({
 	id: z.string(),
 	sha1: z.string(),

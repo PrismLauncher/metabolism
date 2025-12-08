@@ -38,8 +38,9 @@ async function provide(http: HTTPClient, meta: string | URL, maven: string | URL
 			{ mode: HTTPCacheMode.Eternal }
 		);
 
-		if (!installerDataResponse.lastModified)
+		if (!installerDataResponse.lastModified) {
 			throw new Error("Missing Last-Modified header");
+		}
 
 		const installerData = FabricInstallerData.parse(installerDataResponse.json());
 

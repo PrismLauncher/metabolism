@@ -42,14 +42,15 @@ export class DiskCachedClient implements HTTPClient {
 						logger.debug(`'${key}' is up-to-date (matching digest)`);
 						return this.makeResponse(entry);
 					} else
-						logger.debug(`'${key}' needs fetch (digest mismatch)`);
+						{logger.debug(`'${key}' needs fetch (digest mismatch)`);}
 				}
 
 				if (strategy.mode === HTTPCacheMode.ConditionalRequest) {
-					if (entry.eTag)
+					if (entry.eTag) {
 						headers.set("If-None-Match", entry.eTag);
-					else if (entry.lastModified)
+					} else if (entry.lastModified) {
 						headers.set("If-Modified-Since", entry.lastModified.toUTCString());
+					}
 				}
 			}
 
@@ -60,8 +61,9 @@ export class DiskCachedClient implements HTTPClient {
 				return this.makeResponse(entry);
 			}
 
-			if (!response.ok || response.status === 204)
-				throw new Error(`Got ${response.status} ('${response.statusText}') while trying to GET '${url}'`);
+			if (!response.ok || response.status === 204) {
+				throw new Error(`Got ${response.status} ('${response.statusText}') while trying to GET '${url.toString()}'`);
+			}
 
 			const newEntry = await ref.write({
 				...this.parseHeaders(response.headers),
@@ -85,8 +87,9 @@ export class DiskCachedClient implements HTTPClient {
 
 			const response = await this.retry(url.toString(), () => fetch(url, { method: "HEAD", headers: this.makeHeaders() }));
 
-			if (!response.ok || response.status === 204)
-				throw new Error(`Got ${response.status} ('${response.statusText}') while trying to HEAD '${url}'`);
+			if (!response.ok || response.status === 204) {
+				throw new Error(`Got ${response.status} ('${response.statusText}') while trying to HEAD '${url.toString()}'`);
+			}
 
 			const newEntry = await ref.write(this.parseHeaders(response.headers));
 
@@ -105,14 +108,16 @@ export class DiskCachedClient implements HTTPClient {
 				const cached = await Promise.all(refs.map(ref => ref.read()));
 
 				for (const [index, cacheEntry] of cached.entries()) {
-					if (!cacheEntry?.body)
+					if (!cacheEntry?.body) {
 						continue;
+					}
 
 					result[index] = cacheEntry.body.value;
 				}
 
-				if (!result.includes(undefined!))
+				if (!result.includes(undefined!)) {
 					return result;
+				}
 
 				return await this.retry(url.toString(), async () => {
 					const reader = new HttpReader(url, {
@@ -126,16 +131,19 @@ export class DiskCachedClient implements HTTPClient {
 					const entries = await zip.getEntries();
 
 					for (const zipEntry of entries) {
-						if (zipEntry.directory)
+						if (zipEntry.directory) {
 							continue;
+						}
 
 						const index = files.findIndex(file => file.path === zipEntry.filename);
 
-						if (index === -1)
+						if (index === -1) {
 							continue;
+						}
 
-						if (result[index] !== undefined)
+						if (result[index] !== undefined) {
 							continue;
+						}
 
 						const file = files[index]!;
 						const ref = refs[index]!;
@@ -145,10 +153,11 @@ export class DiskCachedClient implements HTTPClient {
 						await ref.write({ body: { value: content } });
 						result[index] = content;
 
-						logger.debug(`Cache entry '${file.key}' updated from ZIP entry '${zipEntry.filename}' from '${url}'`);
+						logger.debug(`Cache entry '${file.key}' updated from ZIP entry '${zipEntry.filename}' from '${url.toString()}'`);
 
-						if (!result.includes(undefined!))
+						if (!result.includes(undefined!)) {
 							break;
+						}
 					}
 
 					return result;
@@ -169,7 +178,7 @@ export class DiskCachedClient implements HTTPClient {
 		return digestResult.equals(expected);
 	}
 
-	private makeHeaders() {
+	private makeHeaders(): Headers {
 		return new Headers({ "user-agent": this.options.userAgent });
 	}
 
@@ -177,8 +186,9 @@ export class DiskCachedClient implements HTTPClient {
 		const lastModifiedRaw = headers.get("last-modified");
 		const lastModified = lastModifiedRaw ? new Date(lastModifiedRaw) : undefined;
 
-		if (lastModified && isNaN(lastModified.getTime()))
-			throw new Error(`Invalid Last-Modified timestamp: '${lastModifiedRaw}'`);
+		if (lastModified && isNaN(lastModified.getTime())) {
+			throw new Error(`Invalid Last-Modified timestamp: '${lastModifiedRaw!}'`);
+		}
 
 		return {
 			eTag: headers.get("etag") ?? undefined,

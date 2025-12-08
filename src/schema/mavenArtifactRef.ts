@@ -22,11 +22,12 @@ class MavenArtifactRef_ {
 	) {
 	}
 
-	get value() {
-		if (this.classifier)
+	get value(): string {
+		if (this.classifier) {
 			return `${this.group}:${this.artifact}:${this.version}:${this.classifier}`;
-		else
+		} else {
 			return `${this.group}:${this.artifact}:${this.version}`;
+		}
 	}
 
 	format(keys: ("group" | "artifact" | "version" | "classifier")[]): string {
@@ -35,11 +36,13 @@ class MavenArtifactRef_ {
 		for (const key of keys) {
 			const value = this[key];
 
-			if (!value)
+			if (!value) {
 				continue;
+			}
 
-			if (result.length !== 0)
+			if (result.length !== 0) {
 				result += ":";
+			}
 
 			result += value;
 		}
@@ -66,4 +69,5 @@ class MavenArtifactRef_ {
 	}
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface MavenArtifactRef extends MavenArtifactRef_ { }
