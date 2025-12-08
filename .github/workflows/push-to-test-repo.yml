@@ -21,10 +21,10 @@ jobs:
           repository: TheKodeToad/metabolism-test
           token: ${{ secrets.PAT }}
           path: run
-      - uses: oven-sh/setup-bun@v2
-      - run: bun install --production --frozen-lockfile
+      - uses: pnpm/action-setup@v4
+      - run: pnpm install --prod --frozen-lockfile
       - name: Generate
-        run: env PINO_LOG_LEVEL=debug bun start all | bun pino-pretty
+        run: env PINO_LOG_LEVEL=debug pnpm start all | pnpm pino-pretty
       - name: Push
         run: |
           cd run

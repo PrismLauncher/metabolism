@@ -1,5 +1,5 @@
 import { PistonVersion } from "#schema/pistonMeta/pistonVersion.ts";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 // technically the schema is... literally just a version file but it's nicer to have things more specific to what we actually expect
 export const ForgeVersionData = PistonVersion.pick({

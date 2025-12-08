@@ -1,4 +1,4 @@
-import { string, z } from "zod/v4";
+import { string, z } from "zod";
 import { MavenArtifactRef } from "../mavenArtifactRef.ts";
 
 export const PistonRule = z.object({

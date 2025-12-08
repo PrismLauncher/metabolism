@@ -3,7 +3,7 @@ import { moduleLogger } from "#core/logger.ts";
 import { Mutex, omit } from "es-toolkit";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { z, ZodError } from "zod/v4";
+import { z, ZodError } from "zod";
 import { deleteFileIfExists, digest, readFileIfExists } from "../util.ts";
 
 const logger = moduleLogger();

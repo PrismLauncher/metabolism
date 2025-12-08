@@ -5,7 +5,7 @@ import { defineProvider } from "#core/provider.ts";
 import { ForgeInstallProfile } from "#schema/forge/forgeInstallProfile.ts";
 import { ForgeVersionData } from "#schema/forge/forgeVersionData.ts";
 import { MavenArtifactRef } from "#schema/mavenArtifactRef.ts";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 const ReposiliteVersions = z.object({
 	isSnapshot: z.boolean(),
