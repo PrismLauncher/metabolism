@@ -1,6 +1,6 @@
 import type { VersionFileRuntime } from "#schema/format/v1/versionFile.ts";
 import { mapValues } from "es-toolkit";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 const VERSION_PATTERN = /^(?<major>\d+)(?:\.(?<minor>\d+))?(?:\.(?<security>\d+))?(?:\.(?<build>\d+))?/;
 const LEGACY_VERSION_PATTERN = /^(?<major>\d+)u(?<security>\d+)(?:b(?<build>\d+))?/;

@@ -126,6 +126,9 @@ export class DiskCachedClient implements HTTPClient {
 					const entries = await zip.getEntries();
 
 					for (const zipEntry of entries) {
+						if (zipEntry.directory)
+							continue;
+
 						const index = files.findIndex(file => file.path === zipEntry.filename);
 
 						if (index === -1)

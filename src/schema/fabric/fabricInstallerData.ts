@@ -1,5 +1,5 @@
 import { MavenArtifactRef } from "#schema/mavenArtifactRef.ts";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 export const FabricLoaderLibrary = z.object({
 	name: MavenArtifactRef,
