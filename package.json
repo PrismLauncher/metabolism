@@ -9,14 +9,20 @@
 	},
 	"scripts": {
 		"start": "node --experimental-strip-types --experimental-transform-types ./src/core/impl/main.ts",
-		"lint": "tsc"
+		"typecheck": "tsc",
+		"lint": "eslint",
+		"reformat": "prettier . --write"
 	},
 	"license": "MIT",
 	"packageManager": "pnpm@10.22.0",
 	"devDependencies": {
 		"@commander-js/extra-typings": "^14.0.0",
+		"@eslint/js": "^9.39.1",
 		"@types/node": "^24.10.1",
-		"typescript": "^5.9.3"
+		"eslint": "^9.39.1",
+		"prettier": "3.7.4",
+		"typescript": "^5.9.3",
+		"typescript-eslint": "^8.48.1"
 	},
 	"dependencies": {
 		"@zip.js/zip.js": "^2.8.11",

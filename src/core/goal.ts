@@ -1,7 +1,9 @@
 import type { VersionFile } from "../schema/format/v1/versionFile.ts";
 import type { Provider } from "./provider.ts";
 
-export function defineGoal<TProvider extends Provider>(goal: Goal<TProvider>): Goal<TProvider> {
+export function defineGoal<TProvider extends Provider>(
+	goal: Goal<TProvider>,
+): Goal<TProvider> {
 	return goal;
 }
 
@@ -11,7 +13,9 @@ export interface Goal<TProvider extends Provider = Provider> {
 	name: string;
 	provider: TProvider;
 
-	generate(data: TProvider extends Provider<infer TData> ? TData : never): VersionOutput[];
+	generate(
+		data: TProvider extends Provider<infer TData> ? TData : never,
+	): VersionOutput[];
 	recommend(first: boolean, version: VersionOutput): boolean;
 }
 

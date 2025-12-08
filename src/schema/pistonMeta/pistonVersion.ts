@@ -3,19 +3,23 @@ import { MavenArtifactRef } from "../mavenArtifactRef.ts";
 
 export const PistonRule = z.object({
 	action: z.enum(["allow", "disallow"]),
-	features: z.object({
-		is_demo_user: z.boolean().optional(),
-		has_custom_resolution: z.boolean().optional(),
-		has_quick_plays_support: z.boolean().optional(),
-		is_quick_play_singleplayer: z.boolean().optional(),
-		is_quick_play_multiplayer: z.boolean().optional(),
-		is_quick_play_realms: z.boolean().optional(),
-	}).optional(),
-	os: z.object({
-		name: z.string().optional(),
-		version: z.string().optional(),
-		arch: z.string().optional(),
-	}).optional(),
+	features: z
+		.object({
+			is_demo_user: z.boolean().optional(),
+			has_custom_resolution: z.boolean().optional(),
+			has_quick_plays_support: z.boolean().optional(),
+			is_quick_play_singleplayer: z.boolean().optional(),
+			is_quick_play_multiplayer: z.boolean().optional(),
+			is_quick_play_realms: z.boolean().optional(),
+		})
+		.optional(),
+	os: z
+		.object({
+			name: z.string().optional(),
+			version: z.string().optional(),
+			arch: z.string().optional(),
+		})
+		.optional(),
 });
 
 export type PistonRule = z.output<typeof PistonRule>;
@@ -33,30 +37,25 @@ export const PistonLibrary = z.object({
 	name: MavenArtifactRef,
 	url: z.string().optional(),
 
-	downloads: z.object({
-		artifact: PistonArtifact.optional(),
-		classifiers: z.record(string(), PistonArtifact).optional(),
-	}).optional(),
+	downloads: z
+		.object({
+			artifact: PistonArtifact.optional(),
+			classifiers: z.record(string(), PistonArtifact).optional(),
+		})
+		.optional(),
 
 	rules: z.array(PistonRule).optional(),
-	natives: z.object({
-		windows: string().optional(),
-		osx: string().optional(),
-		linux: string().optional(),
-	}).optional(),
+	natives: z
+		.object({
+			windows: string().optional(),
+			osx: string().optional(),
+			linux: string().optional(),
+		})
+		.optional(),
 	extract: z.object({ exclude: z.array(string()) }).optional(),
 });
 
 export type PistonLibrary = z.output<typeof PistonLibrary>;
-
-export function parsePistonLibraryName(name: string) {
-	const [groupID, artifactID, version, classifier] = name.split(":", 4);
-
-	if (!groupID || !artifactID || !version)
-		throw new Error(`Malformed library name: '${name}'`);
-
-	return { groupID, artifactID, version, classifier };
-}
 
 export const PistonAssetIndexRef = z.object({
 	id: z.string(),
@@ -76,34 +75,43 @@ export const PistonLoggingAsset = z.object({
 
 export type PistonLoggingAsset = z.output<typeof PistonLoggingAsset>;
 
-
 export const PistonArgument = z.union([
 	z.string(),
 	z.object({
 		rules: z.array(PistonRule),
 		value: z.union([z.string(), z.array(z.string())]),
-	})
+	}),
 ]);
 
 export type PistonArgument = z.output<typeof PistonArgument>;
 
 export const PistonVersion = z.object({
-	arguments: z.object({
-		game: z.array(PistonArgument).optional(),
-		jvm: z.array(PistonArgument).optional(),
-	}).optional(),
+	arguments: z
+		.object({
+			game: z.array(PistonArgument).optional(),
+			jvm: z.array(PistonArgument).optional(),
+		})
+		.optional(),
 	assetIndex: PistonAssetIndexRef.optional(),
 	downloads: z.object({ client: PistonArtifact.omit({ path: true }) }),
 	id: z.string(),
-	javaVersion: z.object({
-		component: z.string(),
-		majorVersion: z.number(),
-	}).optional(),
+	javaVersion: z
+		.object({
+			component: z.string(),
+			majorVersion: z.number(),
+		})
+		.optional(),
 	libraries: z.array(PistonLibrary),
-	logging: z.object({
-		client: PistonLoggingAsset.optional(),
-	}).optional(),
-	mainClass: z.string().nullable().optional().transform(x => x ?? undefined),
+	logging: z
+		.object({
+			client: PistonLoggingAsset.optional(),
+		})
+		.optional(),
+	mainClass: z
+		.string()
+		.nullable()
+		.optional()
+		.transform((x) => x ?? undefined),
 	minecraftArguments: z.string().optional(),
 	releaseTime: z.coerce.date(),
 	time: z.string(),
@@ -111,5 +119,4 @@ export const PistonVersion = z.object({
 	complianceLevel: z.number().optional(),
 });
 
-export type PistonVersion = z.output<typeof PistonVersion>
-
+export type PistonVersion = z.output<typeof PistonVersion>;

@@ -2,7 +2,10 @@ import { setIfAbsent } from "#common/general.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
 import adoptiumJavaVersions from "#provider/adoptiumJavaVersions.ts";
 import type { VersionFileRuntime } from "#schema/format/v1/versionFile.ts";
-import type { AdoptiumJavaBinary, AdoptiumJavaRuntimeEntry } from "#schema/java/adoptiumJavaData.ts";
+import type {
+	AdoptiumJavaBinary,
+	AdoptiumJavaRuntimeEntry,
+} from "#schema/java/adoptiumJavaData.ts";
 import { orderBy } from "es-toolkit";
 
 export default defineGoal({
@@ -13,18 +16,21 @@ export default defineGoal({
 	generate(info): VersionOutput[] {
 		const result: VersionOutput[] = [];
 
-		const majorVersions: Map<number, AdoptiumJavaRuntimeEntry[]> = new Map;
+		const majorVersions: Map<number, AdoptiumJavaRuntimeEntry[]> =
+			new Map();
 
 		for (const entry of info) {
-			if (entry.binaries.some(x => isAvailableBinary(x))) {
-				setIfAbsent(majorVersions, entry.version_data.major, []).push(entry);
+			if (entry.binaries.some((x) => isAvailableBinary(x))) {
+				setIfAbsent(majorVersions, entry.version_data.major, []).push(
+					entry,
+				);
 			}
 		}
 
 		for (const [majorVersion, entries] of majorVersions) {
 			majorVersions.set(
 				majorVersion,
-				orderBy(entries, [entry => entry.timestamp], ["desc"])
+				orderBy(entries, [(entry) => entry.timestamp], ["desc"]),
 			);
 		}
 
@@ -33,7 +39,7 @@ export default defineGoal({
 				version: "java" + majorVersion,
 				releaseTime: entries.at(-1)!.timestamp.toISOString(),
 
-				runtimes: entries.flatMap(transformRuntime)
+				runtimes: entries.flatMap(transformRuntime),
 			});
 		}
 
@@ -43,11 +49,20 @@ export default defineGoal({
 });
 
 function isAvailableBinary(binary: AdoptiumJavaBinary): boolean {
-	if (binary.os !== "linux" && binary.os !== "windows" && binary.os !== "mac") {
+	if (
+		binary.os !== "linux"
+		&& binary.os !== "windows"
+		&& binary.os !== "mac"
+	) {
 		return false;
 	}
 
-	if (binary.architecture !== "x64" && binary.architecture !== "x86" && binary.architecture !== "aarch64" && binary.architecture !== "arm") {
+	if (
+		binary.architecture !== "x64"
+		&& binary.architecture !== "x86"
+		&& binary.architecture !== "aarch64"
+		&& binary.architecture !== "arm"
+	) {
 		return false;
 	}
 
@@ -71,7 +86,9 @@ function getOSType(binary: AdoptiumJavaBinary): string {
 	return `${osName}-${architecture}`;
 }
 
-function transformRuntime(entry: AdoptiumJavaRuntimeEntry): VersionFileRuntime[] {
+function transformRuntime(
+	entry: AdoptiumJavaRuntimeEntry,
+): VersionFileRuntime[] {
 	const result: VersionFileRuntime[] = [];
 
 	const name = `${entry.vendor}_temurin_jre${entry.version_data.major}.${entry.version_data.minor}.${entry.version_data.security}+${entry.version_data.build}`;
@@ -90,7 +107,7 @@ function transformRuntime(entry: AdoptiumJavaRuntimeEntry): VersionFileRuntime[]
 			runtimeOS: getOSType(binary),
 
 			version: {
-				...entry.version_data
+				...entry.version_data,
 			},
 			releaseTime,
 			vendor,
@@ -107,4 +124,3 @@ function transformRuntime(entry: AdoptiumJavaRuntimeEntry): VersionFileRuntime[]
 
 	return result;
 }
-

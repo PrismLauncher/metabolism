@@ -14,13 +14,27 @@ export default defineProvider({
 			archive_type: "zip",
 			javafx_bundled: "false",
 			java_package_type: "jre",
-			include_fields: ["sha256_hash", "build_date", "os", "arch", "hw_bitness"].join(",")
+			include_fields: [
+				"sha256_hash",
+				"build_date",
+				"os",
+				"arch",
+				"hw_bitness",
+			].join(","),
 		});
 
 		const versions = AzulJavaPackage.array().parse(
-			(await http.getCached(new URL("zulu/packages?" + versionsOptions, RUNTIMES_URL), "azul-java-packages.json")).json()
+			(
+				await http.getCached(
+					new URL(
+						"zulu/packages?" + versionsOptions.toString(),
+						RUNTIMES_URL,
+					),
+					"azul-java-packages.json",
+				)
+			).json(),
 		);
 
 		return versions;
 	},
-})
+});

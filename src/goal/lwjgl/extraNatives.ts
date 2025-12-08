@@ -1,7 +1,10 @@
 import type { VersionFilePlatform } from "#schema/format/v1/versionFile.ts";
 import type { ArtifactWithClassifier } from "./index.ts";
 
-type ExtraNatives = Record<string, Partial<Record<VersionFilePlatform, ArtifactWithClassifier>>>;
+type ExtraNatives = Record<
+	string,
+	Partial<Record<VersionFilePlatform, ArtifactWithClassifier>>
+>;
 
 export const LWJGL_EXTRA_NATIVES: ExtraNatives = {
 	// == x86 natives (LWJGL 3) ==
@@ -12,7 +15,7 @@ export const LWJGL_EXTRA_NATIVES: ExtraNatives = {
 			classifier: "natives-osx",
 			url: "https://libraries.minecraft.net/org/lwjgl/lwjgl-tinyfd/3.2.2/lwjgl-tinyfd-3.2.2-natives-macos.jar",
 			sha1: "46d0798228b8a28e857a2a0f02310fd6ba2a4eab",
-			size: 42136
+			size: 42136,
 		},
 	},
 	// only intel mac has LWJGL 3.2.1 natives for tinyfd
@@ -22,13 +25,13 @@ export const LWJGL_EXTRA_NATIVES: ExtraNatives = {
 			classifier: "natives-windows",
 			url: "https://libraries.minecraft.net/org/lwjgl/lwjgl-tinyfd/3.2.1/lwjgl-tinyfd-3.2.1-natives-windows.jar",
 			sha1: "85750d2ca022852e15f58c0b94b3d1d4e7f0ba52",
-			size: 207577
+			size: 207577,
 		},
 		linux: {
 			classifier: "natives-linux",
 			url: "https://libraries.minecraft.net/org/lwjgl/lwjgl-tinyfd/3.2.1/lwjgl-tinyfd-3.2.1-natives-linux.jar",
 			sha1: "4ad49108397322596d7b85c2c687e5de6ee52157",
-			size: 38192
+			size: 38192,
 		},
 	},
 

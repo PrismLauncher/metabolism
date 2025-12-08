@@ -9,6 +9,8 @@ export const PistonVersionRef = z.object({
 
 export type PistonVersionRef = z.output<typeof PistonVersionRef>;
 
-export const PistonVersionManifest = z.object({ versions: z.array(PistonVersionRef) });
+export const PistonVersionManifest = z.object({
+	versions: z.array(PistonVersionRef),
+});
 
 export type PistonVersionManifest = z.output<typeof PistonVersionManifest>;

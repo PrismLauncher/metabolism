@@ -11,19 +11,17 @@ export const AdoptiumJavaReleases = z.object({
 
 export type AdoptiumJavaReleases = z.output<typeof AdoptiumJavaReleases>;
 
-
 export const AdoptiumJavaBinary = z.object({
 	architecture: z.string(),
 	image_type: z.string(),
 	os: z.string(),
 	package: z.object({
 		checksum: z.string(),
-		link: z.string()
-	})
+		link: z.string(),
+	}),
 });
 
 export type AdoptiumJavaBinary = z.output<typeof AdoptiumJavaBinary>;
-
 
 export const AdoptiumJavaRuntimeEntry = z.object({
 	binaries: z.array(AdoptiumJavaBinary),
@@ -33,8 +31,10 @@ export const AdoptiumJavaRuntimeEntry = z.object({
 		major: z.int32(),
 		minor: z.int32(),
 		security: z.int32(),
-		build: z.int32()
-	})
+		build: z.int32(),
+	}),
 });
 
-export type AdoptiumJavaRuntimeEntry = z.output<typeof AdoptiumJavaRuntimeEntry>;
+export type AdoptiumJavaRuntimeEntry = z.output<
+	typeof AdoptiumJavaRuntimeEntry
+>;

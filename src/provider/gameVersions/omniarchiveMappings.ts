@@ -1,20 +1,23 @@
 // theirs -> ours
 // parity with old meta
 // TODO: we probably want to support omniarchive's whole library
-export const OMNIARCHIVE_MAPPINGS: Record<string, { id: string; type: string; }> = {
+export const OMNIARCHIVE_MAPPINGS: Record<
+	string,
+	{ id: string; type: string }
+> = {
 	// -- experiments --
-	"combat1": { id: "1.14_combat-212796", type: "experiment" },
-	"combat2": { id: "1.14_combat-0", type: "experiment" },
-	"combat3": { id: "1.14_combat-3", type: "experiment" },
-	"combat4": { id: "1.15_combat-1", type: "experiment" },
-	"combat5": { id: "1.15_combat-6", type: "experiment" },
-	"combat6": { id: "1.16_combat-0", type: "experiment" },
-	"combat7": { id: "1.16_combat-1", type: "experiment" },
-	"combat7b": { id: "1.16_combat-2", type: "experiment" },
-	"combat7c": { id: "1.16_combat-3", type: "experiment" },
-	"combat8": { id: "1.16_combat-4", type: "experiment" },
-	"combat8b": { id: "1.16_combat-5", type: "experiment" },
-	"combat8c": { id: "1.16_combat-6", type: "experiment" },
+	combat1: { id: "1.14_combat-212796", type: "experiment" },
+	combat2: { id: "1.14_combat-0", type: "experiment" },
+	combat3: { id: "1.14_combat-3", type: "experiment" },
+	combat4: { id: "1.15_combat-1", type: "experiment" },
+	combat5: { id: "1.15_combat-6", type: "experiment" },
+	combat6: { id: "1.16_combat-0", type: "experiment" },
+	combat7: { id: "1.16_combat-1", type: "experiment" },
+	combat7b: { id: "1.16_combat-2", type: "experiment" },
+	combat7c: { id: "1.16_combat-3", type: "experiment" },
+	combat8: { id: "1.16_combat-4", type: "experiment" },
+	combat8b: { id: "1.16_combat-5", type: "experiment" },
+	combat8c: { id: "1.16_combat-6", type: "experiment" },
 	"1.18-exp1": { id: "1.18_experimental-snapshot-1", type: "experiment" },
 	"1.18-exp2": { id: "1.18_experimental-snapshot-2", type: "experiment" },
 	"1.18-exp3": { id: "1.18_experimental-snapshot-3", type: "experiment" },
@@ -22,7 +25,10 @@ export const OMNIARCHIVE_MAPPINGS: Record<string, { id: string; type: string; }>
 	"1.18-exp5": { id: "1.18_experimental-snapshot-5", type: "experiment" },
 	"1.18-exp6": { id: "1.18_experimental-snapshot-6", type: "experiment" },
 	"1.18-exp7": { id: "1.18_experimental-snapshot-7", type: "experiment" },
-	"1.19-exp1": { id: "1.19_deep_dark_experimental_snapshot-1", type: "experiment" },
+	"1.19-exp1": {
+		id: "1.19_deep_dark_experimental_snapshot-1",
+		type: "experiment",
+	},
 
 	// -- old prereleases --
 	"1.2-pre": { id: "1.2", type: "old_snapshot" },
