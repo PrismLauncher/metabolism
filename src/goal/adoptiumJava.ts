@@ -74,7 +74,7 @@ function getOSType(binary: AdoptiumJavaBinary): string {
 function transformRuntime(entry: AdoptiumJavaRuntimeEntry): VersionFileRuntime[] {
 	const result: VersionFileRuntime[] = [];
 
-	const name = `${entry.vendor}_termurin_jre${entry.version_data.major}.${entry.version_data.minor}.${entry.version_data.security}+${entry.version_data.build}`;
+	const name = `${entry.vendor}_temurin_jre${entry.version_data.major}.${entry.version_data.minor}.${entry.version_data.security}+${entry.version_data.build}`;
 	const vendor = entry.vendor;
 	const downloadType = "archive";
 	const packageType = "jre";
