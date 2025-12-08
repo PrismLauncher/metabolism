@@ -4,8 +4,7 @@ Generation for Minecraft game and loader metadata - possible future implementati
 For the time being [this repo](https://github.com/TheKodeToad/metabolism-test) mirrors the latest commit - and you can use the generated output by setting your Metadata URL to https://thekodetoad.github.io/metabolism-test/output/.
 
 ## Usage
-First, run `bun install`.
-To run with Bun, run `bun start` - or to run with Node.JS, run `bun startNode` (doesn't currently work entirely correctly).
+Run `pnpm install` then `pnpm start`.
 
 There are two key concepts - providers and goals. Providers are metadata sources, and goals are metadata targets.
 For example, the `piston-meta` provider provides data to the `net.minecraft` goal.

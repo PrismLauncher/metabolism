@@ -5,7 +5,7 @@ import { Command, InvalidArgumentError } from "commander";
 import { GOALS, PROVIDERS } from "./registry.ts";
 import { build, prepare, sync } from "./runner.ts";
 
-const command = new Command("bun start")
+const command = new Command("pnpm start")
 	.description("Metabolism - Prism Launcher Metadata Generator")
 	.option("-u, --user-agent <value>", "set the User-Agent header", "PrismLauncherMeta/" + packageJSON.version)
 	.option("-o, --output-dir <path>", "set the output directory", "./run/output")
