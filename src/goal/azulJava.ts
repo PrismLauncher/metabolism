@@ -2,7 +2,7 @@ import { setIfAbsent } from "#common/general.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
 import azulJavaVersions from "#provider/azulJavaVersions.ts";
 import type { VersionFileRuntime } from "#schema/format/v1/versionFile.ts";
-import type { AzulJavaPackage, AzulJavaPackages } from "#schema/java/azulJavaData.ts";
+import type { AzulJavaPackage } from "#schema/java/azulJavaData.ts";
 import { orderBy } from "es-toolkit";
 
 export default defineGoal({
@@ -13,7 +13,7 @@ export default defineGoal({
 	generate(info): VersionOutput[] {
 		const result: VersionOutput[] = [];
 
-		const majorVersions: Map<number, AzulJavaPackages> = new Map;
+		const majorVersions: Map<number, AzulJavaPackage[]> = new Map;
 
 		for (const entry of info.flat()) {
 			if (isAvailablePackage(entry)) {
@@ -57,7 +57,7 @@ function isAvailablePackage(entry: AzulJavaPackage): boolean {
 function getOSType(entry: AzulJavaPackage): string {
 	let osName = entry.os;
 	if (osName === "macos") {
-		osName = 'mac-os';
+		osName = "mac-os";
 	}
 
 	let architecture = entry.arch;

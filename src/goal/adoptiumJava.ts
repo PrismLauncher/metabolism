@@ -2,7 +2,7 @@ import { setIfAbsent } from "#common/general.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
 import adoptiumJavaVersions from "#provider/adoptiumJavaVersions.ts";
 import type { VersionFileRuntime } from "#schema/format/v1/versionFile.ts";
-import type { AdoptiumJavaBinary, AdoptiumJavaRuntimeEntries, AdoptiumJavaRuntimeEntry } from "#schema/java/adoptiumJavaData.ts";
+import type { AdoptiumJavaBinary, AdoptiumJavaRuntimeEntry } from "#schema/java/adoptiumJavaData.ts";
 import { orderBy } from "es-toolkit";
 
 export default defineGoal({
@@ -13,7 +13,7 @@ export default defineGoal({
 	generate(info): VersionOutput[] {
 		const result: VersionOutput[] = [];
 
-		const majorVersions: Map<number, AdoptiumJavaRuntimeEntries> = new Map;
+		const majorVersions: Map<number, AdoptiumJavaRuntimeEntry[]> = new Map;
 
 		for (const entry of info) {
 			if (entry.binaries.some(x => isAvailableBinary(x))) {
@@ -57,7 +57,7 @@ function isAvailableBinary(binary: AdoptiumJavaBinary): boolean {
 function getOSType(binary: AdoptiumJavaBinary): string {
 	let osName = binary.os;
 	if (osName === "mac") {
-		osName = 'mac-os';
+		osName = "mac-os";
 	}
 
 	let architecture = binary.architecture;

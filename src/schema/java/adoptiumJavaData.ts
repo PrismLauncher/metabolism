@@ -38,8 +38,3 @@ export const AdoptiumJavaRuntimeEntry = z.object({
 });
 
 export type AdoptiumJavaRuntimeEntry = z.output<typeof AdoptiumJavaRuntimeEntry>;
-
-
-export const AdoptiumJavaRuntimeEntries = z.array(AdoptiumJavaRuntimeEntry);
-
-export type AdoptiumJavaRuntimeEntries = z.output<typeof AdoptiumJavaRuntimeEntries>;
