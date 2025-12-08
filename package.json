@@ -8,15 +8,14 @@
 		"#project/*": "./*"
 	},
 	"scripts": {
-		"start": "bun ./src/core/impl/main.ts",
-		"startNode": "node --experimental-strip-types --experimental-transform-types ./src/core/impl/main.ts",
+		"start": "node --experimental-strip-types --experimental-transform-types ./src/core/impl/main.ts",
 		"lint": "tsc"
 	},
 	"license": "MIT",
-	"packageManager": "bun@1.2.14",
+	"packageManager": "pnpm@10.22.0",
 	"devDependencies": {
 		"@commander-js/extra-typings": "^14.0.0",
-		"@types/bun": "^1.2.15",
+		"@types/node": "^24.10.1",
 		"typescript": "^5.8.3"
 	},
 	"dependencies": {
