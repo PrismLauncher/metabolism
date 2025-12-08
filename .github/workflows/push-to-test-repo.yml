@@ -23,6 +23,11 @@ jobs:
           path: run
       - uses: pnpm/action-setup@v4
       - run: pnpm install --prod --frozen-lockfile
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: "**/pnpm-lock.yaml"
       - name: Generate
         run: env PINO_LOG_LEVEL=debug pnpm start all | pnpm pino-pretty
       - name: Push
