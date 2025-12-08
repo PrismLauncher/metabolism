@@ -12,11 +12,17 @@ const FILE_ENCODING: BufferEncoding = "utf-8";
 const META_SUFFIX: string = ".entry.json";
 const DIGEST_ENCODING: BufferEncoding = "base64";
 
-const CacheEntryMeta = z.object({
-	lastModified: z.coerce.date(),
-	eTag: z.string(),
-	sha1: z.string().transform(value => Buffer.from(value, DIGEST_ENCODING) as Buffer),
-}).partial();
+const CacheEntryMeta = z
+	.object({
+		lastModified: z.coerce.date(),
+		eTag: z.string(),
+		sha1: z
+			.string()
+			.transform(
+				(value) => Buffer.from(value, DIGEST_ENCODING) as Buffer,
+			),
+	})
+	.partial();
 
 type CacheEntryMeta = z.output<typeof CacheEntryMeta>;
 type CacheEntryMetaRaw = z.input<typeof CacheEntryMeta>;
@@ -24,19 +30,21 @@ type CacheEntryMetaRaw = z.input<typeof CacheEntryMeta>;
 type CacheEntryInfo = Omit<CacheEntryMeta, "sha1">;
 
 export interface CacheEntry extends CacheEntryInfo {
-	body?: { sha1: Buffer; value: string; };
+	body?: { sha1: Buffer; value: string };
 }
 
-export type CacheEntryWithBody = CacheEntry & { body: NonNullable<CacheEntry["body"]>; };
+export type CacheEntryWithBody = CacheEntry & {
+	body: NonNullable<CacheEntry["body"]>;
+};
 
 export interface CacheEntryWithoutSha1 extends CacheEntryInfo {
-	body?: { value: string; };
+	body?: { value: string };
 }
 
 type WithSha1<TEntry extends CacheEntryWithoutSha1> =
-	TEntry["body"] extends object
-	? TEntry & { body: NonNullable<CacheEntry["body"]>; }
-	: TEntry;
+	TEntry["body"] extends object ?
+		TEntry & { body: NonNullable<CacheEntry["body"]> }
+	:	TEntry;
 
 export function hasBody(entry: CacheEntry): entry is CacheEntryWithBody {
 	return "body" in entry;
@@ -48,15 +56,18 @@ export class DiskCache {
 
 	constructor(dir: string) {
 		this.dir = path.join(dir, "/");
-		this.locks = new Map;
+		this.locks = new Map();
 	}
 
 	/**
 	 * Take exclusive control of an entry - pauses until the previous call is complete.
 	 * @param key The cache key
 	 */
-	async use<T>(key: string, callback: (ref: CacheEntryAccessor) => T): Promise<Awaited<T>> {
-		const lock = setIfAbsent(this.locks, key, new Mutex);
+	async use<T>(
+		key: string,
+		callback: (ref: CacheEntryAccessor) => T,
+	): Promise<Awaited<T>> {
+		const lock = setIfAbsent(this.locks, key, new Mutex());
 		await lock.acquire();
 
 		try {
@@ -70,14 +81,21 @@ export class DiskCache {
 		}
 	}
 
-	async useAll<T>(keys: string[], callback: (refs: CacheEntryAccessor[]) => T): Promise<Awaited<T>> {
-		const locks = keys.map(key => setIfAbsent(this.locks, key, new Mutex));
-		await Promise.all(locks.map(lock => lock.acquire()));
+	async useAll<T>(
+		keys: string[],
+		callback: (refs: CacheEntryAccessor[]) => T,
+	): Promise<Awaited<T>> {
+		const locks = keys.map((key) =>
+			setIfAbsent(this.locks, key, new Mutex()),
+		);
+		await Promise.all(locks.map((lock) => lock.acquire()));
 
 		try {
-			return await callback(keys.map(key => new CacheEntryAccessor(this.dir, key)));
+			return await callback(
+				keys.map((key) => new CacheEntryAccessor(this.dir, key)),
+			);
 		} finally {
-			locks.forEach(lock => lock.release());
+			locks.forEach((lock) => lock.release());
 
 			for (const [i, lock] of locks.entries()) {
 				const key = keys[i]!;
@@ -89,7 +107,6 @@ export class DiskCache {
 		}
 	}
 }
-
 
 export class CacheEntryAccessor {
 	private path: string;
@@ -103,7 +120,10 @@ export class CacheEntryAccessor {
 	}
 
 	async read(): Promise<CacheEntry | null> {
-		const metaJSON = await readFileIfExists(this.path + META_SUFFIX, FILE_ENCODING);
+		const metaJSON = await readFileIfExists(
+			this.path + META_SUFFIX,
+			FILE_ENCODING,
+		);
 
 		if (metaJSON === null) {
 			return null;
@@ -134,21 +154,26 @@ export class CacheEntryAccessor {
 		const digestBuffer = await digest("sha-1", body);
 
 		if (!digestBuffer.equals(meta.sha1)) {
-			logger.warn(`Modified cache entry (expected sha1sum of ${digestBuffer.toString("hex")})`);
+			logger.warn(
+				`Modified cache entry (expected sha1sum of ${digestBuffer.toString("hex")})`,
+			);
 
 			return null;
 		}
 
 		return {
 			...omit(meta, ["sha1"]),
-			body: { sha1: meta.sha1, value: body }
+			body: { sha1: meta.sha1, value: body },
 		};
 	}
 
-	async write<TEntry extends CacheEntryWithoutSha1>(entry: TEntry): Promise<WithSha1<TEntry>> {
-		const sha1 = entry.body !== undefined
-			? await digest("sha-1", entry.body.value)
-			: undefined;
+	async write<TEntry extends CacheEntryWithoutSha1>(
+		entry: TEntry,
+	): Promise<WithSha1<TEntry>> {
+		const sha1 =
+			entry.body !== undefined ?
+				await digest("sha-1", entry.body.value)
+			:	undefined;
 
 		const metaRaw: CacheEntryMetaRaw = {
 			eTag: entry.eTag,
@@ -158,7 +183,11 @@ export class CacheEntryAccessor {
 
 		await mkdir(path.dirname(this.path), { recursive: true });
 
-		await writeFile(this.path + META_SUFFIX, JSON.stringify(metaRaw), FILE_ENCODING);
+		await writeFile(
+			this.path + META_SUFFIX,
+			JSON.stringify(metaRaw),
+			FILE_ENCODING,
+		);
 
 		if (entry.body) {
 			await writeFile(this.path, entry.body.value);
@@ -168,7 +197,7 @@ export class CacheEntryAccessor {
 
 		return {
 			...entry,
-			body: entry.body ? { value: entry.body.value, sha1 } : undefined
+			body: entry.body ? { value: entry.body.value, sha1 } : undefined,
 		} as any; // :)
 	}
 }

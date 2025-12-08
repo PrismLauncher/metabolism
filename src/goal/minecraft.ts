@@ -1,17 +1,31 @@
 import { throwError } from "#common/general.ts";
-import { isLWJGL2, isLWJGL2Dependency, isLWJGL3 } from "#common/transformation/maven.ts";
-import { isPlatformLibrary, transformArgs, transformPistonLibrary } from "#common/transformation/pistonMeta.ts";
+import {
+	isLWJGL2,
+	isLWJGL2Dependency,
+	isLWJGL3,
+} from "#common/transformation/maven.ts";
+import {
+	isPlatformLibrary,
+	transformArgs,
+	transformPistonLibrary,
+} from "#common/transformation/pistonMeta.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
 import pistonMetaGameVersions from "#provider/gameVersions/index.ts";
-import { VersionFileTrait, type VersionFileDependency } from "#schema/format/v1/versionFile.ts";
-import type { PistonLibrary, PistonVersion } from "#schema/pistonMeta/pistonVersion.ts";
+import {
+	VersionFileTrait,
+	type VersionFileDependency,
+} from "#schema/format/v1/versionFile.ts";
+import type {
+	PistonLibrary,
+	PistonVersion,
+} from "#schema/pistonMeta/pistonVersion.ts";
 
 export default defineGoal({
 	id: "net.minecraft",
 	name: "Minecraft",
 	provider: pistonMetaGameVersions,
 
-	generate: data => data.map(transformVersion),
+	generate: (data) => data.map(transformVersion),
 	recommend: (first, version) => first && version.type === "release",
 });
 
@@ -22,13 +36,14 @@ function transformVersion(version: PistonVersion): VersionOutput {
 
 	let libraries = version.libraries;
 
-	libraries = libraries.filter(x => !processLWJGL(x, requires, traits));
+	libraries = libraries.filter((x) => !processLWJGL(x, requires, traits));
 
 	if (mainClass?.startsWith("net.minecraft.launchwrapper.")) {
 		libraries = libraries.filter(
-			x => !x.name.value.startsWith("net.minecraft:launchwrapper:")
+			(x) =>
+				!x.name.value.startsWith("net.minecraft:launchwrapper:")
 				&& x.name.group !== "net.sf.jopt-simple"
-				&& x.name.group !== "org.ow2.asm"
+				&& x.name.group !== "org.ow2.asm",
 		);
 
 		mainClass = undefined;
@@ -37,16 +52,16 @@ function transformVersion(version: PistonVersion): VersionOutput {
 
 	if (version.arguments?.game) {
 		const featureObjects = version.arguments.game
-			.filter(x => typeof x === "object")
-			.flatMap(x => x.rules)
-			.map(x => x.features)
-			.filter(x => typeof x === "object");
+			.filter((x) => typeof x === "object")
+			.flatMap((x) => x.rules)
+			.map((x) => x.features)
+			.filter((x) => typeof x === "object");
 
-		if (featureObjects.some(x => x.is_quick_play_singleplayer)) {
+		if (featureObjects.some((x) => x.is_quick_play_singleplayer)) {
 			traits.push(VersionFileTrait.QuickPlaySingleplayerAware);
 		}
 
-		if (featureObjects.some(x => x.is_quick_play_multiplayer)) {
+		if (featureObjects.some((x) => x.is_quick_play_multiplayer)) {
 			traits.push(VersionFileTrait.QuickPlayMultiplayerAware);
 		}
 	}
@@ -60,16 +75,23 @@ function transformVersion(version: PistonVersion): VersionOutput {
 
 		"+traits": traits,
 
-		compatibleJavaMajors: [version?.javaVersion?.majorVersion].filter(x => x !== undefined),
+		compatibleJavaMajors: [version?.javaVersion?.majorVersion].filter(
+			(x) => x !== undefined,
+		),
 		compatibleJavaName: version.javaVersion?.component,
 		mainClass,
-		minecraftArguments: version.minecraftArguments
-			?? (version.arguments?.game ? transformArgs(version.arguments.game) : undefined)
-			?? throwError("Neither minecraftArguments nor arguments.game present"),
+		minecraftArguments:
+			version.minecraftArguments
+			?? (version.arguments?.game ?
+				transformArgs(version.arguments.game)
+			:	undefined)
+			?? throwError(
+				"Neither minecraftArguments nor arguments.game present",
+			),
 
 		mainJar: {
 			name: `com.mojang:minecraft:${version.id}:client`,
-			downloads: { artifact: version.downloads.client }
+			downloads: { artifact: version.downloads.client },
 		},
 		logging: version.logging?.client,
 		assetIndex: version.assetIndex,
@@ -77,7 +99,11 @@ function transformVersion(version: PistonVersion): VersionOutput {
 	};
 }
 
-function processLWJGL(lib: PistonLibrary, requires: VersionFileDependency[], traits: VersionFileTrait[]): boolean {
+function processLWJGL(
+	lib: PistonLibrary,
+	requires: VersionFileDependency[],
+	traits: VersionFileTrait[],
+): boolean {
 	if (isLWJGL2Dependency(lib.name)) {
 		return true;
 	}
@@ -92,11 +118,13 @@ function processLWJGL(lib: PistonLibrary, requires: VersionFileDependency[], tra
 		}
 
 		const uid = lwjgl3 ? "org.lwjgl3" : "org.lwjgl";
-		const existing = requires.find(x => x.uid === uid);
+		const existing = requires.find((x) => x.uid === uid);
 
 		if (existing) {
 			if (existing.suggests !== lib.name.version) {
-				throw new Error(`Multiple versions of LWJGL specified! (both '${existing.suggests!}' and '${lib.name.version}' present)`);
+				throw new Error(
+					`Multiple versions of LWJGL specified! (both '${existing.suggests!}' and '${lib.name.version}' present)`,
+				);
 			} else {
 				return true;
 			}

@@ -1,4 +1,3 @@
-
 export interface HTTPClient {
 	/**
 	 * Fetch text over HTTP and store for later use or reuse stored data if it is up-to-date.
@@ -7,7 +6,11 @@ export interface HTTPClient {
 	 * @param strategy Caching strategy - defaults to ConditionalRequest
 	 * @returns metadata and body
 	 */
-	getCached(url: string | URL, key: string, strategy?: HTTPCacheStrategy): Promise<Response>;
+	getCached(
+		url: string | URL,
+		key: string,
+		strategy?: HTTPCacheStrategy,
+	): Promise<Response>;
 
 	/**
 	 * Fetch metadata over HTTP and store for later use or reuse stored data if it is up-to-date. Simply uses Eternal cache strategy.
@@ -25,7 +28,10 @@ export interface HTTPClient {
 	 * @param files zip entry to cache key mapping
 	 * @return array of zip entry content ordered the same as the files parameter
 	 */
-	unzipCached(url: string | URL, files: { path: string; key: string; }[]): Promise<string[]>;
+	unzipCached(
+		url: string | URL,
+		files: { path: string; key: string }[],
+	): Promise<string[]>;
 }
 
 export interface Metadata {
@@ -55,7 +61,6 @@ export const enum HTTPCacheMode {
 	Eternal,
 }
 
-
 export interface ConditionalRequestStrategy {
 	mode: HTTPCacheMode.ConditionalRequest;
 }
@@ -70,6 +75,9 @@ export interface EternalStrategy {
 	mode: HTTPCacheMode.Eternal;
 }
 
-export type HTTPCacheStrategy = ConditionalRequestStrategy | CompareLocalDigestStrategy | EternalStrategy;
+export type HTTPCacheStrategy =
+	| ConditionalRequestStrategy
+	| CompareLocalDigestStrategy
+	| EternalStrategy;
 
 export type DigestAlgorithm = "sha-1" | "sha-256" | "sha-384" | "sha-512";

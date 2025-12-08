@@ -8,7 +8,10 @@ export interface PackageIndexFile {
 	versions: PackageIndexFileVersion[];
 }
 
-export interface PackageIndexFileVersion extends Pick<VersionFile, "releaseTime" | "version" | "type" | "requires" | "conflicts"> {
+export interface PackageIndexFileVersion extends Pick<
+	VersionFile,
+	"releaseTime" | "version" | "type" | "requires" | "conflicts"
+> {
 	recommended: boolean;
 	sha256: string;
 }

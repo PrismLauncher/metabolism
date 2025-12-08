@@ -2,7 +2,10 @@ import { setIfAbsent } from "#common/general.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
 import mojangJavaVersions from "#provider/mojangJavaVersions.ts";
 import type { VersionFileRuntime } from "#schema/format/v1/versionFile.ts";
-import type { PistonJavaRuntimeEntry, PistonJavaRuntimeInfo } from "#schema/pistonMeta/pistonJavaRuntimeInfo.ts";
+import type {
+	PistonJavaRuntimeEntry,
+	PistonJavaRuntimeInfo,
+} from "#schema/pistonMeta/pistonJavaRuntimeInfo.ts";
 import { orderBy } from "es-toolkit";
 
 export default defineGoal({
@@ -13,16 +16,18 @@ export default defineGoal({
 	generate(info) {
 		const result: VersionOutput[] = [];
 
-		const majorVersions: Map<number, FullRuntimeInfo[]> = new Map;
+		const majorVersions: Map<number, FullRuntimeInfo[]> = new Map();
 
 		for (const entry of flattenInfo(info)) {
-			setIfAbsent(majorVersions, entry.version.parsed.major, []).push(entry);
+			setIfAbsent(majorVersions, entry.version.parsed.major, []).push(
+				entry,
+			);
 		}
 
 		for (const [majorVersion, entries] of majorVersions) {
 			majorVersions.set(
 				majorVersion,
-				orderBy(entries, [entry => entry.version.released], ["desc"])
+				orderBy(entries, [(entry) => entry.version.released], ["desc"]),
 			);
 		}
 
@@ -31,7 +36,7 @@ export default defineGoal({
 				version: "java" + majorVersion,
 				releaseTime: entries.at(-1)!.version.released.toISOString(),
 
-				runtimes: entries.map(transformRuntime)
+				runtimes: entries.map(transformRuntime),
 			});
 		}
 
@@ -40,7 +45,7 @@ export default defineGoal({
 	recommend: () => false,
 });
 
-type FullRuntimeInfo = PistonJavaRuntimeEntry & { os: string; name: string; };
+type FullRuntimeInfo = PistonJavaRuntimeEntry & { os: string; name: string };
 
 function* flattenInfo(info: PistonJavaRuntimeInfo): Generator<FullRuntimeInfo> {
 	for (const [os, entriesByName] of Object.entries(info)) {
@@ -52,9 +57,10 @@ function* flattenInfo(info: PistonJavaRuntimeInfo): Generator<FullRuntimeInfo> {
 	}
 }
 function transformRuntime(entry: FullRuntimeInfo): VersionFileRuntime {
-	const os = entry.os === "mac-os" || !entry.os.includes("-")
-		? entry.os + "-x64"
-		: entry.os;
+	const os =
+		entry.os === "mac-os" || !entry.os.includes("-") ?
+			entry.os + "-x64"
+		:	entry.os;
 
 	return {
 		name: entry.name,
@@ -76,4 +82,3 @@ function transformRuntime(entry: FullRuntimeInfo): VersionFileRuntime {
 		url: entry.manifest.url,
 	};
 }
-

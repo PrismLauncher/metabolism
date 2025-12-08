@@ -10,7 +10,12 @@ export const MavenArtifactRef = z.string().transform((name, context) => {
 		return z.NEVER;
 	}
 
-	return new MavenArtifactRef_(groupID, artifactID, version, classifier) as MavenArtifactRef;
+	return new MavenArtifactRef_(
+		groupID,
+		artifactID,
+		version,
+		classifier,
+	) as MavenArtifactRef;
 });
 
 class MavenArtifactRef_ {
@@ -18,9 +23,8 @@ class MavenArtifactRef_ {
 		public group: string,
 		public artifact: string,
 		public version: string,
-		public classifier?: string
-	) {
-	}
+		public classifier?: string,
+	) {}
 
 	get value(): string {
 		if (this.classifier) {
@@ -58,10 +62,14 @@ class MavenArtifactRef_ {
 		const group = encodeURIComponent(this.group).replaceAll(".", "/");
 		const artifact = encodeURIComponent(this.artifact);
 		const version = encodeURIComponent(this.version);
-		const classifier = this.classifier ? "-" + encodeURIComponent(this.classifier) : "";
+		const classifier =
+			this.classifier ? "-" + encodeURIComponent(this.classifier) : "";
 		const suffix = "." + encodeURIComponent(extension);
 
-		return new URL(`${group}/${artifact}/${version}/${artifact}-${version}${classifier}${suffix}`, base);
+		return new URL(
+			`${group}/${artifact}/${version}/${artifact}-${version}${classifier}${suffix}`,
+			base,
+		);
 	}
 
 	toString(): string {
@@ -70,4 +78,4 @@ class MavenArtifactRef_ {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface MavenArtifactRef extends MavenArtifactRef_ { }
+export interface MavenArtifactRef extends MavenArtifactRef_ {}

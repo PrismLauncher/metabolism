@@ -13,18 +13,20 @@ export default defineGoal({
 	generate(info): VersionOutput[] {
 		const result: VersionOutput[] = [];
 
-		const majorVersions: Map<number, AzulJavaPackage[]> = new Map;
+		const majorVersions: Map<number, AzulJavaPackage[]> = new Map();
 
 		for (const entry of info.flat()) {
 			if (isAvailablePackage(entry)) {
-				setIfAbsent(majorVersions, entry.java_version[0] || 0, []).push(entry);
+				setIfAbsent(majorVersions, entry.java_version[0] || 0, []).push(
+					entry,
+				);
 			}
 		}
 
 		for (const [majorVersion, entries] of majorVersions) {
 			majorVersions.set(
 				majorVersion,
-				orderBy(entries, [entry => entry.build_date], ["desc"])
+				orderBy(entries, [(entry) => entry.build_date], ["desc"]),
 			);
 		}
 
@@ -33,7 +35,7 @@ export default defineGoal({
 				version: "java" + majorVersion,
 				releaseTime: entries.at(-1)!.build_date.toISOString(),
 
-				runtimes: entries.map(transformRuntime)
+				runtimes: entries.map(transformRuntime),
 			});
 		}
 
@@ -43,7 +45,11 @@ export default defineGoal({
 });
 
 function isAvailablePackage(entry: AzulJavaPackage): boolean {
-	if (entry.os !== "linux" && entry.os !== "windows" && entry.os !== "macos") {
+	if (
+		entry.os !== "linux"
+		&& entry.os !== "windows"
+		&& entry.os !== "macos"
+	) {
 		return false;
 	}
 
@@ -85,7 +91,7 @@ function transformRuntime(entry: AzulJavaPackage): VersionFileRuntime {
 		version: {
 			major: entry.java_version[0] || 0,
 			minor: entry.java_version[1] || 0,
-			security: entry.java_version[2] || 0
+			security: entry.java_version[2] || 0,
 		},
 		releaseTime,
 		vendor,
@@ -99,4 +105,3 @@ function transformRuntime(entry: AzulJavaPackage): VersionFileRuntime {
 		url: entry.download_url,
 	};
 }
-
