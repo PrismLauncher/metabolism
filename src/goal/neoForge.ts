@@ -11,12 +11,12 @@ import type { VersionFileLibrary } from "#schema/format/v1/versionFile.ts";
 const FORGEWRAPPER: VersionFileLibrary = {
 	downloads: {
 		artifact: {
-			sha1: "86c6791e32ac6478dabf9663f0ad19f8b6465dfe",
-			size: 35483,
-			url: "https://files.prismlauncher.org/maven/io/github/zekerzhayard/ForgeWrapper/prism-2024-02-29/ForgeWrapper-prism-2024-02-29.jar",
+			sha1: "4c4653d80409e7e968d3e3209196ffae778b7b4e",
+			size: 29731,
+			url: "https://files.prismlauncher.org/maven/io/github/zekerzhayard/ForgeWrapper/prism-2025-12-07/ForgeWrapper-prism-2025-12-07.jar",
 		},
 	},
-	name: "io.github.zekerzhayard:ForgeWrapper:prism-2024-02-29",
+	name: "io.github.zekerzhayard:ForgeWrapper:prism-2025-12-07",
 };
 
 export default defineGoal({
