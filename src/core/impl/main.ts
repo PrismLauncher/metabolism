@@ -2,8 +2,8 @@ import type { Goal } from "#core/goal.ts";
 import type { Provider } from "#core/provider.ts";
 import { default as packageJSON } from "#project/package.json" with { type: "json" };
 import { Command, InvalidArgumentError } from "commander";
-import { GOALS, PROVIDERS } from "./registry.ts";
-import { build, prepare, sync } from "./runner.ts";
+import { allGoals, allProviders } from "./registry.ts";
+import { build, prepare } from "./runner.ts";
 
 const command = new Command("pnpm start")
 	.description("Metabolism - Prism Launcher Metadata Generator")
@@ -32,13 +32,13 @@ command.addHelpText(
 	"after",
 	`
 Providers:
-  ${[...PROVIDERS.values()]
+  ${[...allProviders.values()]
 		.map((provider) => "  " + provider.id)
 		.sort()
 		.join("\n")}
 
 Goals:
-${[...GOALS.values()]
+${[...allGoals.values()]
 	.map((goal) => "  " + goal.id)
 	.sort()
 	.join("\n")}`,
@@ -47,33 +47,31 @@ ${[...GOALS.values()]
 command
 	.command("prepare")
 	.alias("p")
-	.argument("<providers...>", "", parseProviders)
+	.argument("[<providers...>]", "", parseProviders)
 	.description("run specified providers without running any goals")
-	.action((providers, _, command) =>
-		prepare(providers, command.optsWithGlobals()),
-	);
-
-command
-	.command("sync")
-	.alias("s")
-	.argument("<providers...>", "", parseProviders)
-	.description("run specified providers and their dependent goals")
-	.action((providers, _, command) =>
-		sync(providers, command.optsWithGlobals()),
-	);
+	.action(async (providers, _, command) => {
+		if (providers === undefined) {
+			await prepare(
+				new Set(allProviders.values()),
+				command.optsWithGlobals(),
+			);
+		} else {
+			await prepare(providers, command.optsWithGlobals());
+		}
+	});
 
 command
 	.command("build")
 	.alias("b")
-	.argument("<goals...>", "", parseGoals)
+	.argument("[<goals...>]", "", parseGoals)
 	.description("run specified goals and their dependencies")
-	.action((goals, _, command) => build(goals, command.optsWithGlobals()));
-
-command
-	.command("all")
-	.alias("a")
-	.description("run everything")
-	.action((_, command) => build(GOALS.values(), command.optsWithGlobals()));
+	.action(async (goals, _, command) => {
+		if (goals === undefined) {
+			await build(new Set(allGoals.values()), command.optsWithGlobals());
+		} else {
+			await build(goals, command.optsWithGlobals());
+		}
+	});
 
 command.parse();
 
@@ -81,7 +79,7 @@ function parseProviders(
 	id: string,
 	result: Set<Provider> = new Set(),
 ): Set<Provider> {
-	const provider = PROVIDERS.get(id);
+	const provider = allProviders.get(id);
 
 	if (!provider) {
 		throw new InvalidArgumentError("");
@@ -93,7 +91,7 @@ function parseProviders(
 }
 
 function parseGoals(id: string, result: Set<Goal> = new Set()): Set<Goal> {
-	const goal = GOALS.get(id);
+	const goal = allGoals.get(id);
 
 	if (!goal) {
 		throw new InvalidArgumentError("");

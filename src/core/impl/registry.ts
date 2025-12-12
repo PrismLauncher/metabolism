@@ -3,8 +3,8 @@ import type { Provider } from "#core/provider.ts";
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 
-export const GOALS = await importGoals();
-export const PROVIDERS = await importProviders();
+export const allGoals = await importGoals();
+export const allProviders = await importProviders();
 
 async function* importValues(dir: string): AsyncGenerator<any, void, unknown> {
 	const entries = await readdir(path.join(import.meta.dirname, dir), {

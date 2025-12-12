@@ -11,10 +11,10 @@ import type { VersionFileLibrary } from "#schema/format/v1/versionFile.ts";
 const fabricLoader = defineGoal({
 	id: "net.fabricmc.fabric-loader",
 	name: "Fabric Loader",
-	provider: fabricLoaderVersions,
+	deps: [fabricLoaderVersions],
 
-	generate: (data) =>
-		data.map((info) => ({
+	generate: ([versions]) =>
+		versions.map((info) => ({
 			...transformVersion(info, FABRIC_MAVEN),
 			type: "release",
 		})),
@@ -24,10 +24,10 @@ const fabricLoader = defineGoal({
 const quiltLoader = defineGoal({
 	id: "org.quiltmc.quilt-loader",
 	name: "Quilt Loader",
-	provider: quiltLoaderVersions,
+	deps: [quiltLoaderVersions],
 
-	generate: (data) =>
-		data.map((info) => {
+	generate: ([quiltVers]) =>
+		quiltVers.map((info) => {
 			let type = "release";
 
 			if (info.version.includes("-")) {

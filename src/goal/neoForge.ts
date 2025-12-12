@@ -4,34 +4,56 @@ import {
 	transformPistonLibrary,
 } from "#common/transformation/pistonMeta.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
+import gameVersions from "#provider/gameVersions/index.ts";
 import neoForgeLoaderVersions from "#provider/neoForgeLoaderVersions.ts";
 import type { VersionFileLibrary } from "#schema/format/v1/versionFile.ts";
 
 const FORGEWRAPPER: VersionFileLibrary = {
 	downloads: {
 		artifact: {
-			sha1: "86c6791e32ac6478dabf9663f0ad19f8b6465dfe",
-			size: 35483,
-			url: "https://files.prismlauncher.org/maven/io/github/zekerzhayard/ForgeWrapper/prism-2024-02-29/ForgeWrapper-prism-2024-02-29.jar",
+			sha1: "4c4653d80409e7e968d3e3209196ffae778b7b4e",
+			size: 29731,
+			url: "https://files.prismlauncher.org/maven/io/github/zekerzhayard/ForgeWrapper/prism-2025-12-07/ForgeWrapper-prism-2025-12-07.jar",
 		},
 	},
-	name: "io.github.zekerzhayard:ForgeWrapper:prism-2024-02-29",
+	name: "io.github.zekerzhayard:ForgeWrapper:prism-2025-12-07",
 };
 
 export default defineGoal({
 	id: "net.neoforged",
 	name: "NeoForge",
 
-	provider: neoForgeLoaderVersions,
-	generate(data) {
-		return data.map(
+	deps: [neoForgeLoaderVersions, gameVersions],
+	generate([versions, mcVersions]) {
+		const mcVersionsById = new Map(mcVersions.map((ver) => [ver.id, ver]));
+
+		return versions.map(
 			({
 				versionData,
 				installerArtifact,
 				installProfile,
 			}): VersionOutput => {
+				let minecraftArguments: string | undefined;
+
+				if (versionData.arguments?.game) {
+					const baseArgs =
+						mcVersionsById.get(versionData.inheritsFrom)?.arguments
+							?.game ?? [];
+					minecraftArguments = transformArgs([
+						...baseArgs,
+						...versionData.arguments.game,
+					]);
+				}
+
+				let version = installerArtifact.version;
+				const legacyPrefix = "1.20.1-";
+
+				if (version.startsWith(legacyPrefix)) {
+					version = version.substring(legacyPrefix.length);
+				}
+
 				return {
-					version: installerArtifact.version,
+					version,
 					releaseTime: versionData.releaseTime.toISOString(),
 					type: versionData.type,
 
@@ -44,10 +66,7 @@ export default defineGoal({
 
 					mainClass:
 						"io.github.zekerzhayard.forgewrapper.installer.Main",
-					minecraftArguments:
-						versionData.arguments?.game ?
-							transformArgs(versionData.arguments.game)
-						:	undefined,
+					minecraftArguments,
 
 					libraries: [
 						FORGEWRAPPER,

@@ -10,7 +10,7 @@ import {
 	transformPistonLibrary,
 } from "#common/transformation/pistonMeta.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
-import pistonMetaGameVersions from "#provider/gameVersions/index.ts";
+import gameVersions from "#provider/gameVersions/index.ts";
 import {
 	VersionFileTrait,
 	type VersionFileDependency,
@@ -23,9 +23,9 @@ import type {
 export default defineGoal({
 	id: "net.minecraft",
 	name: "Minecraft",
-	provider: pistonMetaGameVersions,
+	deps: [gameVersions],
 
-	generate: (data) => data.map(transformVersion),
+	generate: ([versions]) => versions.map(transformVersion),
 	recommend: (first, version) => first && version.type === "release",
 });
 
