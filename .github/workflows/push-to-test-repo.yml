@@ -3,8 +3,8 @@
 name: Push to test repo
 
 on:
-  push:
-    branches: [main]
+  schedule:
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -29,13 +29,13 @@ jobs:
           cache: pnpm
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: Generate
-        run: env PINO_LOG_LEVEL=debug pnpm start all | pnpm pino-pretty
+        run: env PINO_LOG_LEVEL=debug pnpm start build | pnpm pino-pretty
       - name: Push
         run: |
           cd run
           git config user.email "gitbot@scrumplex.net"
           git config user.name "PrismAutomata"
           git add .
-          git diff-index --quiet HEAD || git commit -m "Automatic update for latest commit
+          git diff-index --quiet HEAD || git commit -m "Automatic update from GitHub actions
           ${{ github.event.head_commit.message }}"
           git push
