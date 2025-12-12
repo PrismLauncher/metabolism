@@ -45,8 +45,15 @@ export default defineGoal({
 					]);
 				}
 
+				let version = installerArtifact.version;
+				const legacyPrefix = "1.20.1-";
+
+				if (version.startsWith(legacyPrefix)) {
+					version = version.substring(legacyPrefix.length);
+				}
+
 				return {
-					version: installerArtifact.version,
+					version,
 					releaseTime: versionData.releaseTime.toISOString(),
 					type: versionData.type,
 
