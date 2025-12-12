@@ -4,6 +4,8 @@ Generation for Minecraft game and loader metadata - possible future implementati
 
 For the time being [this repo](https://github.com/TheKodeToad/metabolism-test) mirrors the latest commit - and you can use the generated output by setting your Metadata URL to https://thekodetoad.github.io/metabolism-test/output/.
 
+[Click here for the roadmap](https://github.com/PrismLauncher/metabolism/issues/9)
+
 ## Usage
 
 Run `pnpm install` then `pnpm start`.
@@ -23,32 +25,6 @@ Prepare data from the specified providers, or all if none are specified.
 ### `build <goal>...`
 
 Builds the output of the specified goals, or all if none are specified.
-
-## Roadmap
-
-- ☑️ Generate index (useable)
-    - only writes what has been added in the last build (needs to keep existing entries)
-- ❌ Remove old cache and output files
-
-Generation for...
-
-- ☑️ Minecraft (useable)
-    - missing "texturepacks" and "no-texturepacks" trait
-    - missing "legacyServices" trait
-    - missing "noapplet" trait
-- ☑️ LWJGL (useable)
-    - (3.x.x) missing backported apple sillicon natives
-    - (2.x.x) does not force version to latest on apple sillicon
-- ✅ Fabric
-- 🚧 NeoForge (does not launch)
-    - no versions are recommended
-    - all versions are classified as rlease
-- ❌ Forge
-- ✅ Quilt
-- ❌ LiteLoader
-- ☑️ Mojang Java (should be good)
-- ❌ Adoptium
-- ❌ Azul Zulu
 
 ## Why
 
