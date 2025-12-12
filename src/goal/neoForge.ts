@@ -4,6 +4,7 @@ import {
 	transformPistonLibrary,
 } from "#common/transformation/pistonMeta.ts";
 import { defineGoal, type VersionOutput } from "#core/goal.ts";
+import gameVersions from "#provider/gameVersions/index.ts";
 import neoForgeLoaderVersions from "#provider/neoForgeLoaderVersions.ts";
 import type { VersionFileLibrary } from "#schema/format/v1/versionFile.ts";
 
@@ -22,14 +23,28 @@ export default defineGoal({
 	id: "net.neoforged",
 	name: "NeoForge",
 
-	deps: [neoForgeLoaderVersions],
-	generate([versions]) {
+	deps: [neoForgeLoaderVersions, gameVersions],
+	generate([versions, mcVersions]) {
+		const mcVersionsById = new Map(mcVersions.map((ver) => [ver.id, ver]));
+
 		return versions.map(
 			({
 				versionData,
 				installerArtifact,
 				installProfile,
 			}): VersionOutput => {
+				let minecraftArguments: string | undefined;
+
+				if (versionData.arguments?.game) {
+					const baseArgs =
+						mcVersionsById.get(versionData.inheritsFrom)?.arguments
+							?.game ?? [];
+					minecraftArguments = transformArgs([
+						...baseArgs,
+						...versionData.arguments.game,
+					]);
+				}
+
 				return {
 					version: installerArtifact.version,
 					releaseTime: versionData.releaseTime.toISOString(),
@@ -44,10 +59,7 @@ export default defineGoal({
 
 					mainClass:
 						"io.github.zekerzhayard.forgewrapper.installer.Main",
-					minecraftArguments:
-						versionData.arguments?.game ?
-							transformArgs(versionData.arguments.game)
-						:	undefined,
+					minecraftArguments,
 
 					libraries: [
 						FORGEWRAPPER,
