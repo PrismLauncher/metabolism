@@ -11,15 +11,15 @@ import { orderBy } from "es-toolkit";
 export default defineGoal({
 	id: "net.adoptium.java",
 	name: "Adoptium Provided Java",
-	provider: adoptiumJavaVersions,
+	deps: [adoptiumJavaVersions],
 
-	generate(info): VersionOutput[] {
+	generate([entries]): VersionOutput[] {
 		const result: VersionOutput[] = [];
 
 		const majorVersions: Map<number, AdoptiumJavaRuntimeEntry[]> =
 			new Map();
 
-		for (const entry of info) {
+		for (const entry of entries) {
 			if (entry.binaries.some((x) => isAvailableBinary(x))) {
 				setIfAbsent(majorVersions, entry.version_data.major, []).push(
 					entry,

@@ -10,7 +10,7 @@ Run `pnpm install` then `pnpm start`.
 
 There are two key concepts - providers and goals. Providers are metadata sources, and goals are metadata targets.
 For example, the `piston-meta` provider provides data to the `net.minecraft` goal.
-Goals always specify a single dependency on a source (for the sake of simplicity).
+Goals specify one or more dependencies on providers.
 
 Pass nothing to see full usage with a list of providers and goals.
 
@@ -18,19 +18,11 @@ Available commands:
 
 ### `prepare <provider>...`
 
-Prepare data from the specified providers.
-
-### `sync <provider>...`
-
-`prepare`, then run dependent goals. Useful as the directories touched will be exclusive to each provider.
+Prepare data from the specified providers, or all if none are specified.
 
 ### `build <goal>...`
 
-Runs `prepare` for all dependencies of the specified goals.
-
-### `all`
-
-Prepare and build everything.
+Builds the output of the specified goals, or all if none are specified.
 
 ## Roadmap
 

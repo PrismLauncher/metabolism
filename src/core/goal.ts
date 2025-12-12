@@ -1,21 +1,24 @@
 import type { VersionFile } from "../schema/format/v1/versionFile.ts";
 import type { Provider } from "./provider.ts";
 
-export function defineGoal<TProvider extends Provider>(
-	goal: Goal<TProvider>,
-): Goal<TProvider> {
+export function defineGoal<const TProviders extends Provider[]>(
+	goal: Goal<TProviders>,
+): Goal<TProviders> {
 	return goal;
 }
 
-export interface Goal<TProvider extends Provider = Provider> {
+export type ProviderData<TProviders extends Provider[]> = {
+	[I in keyof TProviders]: TProviders[I] extends Provider<infer TData> ? TData
+	:	never;
+};
+
+export interface Goal<TProviders extends Provider[] = Provider[]> {
 	/** ID (based on reverse domain name) for output - e.g. net.minecraft for Minecraft */
 	id: string;
 	name: string;
-	provider: TProvider;
+	deps: TProviders;
 
-	generate(
-		data: TProvider extends Provider<infer TData> ? TData : never,
-	): VersionOutput[];
+	generate(data: ProviderData<TProviders>): VersionOutput[];
 	recommend(first: boolean, version: VersionOutput): boolean;
 }
 

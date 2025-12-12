@@ -12,7 +12,6 @@ import { pick, sortBy } from "es-toolkit";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { DiskCachedClient } from "./http/diskCachedClient.ts";
-import { GOALS } from "./registry.ts";
 import { digest } from "./util.ts";
 
 const logger = moduleLogger();
@@ -32,33 +31,18 @@ export async function prepare(
 	await run(providers, new Map(), options);
 }
 
-export async function sync(
-	providers: Set<Provider>,
-	options: RunnerOptions,
-): Promise<void> {
-	const dependents: Map<Provider, Goal[]> = new Map();
-
-	for (const goal of GOALS.values()) {
-		if (!providers.has(goal.provider)) {
-			continue;
-		}
-
-		setIfAbsent(dependents, goal.provider, []).push(goal);
-	}
-
-	await run(providers, dependents, options);
-}
-
 export async function build(
-	goals: Iterable<Goal>,
+	goals: Set<Goal>,
 	options: RunnerOptions,
 ): Promise<void> {
 	const providers: Set<Provider> = new Set();
 	const dependents: Map<Provider, Goal[]> = new Map();
 
 	for (const goal of goals) {
-		providers.add(goal.provider);
-		setIfAbsent(dependents, goal.provider, []).push(goal);
+		for (const dep of goal.deps) {
+			providers.add(dep);
+			setIfAbsent(dependents, dep, []).push(goal);
+		}
 	}
 
 	await run(providers, dependents, options);
@@ -71,26 +55,56 @@ async function run(
 ): Promise<void> {
 	const startTime = Date.now();
 
-	const goalResults: [Goal, string][] = [];
+	const satisfiedDeps: Map<Goal, number> = new Map();
+
+	const providerResults: Map<Provider, unknown> = new Map();
+	const goalResults: { goal: Goal; sha256: string }[] = [];
 
 	await Promise.all(
 		providers.values().map(async (provider) => {
-			const data = await runProvider(provider, options);
+			logger.info(`Running provider '${provider.id}'`);
+
+			providerResults.set(provider, await runProvider(provider, options));
 
 			logger.info(`Got data from provider '${provider.id}'!`);
 
-			const providerDependents = dependents.get(provider) ?? [];
+			const providerDependents = dependents.get(provider);
 
-			return await Promise.all(
-				providerDependents.map(async (goal) => {
-					goalResults.push([
-						goal,
-						await runGoal(goal, data, options),
-					]);
+			if (!providerDependents) {
+				return;
+			}
 
-					logger.info(`Done goal '${goal.id}'!`);
-				}),
-			);
+			const tasks = providerDependents
+				.map((goal) => {
+					const counter = (satisfiedDeps.get(goal) ?? 0) + 1;
+
+					if (counter > goal.deps.length) {
+						throw new Error(
+							`Satisfied counter exceeded number of deps (${goal.deps.length}) for goal '${goal.name}'`,
+						);
+					}
+
+					satisfiedDeps.set(goal, counter);
+
+					if (counter !== goal.deps.length) {
+						return null;
+					}
+
+					const data = goal.deps.map((dep) =>
+						providerResults.get(dep),
+					);
+
+					logger.info(`Running goal '${goal.id}'`);
+
+					return runGoal(goal, data, options).then((sha256) => {
+						goalResults.push({ goal, sha256 });
+
+						logger.info(`Done goal '${goal.id}'!`);
+					});
+				})
+				.filter((x) => x != null);
+
+			return await Promise.all(tasks);
 		}),
 	);
 
@@ -107,7 +121,7 @@ async function run(
 	const rootIndex: IndexFile = {
 		formatVersion: 1,
 		packages: sortBy(
-			goalResults.map(([goal, sha256]) => ({
+			goalResults.map(({ goal, sha256 }) => ({
 				uid: goal.id,
 				name: goal.name,
 				sha256,
@@ -139,7 +153,7 @@ async function runProvider(
 
 async function runGoal(
 	goal: Goal,
-	data: unknown,
+	data: unknown[],
 	options: RunnerOptions,
 ): Promise<string> {
 	const outputs = goal.generate(data);

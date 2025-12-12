@@ -8,17 +8,17 @@ import { orderBy } from "es-toolkit";
 export default defineGoal({
 	id: "com.azul.java",
 	name: "Azul Provided Java",
-	provider: azulJavaVersions,
+	deps: [azulJavaVersions],
 
-	generate(info): VersionOutput[] {
+	generate([pkgs]): VersionOutput[] {
 		const result: VersionOutput[] = [];
 
 		const majorVersions: Map<number, AzulJavaPackage[]> = new Map();
 
-		for (const entry of info.flat()) {
-			if (isAvailablePackage(entry)) {
-				setIfAbsent(majorVersions, entry.java_version[0] || 0, []).push(
-					entry,
+		for (const pkg of pkgs) {
+			if (isAvailablePackage(pkg)) {
+				setIfAbsent(majorVersions, pkg.java_version[0] || 0, []).push(
+					pkg,
 				);
 			}
 		}

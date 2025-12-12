@@ -8,10 +8,10 @@ import {
 const fabricIntermediary = defineGoal({
 	id: "net.fabricmc.intermediary",
 	name: "Fabric Intermediary",
-	provider: fabricIntermediaryVersions,
+	deps: [fabricIntermediaryVersions],
 
-	generate: (data) =>
-		data.map((version) => transformVersion(version, FABRIC_MAVEN)),
+	generate: ([versions]) =>
+		versions.map((version) => transformVersion(version, FABRIC_MAVEN)),
 	recommend: () => true,
 });
 

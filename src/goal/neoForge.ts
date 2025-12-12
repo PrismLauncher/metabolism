@@ -22,9 +22,9 @@ export default defineGoal({
 	id: "net.neoforged",
 	name: "NeoForge",
 
-	provider: neoForgeLoaderVersions,
-	generate(data) {
-		return data.map(
+	deps: [neoForgeLoaderVersions],
+	generate([versions]) {
+		return versions.map(
 			({
 				versionData,
 				installerArtifact,

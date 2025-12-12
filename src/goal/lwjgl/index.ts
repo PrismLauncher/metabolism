@@ -28,19 +28,20 @@ const logger = moduleLogger();
 const lwjgl3 = defineGoal({
 	id: "org.lwjgl3",
 	name: "LWJGL 3",
-	provider: pistonMetaGameVersions,
+	deps: [pistonMetaGameVersions],
 
-	generate: (data) => generate(data, ["org.lwjgl"], isLWJGL3, () => false),
+	generate: ([versions]) =>
+		generate(versions, ["org.lwjgl"], isLWJGL3, () => false),
 	recommend: () => false,
 });
 
 const lwjgl2 = defineGoal({
 	id: "org.lwjgl",
 	name: "LWJGL 2",
-	provider: pistonMetaGameVersions,
+	deps: [pistonMetaGameVersions],
 
-	generate: (data) =>
-		generate(data, ["org.lwjgl3"], isLWJGL2, isLWJGL2Dependency),
+	generate: ([versions]) =>
+		generate(versions, ["org.lwjgl3"], isLWJGL2, isLWJGL2Dependency),
 	recommend: () => false,
 });
 

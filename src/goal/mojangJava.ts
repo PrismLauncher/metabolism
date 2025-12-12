@@ -11,14 +11,14 @@ import { orderBy } from "es-toolkit";
 export default defineGoal({
 	id: "net.minecraft.java",
 	name: "Mojang Provided Java",
-	provider: mojangJavaVersions,
+	deps: [mojangJavaVersions],
 
-	generate(info) {
+	generate([versions]) {
 		const result: VersionOutput[] = [];
 
 		const majorVersions: Map<number, FullRuntimeInfo[]> = new Map();
 
-		for (const entry of flattenInfo(info)) {
+		for (const entry of flattenInfo(versions)) {
 			setIfAbsent(majorVersions, entry.version.parsed.major, []).push(
 				entry,
 			);
