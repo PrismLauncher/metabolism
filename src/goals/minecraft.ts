@@ -81,9 +81,10 @@ function transformVersion(version: PistonVersion): VersionOutput {
 
 		"+traits": traits,
 
-		compatibleJavaMajors: [version?.javaVersion?.majorVersion].filter(
-			(x) => x !== undefined,
-		),
+		compatibleJavaMajors:
+			version.javaVersion ?
+				transformJavaMajor(version.javaVersion?.majorVersion)
+			:	undefined,
 		compatibleJavaName: version.javaVersion?.component,
 		mainClass,
 		minecraftArguments:
@@ -148,6 +149,18 @@ function processLWJGL(
 	}
 
 	return false;
+}
+
+const JAVA_SUBSTITUTES = { 16: [17] };
+
+function transformJavaMajor(majorVersion: number): number[] {
+	const result = [majorVersion];
+
+	if (majorVersion in JAVA_SUBSTITUTES) {
+		result.push(...JAVA_SUBSTITUTES[majorVersion]);
+	}
+
+	return result;
 }
 
 function transformAssetsIndex(index: PistonAssetIndexRef): PistonAssetIndexRef {
