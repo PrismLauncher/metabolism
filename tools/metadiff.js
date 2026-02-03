@@ -1,6 +1,6 @@
 import { readdir, readFile, mkdir, writeFile } from "fs/promises";
 import { diff as jsonDiff } from "jsondiffpatch";
-import { join as joinPath, dirname } from "path";
+import { join as joinPath, dirname, basename } from "path";
 
 const [script, left, right] = process.argv.slice(1);
 
@@ -83,6 +83,7 @@ await Promise.all(
 	<head>
 		<link rel="stylesheet" href="https://esm.sh/jsondiffpatch@0.6.0/lib/formatters/styles/html.css" type="text/css" />
 		<script type="application/json" id="delta">${diff}</script>
+		<title>${basename(entry)} - metadiff</title>
 		<script type="module">
 			import * as htmlFormatter from "https://esm.sh/jsondiffpatch@0.6.0/formatters/html";
 
