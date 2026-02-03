@@ -1,13 +1,13 @@
 import type {
 	VersionFileArtifact,
 	VersionFileLibrary,
-} from "#schema/format/v1/versionFile.ts";
+} from "#schemas/format/v1/versionFile.ts";
 import type {
 	PistonArgument,
 	PistonArtifact,
 	PistonLibrary,
 	PistonRule,
-} from "#schema/pistonMeta/pistonVersion.ts";
+} from "#schemas/pistonMeta/pistonVersion.ts";
 import { mapValues, omit } from "es-toolkit";
 import { isEmpty } from "es-toolkit/compat";
 
