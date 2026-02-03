@@ -32,6 +32,6 @@ There is also an assortment of tools in the [tools](tools) folder.
 ## Why
 
 [The Rust rewrite (mcmeta)](https://github.com/PrismLauncher/mcmeta) has been in the works for over two years - it can continue to coexist as a future alternative - but as of May 2025 something to replace mmc-meta feels long overdue.
-I (TheKodeToad) chose TypeScript as I am more familiar with it. But the main difference is that this rewrite is less ambition - this only intends to generate metadata in the existing format simply with (hopefully) cleaner code.
+I (TheKodeToad) chose TypeScript as I am more familiar with it. But the main difference is that this rewrite is less ambition - this only intends to generate metadata in the existing format simply with (hopefully) more maintainable code.
 
 Licensing should not be a concern as no code is taken from the original project.

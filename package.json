@@ -8,7 +8,7 @@
 		"#project/*": "./*"
 	},
 	"scripts": {
-		"start": "node --experimental-strip-types --experimental-transform-types ./src/core/impl/main.ts",
+		"start": "node --experimental-strip-types --experimental-transform-types ./src/main.ts",
 		"typecheck": "tsc",
 		"lint": "eslint",
 		"reformat": "prettier . --write"
