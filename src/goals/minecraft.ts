@@ -16,6 +16,7 @@ import {
 	type VersionFileDependency,
 } from "#schemas/format/v1/versionFile.ts";
 import type {
+	PistonAssetIndexRef,
 	PistonLibrary,
 	PistonVersion,
 } from "#schemas/pistonMeta/pistonVersion.ts";
@@ -39,15 +40,20 @@ function transformVersion(version: PistonVersion): VersionOutput {
 	libraries = libraries.filter((x) => !processLWJGL(x, requires, traits));
 
 	if (mainClass?.startsWith("net.minecraft.launchwrapper.")) {
+		mainClass = undefined;
+		traits.push(VersionFileTrait.LegacyLaunch);
+	}
+
+	const isLaunchWrapperLib = (x: PistonLibrary): boolean =>
+		x.name.value.startsWith("net.minecraft:launchwrapper:");
+	if (libraries.some(isLaunchWrapperLib)) {
+		// NOTE: we always want to remove launchwrapper but it's not always being used as the mainclass
 		libraries = libraries.filter(
 			(x) =>
-				!x.name.value.startsWith("net.minecraft:launchwrapper:")
+				!isLaunchWrapperLib(x)
 				&& x.name.group !== "net.sf.jopt-simple"
 				&& x.name.group !== "org.ow2.asm",
 		);
-
-		mainClass = undefined;
-		traits.push(VersionFileTrait.LegacyLaunch);
 	}
 
 	if (version.arguments?.game) {
@@ -75,9 +81,10 @@ function transformVersion(version: PistonVersion): VersionOutput {
 
 		"+traits": traits,
 
-		compatibleJavaMajors: [version?.javaVersion?.majorVersion].filter(
-			(x) => x !== undefined,
-		),
+		compatibleJavaMajors:
+			version.javaVersion ?
+				transformJavaMajor(version.javaVersion?.majorVersion)
+			:	undefined,
 		compatibleJavaName: version.javaVersion?.component,
 		mainClass,
 		minecraftArguments:
@@ -94,7 +101,10 @@ function transformVersion(version: PistonVersion): VersionOutput {
 			downloads: { artifact: version.downloads.client },
 		},
 		logging: version.logging?.client,
-		assetIndex: version.assetIndex,
+		assetIndex:
+			version.assetIndex ?
+				transformAssetsIndex(version.assetIndex)
+			:	undefined,
 		libraries: libraries.map(transformPistonLibrary),
 	};
 }
@@ -139,4 +149,27 @@ function processLWJGL(
 	}
 
 	return false;
+}
+
+const JAVA_SUBSTITUTES = { 16: [17] };
+
+function transformJavaMajor(majorVersion: number): number[] {
+	const result = [majorVersion];
+
+	if (majorVersion in JAVA_SUBSTITUTES) {
+		result.push(...JAVA_SUBSTITUTES[majorVersion]);
+	}
+
+	return result;
+}
+
+function transformAssetsIndex(index: PistonAssetIndexRef): PistonAssetIndexRef {
+	const url = new URL(index.url);
+
+	if (url.host !== "launchermeta.mojang.com") {
+		return index;
+	}
+
+	url.host = "piston-meta.mojang.com";
+	return { ...index, url: url.toString() };
 }

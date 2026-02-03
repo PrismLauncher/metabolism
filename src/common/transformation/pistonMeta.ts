@@ -25,7 +25,7 @@ export function ruleSetAppliesByDefault(rules: PistonRule[]): boolean {
 
 export function transformPistonLibrary(lib: PistonLibrary): VersionFileLibrary {
 	return {
-		...omit(lib, ["extract"]),
+		...lib,
 		name: lib.name.value,
 		downloads:
 			lib.downloads ?

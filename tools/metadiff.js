@@ -1,6 +1,7 @@
 import { readdir, readFile, mkdir, writeFile } from "fs/promises";
-import { diff as jsonDiff } from "jsondiffpatch";
-import { join as joinPath, dirname } from "path";
+import { create as createDiffPatcher } from "jsondiffpatch";
+import { join as joinPath, dirname, basename } from "path";
+import { pathToFileURL } from "url";
 
 const [script, left, right] = process.argv.slice(1);
 
@@ -38,54 +39,80 @@ await walkEntries(right, (entry) => {
 });
 
 function preprocess(json) {
+	// some were changed on purpose
+	delete json.name;
+
+	// ignored by launcher
 	delete json.order;
 
-	if (json.releaseTime) {
-		json.releaseTime = new Date(json.releaseTime).toISOString();
+	if (json["+traits"]) {
+		// ignored by launcher
+		json["+traits"] = json["+traits"].filter(
+			(trait) => trait !== "XR:Initial",
+		);
+	}
+}
+
+function propertyFilter(name) {
+	if (name === "releaseTime") {
+		// NOTE: we want to ignore this everywhere, not just in the root
+		return false;
 	}
 
-	return json;
+	return true;
 }
+
+const jsonDiff = createDiffPatcher({ propertyFilter });
 
 await Promise.all(
 	toDiff.entries().map(async ([entry, { leftExists, rightExists }]) => {
+		const leftPath = joinPath(left, entry);
+		const rightPath = joinPath(right, entry);
+
 		let leftContent, rightContent;
 		if (leftExists) {
-			leftContent = await readFile(joinPath(left, entry), "utf-8");
+			leftContent = await readFile(leftPath, "utf-8");
 		}
 		if (rightExists) {
-			rightContent = await readFile(joinPath(right, entry), "utf-8");
+			rightContent = await readFile(rightPath, "utf-8");
 		}
 
-		let leftObj = "Does not exists";
+		let leftObj = "Does not exist";
 		let rightObj = "Deleted";
 		if (leftExists) {
-			leftObj = preprocess(JSON.parse(leftContent));
+			leftObj = JSON.parse(leftContent);
 		}
 		if (rightExists) {
-			rightObj = preprocess(JSON.parse(rightContent));
+			rightObj = JSON.parse(rightContent);
 		}
+		preprocess(leftObj);
+		preprocess(rightObj);
 
-		const diff = JSON.stringify(jsonDiff(leftObj, rightObj));
+		const delta = jsonDiff.diff(leftObj, rightObj, { propertyFilter });
 
 		const outputPath = joinPath(output, entry + ".html");
 		await mkdir(dirname(outputPath), { recursive: true });
-		await writeFile(
-			outputPath,
-			`<!DOCTYPE html>
+
+		const doc = `<!DOCTYPE html>
 <html>
 	<head>
 		<link rel="stylesheet" href="https://esm.sh/jsondiffpatch@0.6.0/lib/formatters/styles/html.css" type="text/css" />
-		<script type="application/json" id="delta">${diff}</script>
+		<script type="application/json" id="delta">${JSON.stringify(delta)}</script>
+		<title>${basename(entry)} - metadiff</title>
 		<script type="module">
 			import * as htmlFormatter from "https://esm.sh/jsondiffpatch@0.6.0/formatters/html";
 
 			const delta = JSON.parse(document.getElementById("delta").textContent);
-			document.body.innerHTML = htmlFormatter.format(delta);
+			const view = document.getElementById("view");
+			view.innerHTML = htmlFormatter.format(delta);
 		</script>
 	</head>
-</html>`,
-			{ encoding: "utf-8" },
-		);
+	<body>
+			<a href="${pathToFileURL(leftPath)}">View Left</a>
+			| <a href="${pathToFileURL(rightPath)}">View Right</a>
+			<div id="view"></div>
+	</body>
+</html>`;
+		await writeFile(outputPath, doc, { encoding: "utf-8" });
 	}),
 );
