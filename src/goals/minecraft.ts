@@ -16,6 +16,7 @@ import {
 	type VersionFileDependency,
 } from "#schemas/format/v1/versionFile.ts";
 import type {
+	PistonAssetIndexRef,
 	PistonLibrary,
 	PistonVersion,
 } from "#schemas/pistonMeta/pistonVersion.ts";
@@ -94,7 +95,10 @@ function transformVersion(version: PistonVersion): VersionOutput {
 			downloads: { artifact: version.downloads.client },
 		},
 		logging: version.logging?.client,
-		assetIndex: version.assetIndex,
+		assetIndex:
+			version.assetIndex ?
+				transformAssetsIndex(version.assetIndex)
+			:	undefined,
 		libraries: libraries.map(transformPistonLibrary),
 	};
 }
@@ -139,4 +143,15 @@ function processLWJGL(
 	}
 
 	return false;
+}
+
+function transformAssetsIndex(index: PistonAssetIndexRef): PistonAssetIndexRef {
+	const url = new URL(index.url);
+
+	if (url.host !== "launchermeta.mojang.com") {
+		return index;
+	}
+
+	url.host = "piston-meta.mojang.com";
+	return { ...index, url: url.toString() };
 }
