@@ -44,6 +44,12 @@ function preprocess(json) {
 		json.releaseTime = new Date(json.releaseTime).toISOString();
 	}
 
+	if (json["+traits"]) {
+		json["+traits"] = json["+traits"].filter(
+			(trait) => trait !== "XR:Initial",
+		);
+	}
+
 	return json;
 }
 
