@@ -1,6 +1,7 @@
 import { readdir, readFile, mkdir, writeFile } from "fs/promises";
 import { create as createDiffPatcher } from "jsondiffpatch";
 import { join as joinPath, dirname, basename } from "path";
+import { pathToFileURL } from "url";
 
 const [script, left, right] = process.argv.slice(1);
 
@@ -65,12 +66,15 @@ const jsonDiff = createDiffPatcher({ propertyFilter });
 
 await Promise.all(
 	toDiff.entries().map(async ([entry, { leftExists, rightExists }]) => {
+		const leftPath = joinPath(left, entry);
+		const rightPath = joinPath(right, entry);
+
 		let leftContent, rightContent;
 		if (leftExists) {
-			leftContent = await readFile(joinPath(left, entry), "utf-8");
+			leftContent = await readFile(leftPath, "utf-8");
 		}
 		if (rightExists) {
-			rightContent = await readFile(joinPath(right, entry), "utf-8");
+			rightContent = await readFile(rightPath, "utf-8");
 		}
 
 		let leftObj = "Does not exist";
@@ -99,9 +103,15 @@ await Promise.all(
 			import * as htmlFormatter from "https://esm.sh/jsondiffpatch@0.6.0/formatters/html";
 
 			const delta = JSON.parse(document.getElementById("delta").textContent);
-			document.body.innerHTML = htmlFormatter.format(delta);
+			const view = document.getElementById("view");
+			view.innerHTML = htmlFormatter.format(delta);
 		</script>
 	</head>
+	<body>
+			<a href="${pathToFileURL(leftPath)}">View Left</a>
+			| <a href="${pathToFileURL(rightPath)}">View Right</a>
+			<div id="view"></div>
+	</body>
 </html>`;
 		await writeFile(outputPath, doc, { encoding: "utf-8" });
 	}),
