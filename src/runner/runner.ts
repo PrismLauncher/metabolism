@@ -1,7 +1,7 @@
 import { digestStringToBuf, setIfAbsent } from "#common/util.ts";
+import type { Provider } from "#index.ts";
+import { type Goal, type VersionOutput } from "#index.ts";
 import { moduleLogger } from "#logger.ts";
-import type { Provider } from "#metabolism.ts";
-import { type Goal, type VersionOutput } from "#metabolism.ts";
 import type { IndexFile } from "#schemas/format/v1/indexFile.ts";
 import type {
 	PackageIndexFile,

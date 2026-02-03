@@ -1,6 +1,6 @@
 import { ADOPTIUM_API } from "#common/constants/urls.ts";
+import { defineProvider } from "#index.ts";
 import { moduleLogger } from "#logger.ts";
-import { defineProvider } from "#metabolism.ts";
 import {
 	AdoptiumJavaReleases,
 	AdoptiumJavaRuntimeEntry,

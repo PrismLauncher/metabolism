@@ -1,4 +1,4 @@
-import type { Goal, Provider } from "#metabolism.ts";
+import type { Goal, Provider } from "#index.ts";
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 

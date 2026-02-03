@@ -1,4 +1,4 @@
-import type { Goal, Provider } from "#metabolism.ts";
+import type { Goal, Provider } from "#index.ts";
 import { default as packageJSON } from "#project/package.json" with { type: "json" };
 import { Command, InvalidArgumentError } from "commander";
 import { allGoals, allProviders } from "./registry.ts";

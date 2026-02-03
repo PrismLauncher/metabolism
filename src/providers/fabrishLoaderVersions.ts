@@ -5,7 +5,7 @@ import {
 	QUILT_META,
 } from "#common/constants/urls.ts";
 import { HTTPCacheMode, type HTTPClient } from "#httpClient.ts";
-import { defineProvider } from "#metabolism.ts";
+import { defineProvider } from "#index.ts";
 import { FabricInstallerData } from "#schemas/fabric/fabricInstallerData.ts";
 import {
 	FabricMetaVersion,

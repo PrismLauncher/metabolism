@@ -8,8 +8,8 @@ import {
 	transformPistonArtifact,
 } from "#common/transformation/pistonMeta.ts";
 import { setIfAbsent } from "#common/util.ts";
+import { defineGoal, type VersionOutput } from "#index.ts";
 import { moduleLogger } from "#logger.ts";
-import { defineGoal, type VersionOutput } from "#metabolism.ts";
 import pistonMetaGameVersions from "#providers/gameVersions/index.ts";
 import type {
 	VersionFileArtifact,

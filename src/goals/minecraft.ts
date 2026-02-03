@@ -9,7 +9,7 @@ import {
 	transformPistonLibrary,
 } from "#common/transformation/pistonMeta.ts";
 import { throwError } from "#common/util.ts";
-import { defineGoal, type VersionOutput } from "#metabolism.ts";
+import { defineGoal, type VersionOutput } from "#index.ts";
 import gameVersions from "#providers/gameVersions/index.ts";
 import {
 	VersionFileTrait,

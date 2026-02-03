@@ -1,7 +1,7 @@
 import { NEOFORGE_MAVEN, NEOFORGE_MAVEN_API } from "#common/constants/urls.ts";
 import { concurrencyLimit } from "#common/util.ts";
 import type { HTTPClient } from "#httpClient.ts";
-import { defineProvider } from "#metabolism.ts";
+import { defineProvider } from "#index.ts";
 import { ForgeInstallProfile } from "#schemas/forge/forgeInstallProfile.ts";
 import { ForgeVersionData } from "#schemas/forge/forgeVersionData.ts";
 import { MavenArtifactRef } from "#schemas/mavenArtifactRef.ts";

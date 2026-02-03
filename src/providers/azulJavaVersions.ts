@@ -1,5 +1,5 @@
 import { AZUL_API } from "#common/constants/urls.ts";
-import { defineProvider } from "#metabolism.ts";
+import { defineProvider } from "#index.ts";
 import { AzulJavaPackage } from "#schemas/java/azulJavaData.ts";
 
 const RUNTIMES_URL = new URL("v1/", AZUL_API);

@@ -1,5 +1,5 @@
 import { FABRIC_MAVEN } from "#common/constants/urls.ts";
-import { defineGoal, type VersionOutput } from "#metabolism.ts";
+import { defineGoal, type VersionOutput } from "#index.ts";
 import {
 	fabricIntermediaryVersions,
 	type FabricIntermediaryVersion,
