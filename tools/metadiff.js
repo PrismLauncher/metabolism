@@ -48,9 +48,7 @@ function preprocess(json) {
 
 	if (json["+traits"]) {
 		// ignored by launcher
-		json["+traits"] = json["+traits"].filter(
-			(x) => x !== "XR:Initial",
-		);
+		json["+traits"] = json["+traits"].filter((x) => x !== "XR:Initial");
 	}
 
 	if (json.libraries) {
