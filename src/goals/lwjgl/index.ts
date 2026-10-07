@@ -35,7 +35,6 @@ const lwjgl3 = defineGoal({
 
 	generate: ([versions]) =>
 		generate(versions, ["org.lwjgl"], isLWJGL3, () => false),
-	recommend: () => false,
 });
 
 const lwjgl2 = defineGoal({
@@ -45,7 +44,6 @@ const lwjgl2 = defineGoal({
 
 	generate: ([versions]) =>
 		generate(versions, ["org.lwjgl3"], isLWJGL2, isLWJGL2Dependency),
-	recommend: () => false,
 });
 
 export default [lwjgl3, lwjgl2];

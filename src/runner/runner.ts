@@ -15,7 +15,7 @@ import type {
 	PackageIndexFileVersion,
 } from "#schemas/format/v1/packageIndexFile.ts";
 import type { VersionFile } from "#schemas/format/v1/versionFile.ts";
-import { pick, sortBy } from "es-toolkit";
+import { omit, pick, sortBy } from "es-toolkit";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { DiskCachedClient } from "./diskCachedClient.ts";
@@ -184,8 +184,6 @@ async function runGoal(
 
 	const space = options.minify ? 0 : 2;
 
-	let anyRecommended = false;
-
 	const indexVersions = await Promise.all(
 		outputs.map(async (output): Promise<PackageIndexFileVersion> => {
 			if (
@@ -209,9 +207,6 @@ async function runGoal(
 				);
 			}
 
-			const recommended = goal.recommend(!anyRecommended, output);
-			anyRecommended ||= recommended;
-
 			const versionFile = generateVersionFile(goal, output);
 			const outputData = JSON.stringify(versionFile, undefined, space);
 
@@ -233,7 +228,7 @@ async function runGoal(
 					"conflicts",
 					"requires",
 				]),
-				recommended,
+				recommended: output.recommended ?? false,
 				sha256,
 			};
 		}),
@@ -267,7 +262,7 @@ function generateVersionFile(goal: Goal, output: VersionOutput): VersionFile {
 		uid: goal.id,
 		name: goal.name,
 		formatVersion: 1,
-		...output,
+		...omit(output, ["recommended"]),
 	};
 
 	// give it a little trim :)

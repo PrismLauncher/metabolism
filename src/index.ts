@@ -23,7 +23,6 @@ export interface Goal<TProviders extends Provider[] = Provider[]> {
 	deps: TProviders;
 
 	generate(data: ProviderData<TProviders>): VersionOutput[];
-	recommend(first: boolean, version: VersionOutput): boolean;
 }
 
 export function defineGoal<const TProviders extends Provider[]>(
@@ -32,4 +31,7 @@ export function defineGoal<const TProviders extends Provider[]>(
 	return goal;
 }
 
-export type VersionOutput = Omit<VersionFile, "uid" | "name" | "formatVersion">;
+export type VersionOutput = Omit<
+	VersionFile,
+	"uid" | "name" | "formatVersion"
+> & { recommended?: boolean };

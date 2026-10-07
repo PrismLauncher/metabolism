@@ -12,7 +12,6 @@ const fabricIntermediary = defineGoal({
 
 	generate: ([versions]) =>
 		versions.map((version) => transformVersion(version, FABRIC_MAVEN)),
-	recommend: () => true,
 });
 
 export default [fabricIntermediary];
@@ -25,6 +24,7 @@ function transformVersion(
 		version: version.version,
 		releaseTime: version.lastModified.toISOString(),
 		type: "release",
+		recommended: true,
 
 		requires: [{ uid: "net.minecraft", equals: version.version }],
 		volatile: true,

@@ -41,7 +41,6 @@ export default defineGoal({
 
 		return result;
 	},
-	recommend: () => false,
 });
 
 function isAvailablePackage(entry: AzulJavaPackage): boolean {
