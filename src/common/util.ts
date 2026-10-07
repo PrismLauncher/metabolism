@@ -1,4 +1,5 @@
 import { Semaphore } from "es-toolkit";
+import { readFile } from "node:fs/promises";
 
 export function throwError(error: Error | string): never {
 	if (typeof error === "string") {
@@ -49,4 +50,30 @@ export async function digestStringToBuf(
 	return Buffer.from(
 		await crypto.subtle.digest(algorithm, Buffer.from(data)),
 	);
+}
+
+export function getErrorCode(error: unknown): string | undefined {
+	if (!(error instanceof Error)) {
+		return undefined;
+	}
+	if (typeof error["code"] !== "string") {
+		return undefined;
+	}
+
+	return error["code"];
+}
+
+export async function readFileIfExists(
+	path: string,
+	encoding: BufferEncoding,
+): Promise<string | null> {
+	try {
+		return await readFile(path, encoding);
+	} catch (error) {
+		if (getErrorCode(error) !== "ENOENT") {
+			throw error;
+		}
+
+		return null;
+	}
 }

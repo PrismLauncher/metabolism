@@ -1,8 +1,15 @@
-import { digestStringToBuf, setIfAbsent } from "#common/util.ts";
+import {
+	digestStringToBuf,
+	readFileIfExists,
+	setIfAbsent,
+} from "#common/util.ts";
 import type { Provider } from "#index.ts";
 import { type Goal, type VersionOutput } from "#index.ts";
 import { moduleLogger } from "#logger.ts";
-import type { IndexFile } from "#schemas/format/v1/indexFile.ts";
+import type {
+	IndexFile,
+	IndexFilePackage,
+} from "#schemas/format/v1/indexFile.ts";
 import type {
 	PackageIndexFile,
 	PackageIndexFileVersion,
@@ -116,23 +123,38 @@ async function run(
 		"Summary",
 	);
 
-	// TODO: placeholder
-	const rootIndex: IndexFile = {
+	const indexPath = path.join(options.outputDir, "index.json");
+
+	let packages: IndexFilePackage[] = [];
+
+	// TODO: is there a better way to do this? if the formatVersion changes the old data is lost, and we don't properly validate the data either
+	const existingIndexContent = await readFileIfExists(indexPath, "utf-8");
+	if (existingIndexContent) {
+		let obj: any;
+		try {
+			obj = JSON.parse(existingIndexContent);
+		} catch {
+			/* empty */
+		}
+
+		if (obj && obj.formatVersion == 1 && obj.packages) {
+			packages = obj.packages;
+		}
+	}
+
+	for (const { goal, sha256 } of goalResults) {
+		packages.splice(
+			packages.findIndex((x) => x.uid === goal.id),
+			1,
+		);
+		packages.push({ uid: goal.id, name: goal.name, sha256 });
+	}
+	const index: IndexFile = {
 		formatVersion: 1,
-		packages: sortBy(
-			goalResults.map(({ goal, sha256 }) => ({
-				uid: goal.id,
-				name: goal.name,
-				sha256,
-			})),
-			[(v) => v.uid],
-		),
+		packages: sortBy(packages, ["uid"]),
 	};
 
-	await writeFile(
-		path.join(options.outputDir, "index.json"),
-		JSON.stringify(rootIndex, undefined, 2),
-	);
+	await writeFile(indexPath, JSON.stringify(index, undefined, 2));
 
 	logger.info(`Done in ${formattedTime}!`);
 }

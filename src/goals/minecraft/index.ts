@@ -20,6 +20,7 @@ import type {
 	PistonLibrary,
 	PistonVersion,
 } from "#schemas/pistonMeta/pistonVersion.ts";
+import { MINECRAFT_VERSION_PATCHES } from "./versionPatches.ts";
 
 export default defineGoal({
 	id: "net.minecraft",
@@ -106,6 +107,8 @@ function transformVersion(version: PistonVersion): VersionOutput {
 				transformAssetsIndex(version.assetIndex)
 			:	undefined,
 		libraries: libraries.map(transformPistonLibrary),
+
+		...MINECRAFT_VERSION_PATCHES[version.id],
 	};
 }
 

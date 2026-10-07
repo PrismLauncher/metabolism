@@ -22,6 +22,7 @@ const command = new Command("pnpm start")
 		"Always assume cache entries are up-to-date",
 		false,
 	)
+	// FIXME: put this to use
 	.option("-M, --minify", "Minify JSON output", false)
 	.version(packageJSON.version)
 	.helpCommand(false)

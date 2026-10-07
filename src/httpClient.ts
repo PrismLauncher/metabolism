@@ -1,15 +1,17 @@
 export interface HTTPClient {
+	get(url: string | URL): Promise<Response>;
+
 	/**
 	 * Fetch text over HTTP and store for later use or reuse stored data if it is up-to-date.
 	 * @param url URL to GET
 	 * @param key Cache key
-	 * @param strategy Caching strategy - defaults to ConditionalRequest
+	 * @param strategy Caching strategy
 	 * @returns metadata and body
 	 */
 	getCached(
 		url: string | URL,
 		key: string,
-		strategy?: HTTPCacheStrategy,
+		strategy: HTTPCacheStrategy,
 	): Promise<Response>;
 
 	/**
@@ -17,7 +19,7 @@ export interface HTTPClient {
 	 * @param url URL to HEAD
 	 * @param key Cache key
 	 * @param contentType Content-Type header
-	 * @param strategy Caching strategy - defaults to ConditionalRequest
+	 * @param strategy Caching strategy
 	 * @returns metadata
 	 */
 	headCached(url: string | URL, key: string): Promise<Metadata>;
@@ -36,7 +38,6 @@ export interface HTTPClient {
 
 export interface Metadata {
 	lastModified?: Date;
-	eTag?: string;
 }
 
 export interface Response extends Metadata {
@@ -46,12 +47,6 @@ export interface Response extends Metadata {
 
 export const enum HTTPCacheMode {
 	/**
-	 * Send If-None-Match with the last known ETag if available - otherwise falls back to If-Modified-Since. If 304 Unmodified is returned, use the cached data.
-	 * Use this if you haven't already received the expected checksum from another request.
-	 * CompareLocalDigest should be preferred if possible to avoid unecessary requests.
-	 */
-	ConditionalRequest,
-	/**
 	 * Check the digest of the locally cached value, and only perform a HTTP request if it does not match.
 	 */
 	CompareLocalDigest,
@@ -59,10 +54,6 @@ export const enum HTTPCacheMode {
 	 * Cache forever - never invalidate.
 	 */
 	Eternal,
-}
-
-export interface ConditionalRequestStrategy {
-	mode: HTTPCacheMode.ConditionalRequest;
 }
 
 export interface CompareLocalDigestStrategy {
@@ -75,9 +66,6 @@ export interface EternalStrategy {
 	mode: HTTPCacheMode.Eternal;
 }
 
-export type HTTPCacheStrategy =
-	| ConditionalRequestStrategy
-	| CompareLocalDigestStrategy
-	| EternalStrategy;
+export type HTTPCacheStrategy = CompareLocalDigestStrategy | EternalStrategy;
 
 export type DigestAlgorithm = "sha-1" | "sha-256" | "sha-384" | "sha-512";

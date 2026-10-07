@@ -25,12 +25,11 @@ export default defineProvider({
 
 		const versions = AzulJavaPackage.array().parse(
 			(
-				await http.getCached(
+				await http.get(
 					new URL(
 						"zulu/packages?" + versionsOptions.toString(),
 						RUNTIMES_URL,
 					),
-					"azul-java-packages.json",
 				)
 			).json(),
 		);

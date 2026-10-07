@@ -17,22 +17,18 @@ export default defineProvider({
 	async provide(http): Promise<AdoptiumJavaRuntimeEntry[]> {
 		const releases = AdoptiumJavaReleases.parse(
 			(
-				await http.getCached(
-					new URL("info/available_releases", RUNTIMES_URL),
-					"available-releases.json",
-				)
+				await http.get(new URL("info/available_releases", RUNTIMES_URL))
 			).json(),
 		);
 
 		return Promise.all(
 			releases.available_releases.map(async (version) => {
 				const response = await http
-					.getCached(
+					.get(
 						new URL(
 							`assets/feature_releases/${version}/ga?image_type=jre`,
 							RUNTIMES_URL,
 						),
-						`adoptium-java-runtime-${version}.json`,
 					)
 					.catch(() => {
 						logger.error(

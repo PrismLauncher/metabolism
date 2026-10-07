@@ -37,17 +37,42 @@ export class DiskCachedClient implements HTTPClient {
 		this.cache = new DiskCache(options.dir);
 	}
 
+	private async request(
+		url: string | URL,
+		options: RequestInit,
+	): Promise<globalThis.Response> {
+		const response = await this.retry(url.toString(), () =>
+			fetch(url, options),
+		);
+
+		if (!response.ok || response.status === 204) {
+			throw new Error(
+				`Got ${response.status} ('${response.statusText}') while trying to ${options.method ?? "GET"} '${url.toString()}'`,
+			);
+		}
+
+		return response;
+	}
+
+	async get(url: string | URL): Promise<Response> {
+		const response = await this.request(url, {
+			headers: this.makeHeaders(),
+		});
+		const text = await response.text();
+		return {
+			...this.parseHeaders(response.headers),
+			body: text,
+			json: () => JSON.parse(text),
+		};
+	}
+
 	async getCached(
 		url: string | URL,
 		key: string,
-		strategy: HTTPCacheStrategy = {
-			mode: HTTPCacheMode.ConditionalRequest,
-		},
+		strategy: HTTPCacheStrategy,
 	): Promise<Response> {
 		return await this.cache.use(key, async (ref) => {
 			const entry = await ref.read();
-
-			const headers = this.makeHeaders();
 
 			if (entry && hasBody(entry)) {
 				if (
@@ -68,38 +93,11 @@ export class DiskCachedClient implements HTTPClient {
 						logger.debug(`'${key}' needs fetch (digest mismatch)`);
 					}
 				}
-
-				if (strategy.mode === HTTPCacheMode.ConditionalRequest) {
-					if (entry.eTag) {
-						headers.set("If-None-Match", entry.eTag);
-					} else if (entry.lastModified) {
-						headers.set(
-							"If-Modified-Since",
-							entry.lastModified.toUTCString(),
-						);
-					}
-				}
 			}
 
-			const response = await this.retry(url.toString(), () =>
-				fetch(url, { headers }),
-			);
-
-			if (
-				strategy.mode === HTTPCacheMode.ConditionalRequest
-				&& response.status === 304
-				&& entry
-				&& hasBody(entry)
-			) {
-				this.logger.debug(`Cache entry '${key}' is up-to-date (304)`);
-				return this.makeResponse(entry);
-			}
-
-			if (!response.ok || response.status === 204) {
-				throw new Error(
-					`Got ${response.status} ('${response.statusText}') while trying to GET '${url.toString()}'`,
-				);
-			}
+			const response = await this.request(url, {
+				headers: this.makeHeaders(),
+			});
 
 			const newEntry = await ref.write({
 				...this.parseHeaders(response.headers),
@@ -123,15 +121,10 @@ export class DiskCachedClient implements HTTPClient {
 				return this.makeMetadata(entry);
 			}
 
-			const response = await this.retry(url.toString(), () =>
-				fetch(url, { method: "HEAD", headers: this.makeHeaders() }),
-			);
-
-			if (!response.ok || response.status === 204) {
-				throw new Error(
-					`Got ${response.status} ('${response.statusText}') while trying to HEAD '${url.toString()}'`,
-				);
-			}
+			const response = await this.request(url, {
+				headers: this.makeHeaders(),
+				method: "HEAD",
+			});
 
 			const newEntry = await ref.write(
 				this.parseHeaders(response.headers),
@@ -253,14 +246,11 @@ export class DiskCachedClient implements HTTPClient {
 			);
 		}
 
-		return {
-			eTag: headers.get("etag") ?? undefined,
-			lastModified,
-		};
+		return { lastModified };
 	}
 
 	private makeMetadata(entry: CacheEntry): Metadata {
-		return pick(entry, ["eTag", "lastModified"]);
+		return pick(entry, ["lastModified"]);
 	}
 
 	private makeResponse(entry: CacheEntryWithBody): Response {

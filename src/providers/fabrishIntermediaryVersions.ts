@@ -23,12 +23,7 @@ async function provide(
 	maven: string | URL,
 ): Promise<FabricIntermediaryVersion[]> {
 	const list = FabricMetaVersions.parse(
-		(
-			await http.getCached(
-				new URL("versions/intermediary", meta),
-				"intermediary-versions.json",
-			)
-		).json(),
+		(await http.get(new URL("versions/intermediary", meta))).json(),
 	);
 
 	return await Promise.all(

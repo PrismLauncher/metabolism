@@ -32,9 +32,8 @@ async function pistonMetaVersions(http: HTTPClient): Promise<PistonVersion[]> {
 
 	const manifest = PistonVersionManifest.parse(
 		(
-			await http.getCached(
+			await http.get(
 				new URL("mc/game/version_manifest_v2.json", PISTON_META),
-				base + "/versions.json",
 			)
 		).json(),
 	);
@@ -47,12 +46,11 @@ async function fabricMavenVersions(http: HTTPClient): Promise<PistonVersion[]> {
 
 	const manifest = PistonVersionManifest.parse(
 		(
-			await http.getCached(
+			await http.get(
 				new URL(
 					"net/minecraft/experimental_versions.json",
 					FABRIC_MAVEN,
 				),
-				base + "/experimental_versions.json",
 			)
 		).json(),
 	);
@@ -78,8 +76,11 @@ async function oldSnapshots(http: HTTPClient): Promise<PistonVersion[]> {
 			// manifest ID and type should take precidence - in some cases we override it
 			return {
 				...OldSnapshotVersion.parse(response),
-				id: version.id,
 				type: "old_snapshot",
+				javaVersion: {
+					component: "jre-legacy",
+					majorVersion: 8,
+				},
 				downloads: {
 					client: {
 						url: version.jar,

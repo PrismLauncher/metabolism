@@ -3,17 +3,11 @@ import type {
 	VersionFilePlatform,
 } from "#schemas/format/v1/versionFile.ts";
 
-type ExtraNatives = Record<
-	string,
-	Partial<
-		Record<
-			VersionFilePlatform,
-			VersionFileArtifact & { classifier: string }
-		>
-	>
+type ExtraNatives = Partial<
+	Record<VersionFilePlatform, VersionFileArtifact & { classifier: string }>
 >;
 
-export const LWJGL_EXTRA_NATIVES: ExtraNatives = {
+export const LWJGL_EXTRA_NATIVES: Record<string, ExtraNatives> = {
 	// == x86 natives (LWJGL 3) ==
 
 	// missing native due to the fact that versions using tinyfd on 3.2.2 force LWJGL 3.2.1 on intel mac (presumably for a workaround)
@@ -84,4 +78,21 @@ export const LWJGL_EXTRA_NATIVES: ExtraNatives = {
 			size: 475177,
 		},
 	},
+};
+
+interface Mapping {
+	target: string;
+	platforms: VersionFilePlatform[];
+}
+
+const FORCE_2_9_4_NIGHTLY_FOR_ARM: Mapping = {
+	target: "2.9.4-nightly-20150209",
+	platforms: ["osx-arm64", "linux-arm64", "linux-arm32"],
+};
+
+// Use a different LWJGL version on the specified platforms.
+export const LWJGL_MAPPINGS: Record<string, Mapping> = {
+	"2.9.1": FORCE_2_9_4_NIGHTLY_FOR_ARM,
+	"2.9.1-nightly-20131120": FORCE_2_9_4_NIGHTLY_FOR_ARM,
+	"2.9.3": FORCE_2_9_4_NIGHTLY_FOR_ARM,
 };

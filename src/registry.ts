@@ -23,9 +23,9 @@ async function* importValues(dir: string): AsyncGenerator<any, void, unknown> {
 		}
 
 		const relativePath = path.relative(".", importPath);
-		const defaultExport = await import(pathToFileURL(importPath).toString()).then(
-			(module) => module.default,
-		);
+		const defaultExport = await import(
+			pathToFileURL(importPath).toString()
+		).then((module) => module.default);
 
 		if (Array.isArray(defaultExport)) {
 			for (const item of defaultExport) {

@@ -37,12 +37,7 @@ async function provide(
 	maven: string | URL,
 ): Promise<FabricLoaderVersion[]> {
 	const list = FabricMetaVersions.parse(
-		(
-			await http.getCached(
-				new URL("versions/loader", meta),
-				"loader-versions.json",
-			)
-		).json(),
+		(await http.get(new URL("versions/loader", meta))).json(),
 	);
 
 	return await Promise.all(

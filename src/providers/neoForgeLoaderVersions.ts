@@ -37,9 +37,8 @@ async function provide(
 
 	const { versions } = ReposiliteVersions.parse(
 		(
-			await http.getCached(
+			await http.get(
 				new URL("versions/releases/" + basePath, NEOFORGE_MAVEN_API),
-				artifact + "-versions.json",
 			)
 		).json(),
 	);
