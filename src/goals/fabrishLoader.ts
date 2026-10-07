@@ -13,12 +13,18 @@ const fabricLoader = defineGoal({
 	name: "Fabric Loader",
 	deps: [fabricLoaderVersions],
 
-	generate: ([versions]) =>
-		versions.map((info) => ({
+	generate: ([versions]) => {
+		const result = versions.map((info) => ({
 			...transformVersion(info, FABRIC_MAVEN),
 			type: "release",
-		})),
-	recommend: (first) => first,
+		}));
+
+		if (result.length !== 0) {
+			result[0]!.recommended = true;
+		}
+
+		return result;
+	},
 });
 
 const quiltLoader = defineGoal({
@@ -26,8 +32,8 @@ const quiltLoader = defineGoal({
 	name: "Quilt Loader",
 	deps: [quiltLoaderVersions],
 
-	generate: ([quiltVers]) =>
-		quiltVers.map((info) => {
+	generate: ([quiltVers]) => {
+		const result = quiltVers.map((info) => {
 			let type = "release";
 
 			if (info.version.includes("-")) {
@@ -50,8 +56,15 @@ const quiltLoader = defineGoal({
 			}
 
 			return { ...transformVersion(info, QUILT_MAVEN), type };
-		}),
-	recommend: (first) => first,
+		});
+
+		const firstRelease = result.find((x) => x.type === "release");
+		if (firstRelease) {
+			firstRelease.recommended = true;
+		}
+
+		return result;
+	},
 });
 
 export default [fabricLoader, quiltLoader];

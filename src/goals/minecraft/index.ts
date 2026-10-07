@@ -27,8 +27,16 @@ export default defineGoal({
 	name: "Minecraft",
 	deps: [gameVersions],
 
-	generate: ([versions]) => versions.map(transformVersion),
-	recommend: (first, version) => first && version.type === "release",
+	generate: ([versions]) => {
+		const result = versions.map(transformVersion);
+
+		const firstRelease = result.find((x) => x.type === "release");
+		if (firstRelease) {
+			firstRelease.recommended = true;
+		}
+
+		return result;
+	},
 });
 
 function transformVersion(version: PistonVersion): VersionOutput {

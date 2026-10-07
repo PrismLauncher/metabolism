@@ -42,7 +42,6 @@ export default defineGoal({
 
 		return result;
 	},
-	recommend: () => false,
 });
 
 type FullRuntimeInfo = PistonJavaRuntimeEntry & { os: string; name: string };

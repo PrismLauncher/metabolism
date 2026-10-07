@@ -45,7 +45,6 @@ export default defineGoal({
 
 		return result;
 	},
-	recommend: () => false,
 });
 
 function isAvailableBinary(binary: AdoptiumJavaBinary): boolean {

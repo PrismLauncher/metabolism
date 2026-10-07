@@ -27,7 +27,7 @@ export default defineGoal({
 	generate([versions, mcVersions]) {
 		const mcVersionsById = new Map(mcVersions.map((ver) => [ver.id, ver]));
 
-		return versions.map(
+		const result = versions.map(
 			({
 				versionData,
 				installerArtifact,
@@ -82,6 +82,12 @@ export default defineGoal({
 				};
 			},
 		);
+
+		const firstRelease = result.find((x) => x.type === "release");
+		if (firstRelease) {
+			firstRelease.recommended = true;
+		}
+
+		return result;
 	},
-	recommend: (first, version) => first && version.type === "release",
 });
