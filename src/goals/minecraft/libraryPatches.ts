@@ -7,7 +7,10 @@ import type { LibraryPatch } from "#common/transformation/libraryPatches.ts";
 
 export const MINECRAFT_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
-		match: ["org.apache.logging.log4j:log4j-core:2.0-beta9"],
+		match: [
+			"org.apache.logging.log4j:log4j-core:2.0-beta9",
+			"org.apache.logging.log4j:log4j-core:2.0-rc2",
+		],
 		override: {
 			downloads: {
 				artifact: {
@@ -30,6 +33,42 @@ export const MINECRAFT_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			},
 			name: "org.apache.logging.log4j:log4j-api:2.0-beta9-fixed",
+		},
+	},
+	{
+		match: [
+			"org.apache.logging.log4j:log4j-core:2.17.0",
+			"org.apache.logging.log4j:log4j-core:2.16.0",
+			"org.apache.logging.log4j:log4j-core:2.14.1",
+			"org.apache.logging.log4j:log4j-core:2.8.1",
+		],
+		override: {
+			downloads: {
+				artifact: {
+					sha1: "779f60f3844dadc3ef597976fcb1e5127b1f343d",
+					size: 1790452,
+					url: "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.17.1/log4j-core-2.17.1.jar",
+				},
+			},
+			name: "org.apache.logging.log4j:log4j-core:2.17.1",
+		},
+	},
+	{
+		match: [
+			"org.apache.logging.log4j:log4j-api:2.17.0",
+			"org.apache.logging.log4j:log4j-api:2.16.0",
+			"org.apache.logging.log4j:log4j-api:2.14.1",
+			"org.apache.logging.log4j:log4j-api:2.8.1",
+		],
+		override: {
+			downloads: {
+				artifact: {
+					sha1: "d771af8e336e372fb5399c99edabe0919aeaf5b2",
+					size: 301872,
+					url: "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.17.1/log4j-api-2.17.1.jar",
+				},
+			},
+			name: "org.apache.logging.log4j:log4j-api:2.17.1",
 		},
 	},
 
