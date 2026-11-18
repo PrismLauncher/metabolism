@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { NEOFORGE_MAVEN, NEOFORGE_MAVEN_API } from "#common/constants/urls.ts";
 import { concurrencyLimit } from "#common/util.ts";
 import type { HTTPClient } from "#httpClient.ts";

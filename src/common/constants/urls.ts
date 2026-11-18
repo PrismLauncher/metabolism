@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 export const PISTON_META = "https://piston-meta.mojang.com/";
 
 export const FABRIC_META = "https://meta.fabricmc.net/";

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { digestStringToBuf } from "#common/util.ts";
 import {
 	HTTPCacheMode,

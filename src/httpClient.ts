@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 export interface HTTPClient {
 	get(url: string | URL): Promise<Response>;
 

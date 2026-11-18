@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { NEOFORGE_MAVEN } from "#common/constants/urls.ts";
 import {
 	transformArgs,

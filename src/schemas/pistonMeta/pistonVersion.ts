@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { string, z } from "zod";
 import { MavenArtifactRef } from "../mavenArtifactRef.ts";
 

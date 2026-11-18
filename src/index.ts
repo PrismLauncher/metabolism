@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import type { HTTPClient } from "#httpClient.ts";
 import type { VersionFile } from "./schemas/format/v1/versionFile.ts";
 

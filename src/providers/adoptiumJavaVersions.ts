@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { ADOPTIUM_API } from "#common/constants/urls.ts";
 import { defineProvider } from "#index.ts";
 import { moduleLogger } from "#logger.ts";

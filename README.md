@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 metabolism contributors
+
+SPDX-License-Identifier: MIT
+-->
+
 # Metabolism
 
 Generation for Minecraft game and loader metadata - possible future implementation in TypeScript.

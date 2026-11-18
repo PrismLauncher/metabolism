@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import type { Goal, Provider } from "#index.ts";
 import { default as packageJSON } from "#project/package.json" with { type: "json" };
 import { Command, InvalidArgumentError } from "commander";

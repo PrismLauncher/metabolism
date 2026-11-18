@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { PISTON_META } from "#common/constants/urls.ts";
 import { defineProvider } from "#index.ts";
 import { PistonJavaRuntimeInfo } from "#schemas/pistonMeta/pistonJavaRuntimeInfo.ts";

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { AZUL_API } from "#common/constants/urls.ts";
 import { defineProvider } from "#index.ts";
 import { AzulJavaPackage } from "#schemas/java/azulJavaData.ts";

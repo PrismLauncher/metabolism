@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 metabolism contributors
+
+SPDX-License-Identifier: MIT
+-->
+
 ## `metadiff.js [left-dir] [right-dir]`
 
 Provides a diff between meta outputs with reduced noise.

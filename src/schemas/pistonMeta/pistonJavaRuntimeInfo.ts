@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import type { VersionFileRuntime } from "#schemas/format/v1/versionFile.ts";
 import { mapValues } from "es-toolkit";
 import { z } from "zod";
