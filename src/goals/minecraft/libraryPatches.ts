@@ -55,6 +55,23 @@ export const MINECRAFT_LIBRARY_PATCHES: LibraryPatch[] = [
 	},
 	{
 		match: [
+			"org.apache.logging.log4j:log4j-slf4j18-impl:2.17.0",
+			"org.apache.logging.log4j:log4j-slf4j18-impl:2.16.0",
+			"org.apache.logging.log4j:log4j-slf4j18-impl:2.14.1",
+		],
+		override: {
+			downloads: {
+				artifact: {
+					sha1: "ca499d751f4ddd8afb016ef698c30be0da1d09f7",
+					size: 21268,
+					url: "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-slf4j18-impl/2.17.1/log4j-slf4j18-impl-2.17.1.jar",
+				},
+			},
+			name: "org.apache.logging.log4j:log4j-slf4j18-impl:2.17.1",
+		},
+	},
+	{
+		match: [
 			"org.apache.logging.log4j:log4j-api:2.17.0",
 			"org.apache.logging.log4j:log4j-api:2.16.0",
 			"org.apache.logging.log4j:log4j-api:2.14.1",
