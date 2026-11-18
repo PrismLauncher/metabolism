@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { applyLibraryPatches } from "#common/transformation/libraryPatches.ts";
 import {
 	isLWJGL2,
 	isLWJGL2Dependency,
@@ -11,7 +12,7 @@ import {
 	isPlatformLibrary,
 	transformPistonArtifact,
 } from "#common/transformation/pistonMeta.ts";
-import { setIfAbsent, throwError } from "#common/util.ts";
+import { setIfAbsent } from "#common/util.ts";
 import { defineGoal, type VersionOutput } from "#index.ts";
 import { moduleLogger } from "#logger.ts";
 import pistonMetaGameVersions from "#providers/gameVersions/index.ts";
@@ -22,13 +23,10 @@ import type {
 	VersionFilePlatform,
 } from "#schemas/format/v1/versionFile.ts";
 import { MavenArtifactRef } from "#schemas/mavenArtifactRef.ts";
-import {
-	PistonRule,
-	PistonVersion,
-} from "#schemas/pistonMeta/pistonVersion.ts";
+import { PistonVersion } from "#schemas/pistonMeta/pistonVersion.ts";
 import { omit } from "es-toolkit";
 import { isEmpty } from "es-toolkit/compat";
-import { LWJGL_EXTRA_NATIVES, LWJGL_MAPPINGS } from "./extraNatives.ts";
+import { LWJGL_LIBRARY_PATCHES } from "./libraryPatches.ts";
 
 const logger = moduleLogger();
 
@@ -158,31 +156,21 @@ function generate(
 		}
 	}
 
-	sharedDeps.values().forEach(patchModule);
-
-	for (const version of versions.values()) {
-		version.modules.forEach(patchModule);
-	}
-
 	const conflicts: VersionFileDependency[] = conflictUIDs.map((uid) => ({
 		uid,
 	}));
+	const sharedLibs = applyLibraryPatches(
+		[...sharedDeps.values().flatMap(transformModule)],
+		LWJGL_LIBRARY_PATCHES,
+	);
 	const result = versions
 		.entries()
 		.filter(([_, version]) => version.used)
 		.map(([versionKey, version]): VersionOutput => {
-			let libs = [...version.modules.values().flatMap(transformModule)];
-			const mapping = LWJGL_MAPPINGS[versionKey];
-			if (mapping) {
-				libs = redirectVersionLibs(
-					versions.get(mapping.target)
-						?? throwError(
-							`Mapping target for "${versionKey}" does not exist: "${mapping.target}"`,
-						),
-					mapping.platforms,
-					libs,
-				);
-			}
+			const libs = applyLibraryPatches(
+				[...version.modules.values().flatMap(transformModule)],
+				LWJGL_LIBRARY_PATCHES,
+			);
 
 			return {
 				version: versionKey,
@@ -192,83 +180,11 @@ function generate(
 				conflicts,
 				volatile: true,
 
-				libraries: [
-					...sharedDeps.values().flatMap(transformModule),
-					...libs,
-				],
+				libraries: [...sharedLibs, ...libs],
 			};
 		});
 
 	return [...result];
-}
-
-function patchModule(module: LWJGLModule): void {
-	const name = module.baseName.value;
-	const natives = LWJGL_EXTRA_NATIVES[name];
-	if (!natives) {
-		return;
-	}
-
-	for (const [platform, artifact] of Object.entries(natives)) {
-		setIfAbsent(
-			module.nativeCode,
-			platform as keyof (typeof LWJGL_EXTRA_NATIVES)[string],
-			artifact,
-		);
-	}
-}
-
-function redirectVersionLibs(
-	targetVersion: LWJGLVersion,
-	platforms: VersionFilePlatform[],
-	libs: VersionFileLibrary[],
-): VersionFileLibrary[] {
-	const baseLibs = libs.map(
-		(lib): VersionFileLibrary => ({
-			...lib,
-			rules: [
-				{ action: "allow" },
-				...platforms.map(
-					(os): PistonRule => ({
-						action: "disallow",
-						os: { name: os },
-					}),
-				),
-			],
-		}),
-	);
-	const extraLibs = [
-		...targetVersion.modules
-			.values()
-			.flatMap(transformModule)
-			.map((lib): VersionFileLibrary => {
-				const result: VersionFileLibrary = {
-					...lib,
-					rules: platforms.map((os) => ({
-						action: "allow",
-						os: { name: os },
-					})),
-				};
-
-				if (result.natives && result.downloads?.classifiers) {
-					for (const [platform, classifier] of Object.entries(
-						result.natives,
-					)) {
-						if (
-							platforms.includes(platform as VersionFilePlatform)
-						) {
-							continue;
-						}
-
-						delete result.natives[platform];
-						delete result.downloads.classifiers[classifier];
-					}
-				}
-
-				return result;
-			}),
-	];
-	return [...baseLibs, ...extraLibs];
 }
 
 function transformModule(module: LWJGLModule): VersionFileLibrary[] {
@@ -382,7 +298,6 @@ function mapClassifier(classifier: string): VersionFilePlatform | undefined {
 
 	switch (classifier) {
 		case "windows":
-		case "windows-x86":
 		case "windows-arm64":
 		case "osx":
 		case "linux":
@@ -390,6 +305,9 @@ function mapClassifier(classifier: string): VersionFilePlatform | undefined {
 		case "linux-arm32":
 		case "freebsd":
 			return classifier;
+
+		case "windows-x86":
+			return "windows";
 
 		case "macos":
 			return "osx";

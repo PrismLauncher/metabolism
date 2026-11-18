@@ -81,3 +81,36 @@ export async function readFileIfExists(
 		return null;
 	}
 }
+
+type Patch<T> = {
+	[TKey in keyof T]?: Patch<T[TKey]>;
+};
+
+export function patchObject<T extends object>(obj: T, patch: Patch<T>): T {
+	// FIXME: is there anything better which could work
+	const result = { ...obj };
+
+	for (const key in patch) {
+		if (!Object.hasOwn(patch, key)) {
+			continue;
+		}
+
+		const entry = patch[key]!;
+		if (entry === undefined) {
+			continue;
+		}
+
+		if (
+			typeof entry === "object"
+			&& entry !== null
+			&& typeof result[key] === "object"
+			&& result[key] !== null
+		) {
+			result[key] = patchObject(result[key], entry) as any;
+		} else {
+			result[key] = entry as any;
+		}
+	}
+
+	return result;
+}
