@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { sortBy } from "es-toolkit";
 import { mkdir, readdir, readFile, writeFile } from "fs/promises";
 import { create as createDiffPatcher } from "jsondiffpatch";

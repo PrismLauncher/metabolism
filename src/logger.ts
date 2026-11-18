@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getCallSites } from "node:util";

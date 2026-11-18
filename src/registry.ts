@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import type { Goal, Provider } from "#index.ts";
 import { readdir } from "node:fs/promises";
 import path from "node:path";

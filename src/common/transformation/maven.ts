@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import type { MavenArtifactRef } from "#schemas/mavenArtifactRef.ts";
 
 export function isLWJGL3(name: MavenArtifactRef): boolean {

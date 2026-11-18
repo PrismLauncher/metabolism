@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { z } from "zod";
 
 // TODO: make more general purpose?

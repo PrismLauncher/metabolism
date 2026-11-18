@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { FABRIC_MAVEN, QUILT_MAVEN } from "#common/constants/urls.ts";
 import { defineGoal, type VersionOutput } from "#index.ts";
 import {

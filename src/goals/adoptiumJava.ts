@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { setIfAbsent } from "#common/util.ts";
 import { defineGoal, type VersionOutput } from "#index.ts";
 import adoptiumJavaVersions from "#providers/adoptiumJavaVersions.ts";

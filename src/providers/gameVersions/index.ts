@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { FABRIC_MAVEN, PISTON_META } from "#common/constants/urls.ts";
 import { HTTPCacheMode, type HTTPClient } from "#httpClient.ts";
 import { defineProvider } from "#index.ts";
