@@ -101,6 +101,19 @@ function transformVersion(version: PistonVersion): VersionOutput {
 		}
 	}
 
+	const javaMajors =
+		version.javaVersion ?
+			transformJavaMajor(version.javaVersion?.majorVersion)
+		:	[];
+
+	const jvmArgs: string[] = [];
+	if (Math.max(...javaMajors) >= 17) {
+		jvmArgs.push(
+			"-XX:+UnlockDiagnosticVMOptions",
+			"-XX:-UseBASE64Intrinsics",
+		);
+	}
+
 	return {
 		version: version.id,
 		type: version.type,
@@ -110,11 +123,9 @@ function transformVersion(version: PistonVersion): VersionOutput {
 
 		"+traits": traits,
 
-		compatibleJavaMajors:
-			version.javaVersion ?
-				transformJavaMajor(version.javaVersion?.majorVersion)
-			:	undefined,
+		compatibleJavaMajors: javaMajors,
 		compatibleJavaName: version.javaVersion?.component,
+		"+jvmArgs": jvmArgs,
 		mainClass,
 		minecraftArguments:
 			version.minecraftArguments
