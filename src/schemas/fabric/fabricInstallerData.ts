@@ -2,11 +2,11 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { MavenArtifactRef } from "#schemas/mavenArtifactRef.ts";
+import { MavenArtifactString } from "#schemas/maven.ts";
 import { z } from "zod";
 
 export const FabricLoaderLibrary = z.object({
-	name: MavenArtifactRef,
+	name: MavenArtifactString,
 	url: z.string().optional(),
 	sha1: z.string().optional(),
 	size: z.number().optional(),

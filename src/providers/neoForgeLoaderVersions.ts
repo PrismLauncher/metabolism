@@ -3,12 +3,12 @@
 // SPDX-License-Identifier: MIT
 
 import { NEOFORGE_MAVEN, NEOFORGE_MAVEN_API } from "#common/constants/urls.ts";
+import { MavenArtifactRef } from "#common/maven.ts";
 import { concurrencyLimit } from "#common/util.ts";
 import type { HTTPClient } from "#httpClient.ts";
 import { defineProvider } from "#index.ts";
 import { ForgeInstallProfile } from "#schemas/forge/forgeInstallProfile.ts";
 import { ForgeVersionData } from "#schemas/forge/forgeVersionData.ts";
-import { MavenArtifactRef } from "#schemas/mavenArtifactRef.ts";
 import { z } from "zod";
 
 const ReposiliteVersions = z.object({
@@ -55,9 +55,12 @@ async function provide(
 
 	return await Promise.all(
 		basedVersions.map(async (version) => {
-			const installerArtifact = MavenArtifactRef.parse(
-				group + ":" + artifact + ":" + version + ":installer",
-			);
+			const installerArtifact = new MavenArtifactRef({
+				group,
+				artifact,
+				version,
+				classifier: ":installer",
+			});
 			const prefix = `${artifact}-${version}`;
 
 			const [versionJSON, installProfileJSON] = await limit(() =>
