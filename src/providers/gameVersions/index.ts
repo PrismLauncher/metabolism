@@ -59,7 +59,10 @@ async function fabricMavenVersions(http: HTTPClient): Promise<PistonVersion[]> {
 		).json(),
 	);
 
-	return await getVersions(http, base, manifest.versions);
+	return (await getVersions(http, base, manifest.versions)).map((v) => ({
+		...v,
+		type: "experiment",
+	}));
 }
 
 const OldSnapshotVersion = PistonVersion.omit({ downloads: true });
