@@ -75,11 +75,13 @@ export interface VersionFileDependency {
 
 export enum VersionFileTrait {
 	UseFirstThreadOnMacOS = "FirstThreadOnMacOS",
-	LegacyLaunch = "legacyLaunch",
-	LaunchWithoutApplet = "noapplet",
-	UseOnlineFixes = "legacyServices",
 	QuickPlaySingleplayerAware = "feature:is_quick_play_singleplayer",
 	QuickPlayMultiplayerAware = "feature:is_quick_play_multiplayer",
+	LegacyLaunch = "legacyLaunch",
+	NoApplet = "noapplet",
+	LegacyServices = "legacyServices",
+	NoTexturePacks = "no-texturepacks",
+	TexturePacks = "texturepacks",
 }
 
 export interface VersionFileRuntime {
