@@ -212,7 +212,7 @@ function selectLWJGLVersion(libs: PistonLibrary[]): string | null {
 
 function classifierHackDeletThis(lib: PistonLibrary): PistonLibrary {
 	// FIXME: for some reason this still exists for a workaround for a launcher bug
-	if (lib.name.classifier) {
+	if (lib.name.classifier && lib.name.classifier.startsWith("natives-")) {
 		return {
 			...lib,
 			name: new MavenArtifactRef({
