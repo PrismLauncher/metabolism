@@ -53,6 +53,27 @@ export const MINECRAFT_VERSION_PATCHES: Patch<VersionOutput>[] = [
 		override: { "+traits": [VersionFileTrait.LegacyServices] },
 	},
 	{
+		match: [
+			"13w23a",
+			"13w22a",
+			"13w21b",
+			"13w21a",
+			"13w19a",
+			"13w18c",
+			"13w18b",
+			"13w18a",
+			"13w17a",
+			"13w16b",
+			"13w16a",
+		],
+		override: {
+			"+traits": [
+				VersionFileTrait.LegacyLaunch,
+				VersionFileTrait.LegacyServices,
+			],
+		},
+	},
+	{
 		// See https://github.com/PrismLauncher/meta/issues/6
 		match: ["inf-20100618..a1.1.2_01"],
 		override: {
