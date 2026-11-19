@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Semaphore } from "es-toolkit";
+import { isPlainObject, Semaphore } from "es-toolkit";
 import { readFile } from "node:fs/promises";
 
 export function throwError(error: Error | string): never {
@@ -100,13 +100,10 @@ export function patchObject<T extends object>(obj: T, patch: Patch<T>): T {
 			continue;
 		}
 
-		if (
-			typeof entry === "object"
-			&& entry !== null
-			&& typeof result[key] === "object"
-			&& result[key] !== null
-		) {
+		if (isPlainObject(entry) && isPlainObject(result[key])) {
 			result[key] = patchObject(result[key], entry) as any;
+		} else if (Array.isArray(entry) && Array.isArray(result[key])) {
+			result[key].push(...entry);
 		} else {
 			result[key] = entry as any;
 		}
