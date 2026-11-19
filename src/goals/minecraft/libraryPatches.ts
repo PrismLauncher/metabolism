@@ -3,10 +3,10 @@
 //
 // SPDX-License-Identifier: MS-PL
 
-import type { Patch } from "#common/transformation/patchSet.ts";
+import { compilePatchSet } from "#common/transformation/patchSet.ts";
 import type { VersionFileLibrary } from "#schemas/format/v1/versionFile.ts";
 
-export const MINECRAFT_LIBRARY_PATCHES: Patch<VersionFileLibrary>[] = [
+export const MINECRAFT_LIBRARY_PATCHES = compilePatchSet<VersionFileLibrary>([
 	{
 		match: [
 			"org.apache.logging.log4j:log4j-core:2.0-beta9",
@@ -283,4 +283,4 @@ export const MINECRAFT_LIBRARY_PATCHES: Patch<VersionFileLibrary>[] = [
 			},
 		],
 	},
-];
+]);

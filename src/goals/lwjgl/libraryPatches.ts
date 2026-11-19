@@ -3,10 +3,10 @@
 //
 // SPDX-License-Identifier: MS-PL
 
-import type { Patch } from "#common/transformation/patchSet.ts";
+import { compilePatchSet } from "#common/transformation/patchSet.ts";
 import type { VersionFileLibrary } from "#schemas/format/v1/versionFile.ts";
 
-export const LWJGL_LIBRARY_PATCHES: Patch<VersionFileLibrary>[] = [
+export const LWJGL_LIBRARY_PATCHES = compilePatchSet<VersionFileLibrary>([
 	{
 		// Add missing tinyfd natives to LWJGL 3.2.2
 		// NOTE: unlike mmc-meta the only thing missing is macos natives
@@ -5423,4 +5423,4 @@ export const LWJGL_LIBRARY_PATCHES: Patch<VersionFileLibrary>[] = [
 			},
 		],
 	},
-];
+]);

@@ -8,7 +8,10 @@ import {
 	isLWJGL2Dependency,
 	isLWJGL3,
 } from "#common/transformation/maven.ts";
-import { applyPatchSet } from "#common/transformation/patchSet.ts";
+import {
+	applyPatchSet,
+	compilePatchSet,
+} from "#common/transformation/patchSet.ts";
 import {
 	isPlatformLibrary,
 	transformArgs,
@@ -36,9 +39,14 @@ export default defineGoal({
 	deps: [gameVersions],
 
 	generate: ([versions]) => {
+		const versionPatches = compilePatchSet(
+			MINECRAFT_VERSION_PATCHES,
+			versions.map((v) => v.id),
+		);
+
 		const result = applyPatchSet(
 			versions.map(transformVersion),
-			MINECRAFT_VERSION_PATCHES,
+			versionPatches,
 			(v) => v.version,
 		);
 
