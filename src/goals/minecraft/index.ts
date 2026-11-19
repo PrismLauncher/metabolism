@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { MavenArtifactRef } from "#common/maven.ts";
 import { applyLibraryPatches } from "#common/transformation/libraryPatches.ts";
 import {
 	isLWJGL2,
@@ -84,6 +85,8 @@ function transformVersion(version: PistonVersion): VersionOutput {
 				&& x.name.group !== "org.ow2.asm",
 		);
 	}
+
+	libraries = libraries.map(classifierHackDeletThis);
 
 	if (version.arguments?.game) {
 		const featureObjects = version.arguments.game
@@ -193,6 +196,21 @@ function selectLWJGLVersion(libs: PistonLibrary[]): string | null {
 	}
 
 	return versions[0] ?? null;
+}
+
+function classifierHackDeletThis(lib: PistonLibrary): PistonLibrary {
+	// FIXME: for some reason this still exists for a workaround for a launcher bug
+	if (lib.name.classifier) {
+		return {
+			...lib,
+			name: new MavenArtifactRef({
+				...omit(lib.name, ["classifier"]),
+				artifact: lib.name.artifact + "-" + lib.name.classifier,
+			}),
+		};
+	}
+
+	return lib;
 }
 
 const JAVA_SUBSTITUTES = { 16: [17] };
