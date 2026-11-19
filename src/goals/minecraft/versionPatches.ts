@@ -32,7 +32,7 @@ export const MINECRAFT_VERSION_PATCHES: Patch<VersionOutput>[] = [
 		override: { mainClass: "com.mojang.minecraft.c" },
 	},
 	{
-		match: ["a1.2.2a..a1.2.1_01"],
+		match: ["rd-132211..a1.2.1_01"],
 		override: { "+traits": [VersionFileTrait.NoTexturePacks] },
 	},
 	{

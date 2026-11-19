@@ -14,6 +14,7 @@ import {
 } from "#common/transformation/patchSet.ts";
 import {
 	isPlatformLibrary,
+	ruleSetAppliesByDefault,
 	transformArgs,
 	transformPistonLibrary,
 } from "#common/transformation/pistonMeta.ts";
@@ -25,6 +26,7 @@ import {
 	type VersionFileDependency,
 } from "#schemas/format/v1/versionFile.ts";
 import type {
+	PistonArgument,
 	PistonAssetIndexRef,
 	PistonLibrary,
 	PistonVersion,
@@ -122,7 +124,7 @@ function transformVersion(version: PistonVersion): VersionOutput {
 			transformJavaMajor(version.javaVersion?.majorVersion)
 		:	[8];
 
-	const jvmArgs: string[] = [];
+	const jvmArgs: string[] = transformJVMArgs(version?.arguments?.jvm ?? []);
 	if (Math.max(...javaMajors) >= 17) {
 		jvmArgs.push(
 			"-XX:+UnlockDiagnosticVMOptions",
@@ -208,6 +210,16 @@ function selectLWJGLVersion(libs: PistonLibrary[]): string | null {
 	}
 
 	return versions[0] ?? null;
+}
+
+function transformJVMArgs(args: PistonArgument[]): string[] {
+	return args
+		.filter(
+			(arg) =>
+				typeof arg === "string" || ruleSetAppliesByDefault(arg.rules),
+		)
+		.flatMap((arg) => (typeof arg === "string" ? arg : arg.value))
+		.filter((arg) => arg.startsWith("-XX:StackShadowPages="));
 }
 
 function classifierHackDeletThis(lib: PistonLibrary): PistonLibrary {
