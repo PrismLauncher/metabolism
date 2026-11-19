@@ -36,6 +36,7 @@ export function compilePatchSet<T>(
 		for (const match of patch.match) {
 			const rangeSeparatorIdx = match.indexOf("..");
 			if (!allKeys || rangeSeparatorIdx === -1) {
+				add(match, patch);
 				continue;
 			}
 
