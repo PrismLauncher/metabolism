@@ -3,12 +3,12 @@
 // SPDX-License-Identifier: MIT
 
 import { MavenArtifactRef } from "#common/maven.ts";
-import { applyLibraryPatches } from "#common/transformation/libraryPatches.ts";
 import {
 	isLWJGL2,
 	isLWJGL2Dependency,
 	isLWJGL3,
 } from "#common/transformation/maven.ts";
+import { applyPatchSet } from "#common/transformation/patchSet.ts";
 import {
 	isPlatformLibrary,
 	transformArgs,
@@ -26,6 +26,7 @@ import type {
 	PistonLibrary,
 	PistonVersion,
 } from "#schemas/pistonMeta/pistonVersion.ts";
+import { omit } from "es-toolkit";
 import { MINECRAFT_LIBRARY_PATCHES } from "./libraryPatches.ts";
 import { MINECRAFT_VERSION_PATCHES } from "./versionPatches.ts";
 
@@ -35,7 +36,11 @@ export default defineGoal({
 	deps: [gameVersions],
 
 	generate: ([versions]) => {
-		const result = versions.map(transformVersion);
+		const result = applyPatchSet(
+			versions.map(transformVersion),
+			MINECRAFT_VERSION_PATCHES,
+			(v) => v.version,
+		);
 
 		const firstRelease = result.find((x) => x.type === "release");
 		if (firstRelease) {
@@ -148,12 +153,11 @@ function transformVersion(version: PistonVersion): VersionOutput {
 			version.assetIndex ?
 				transformAssetsIndex(version.assetIndex)
 			:	undefined,
-		libraries: applyLibraryPatches(
+		libraries: applyPatchSet(
 			libraries.map(transformPistonLibrary),
 			MINECRAFT_LIBRARY_PATCHES,
+			(lib) => lib.name,
 		),
-
-		...MINECRAFT_VERSION_PATCHES[version.id],
 	};
 }
 

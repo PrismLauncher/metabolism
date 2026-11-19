@@ -3,12 +3,12 @@
 // SPDX-License-Identifier: MIT
 
 import { MavenArtifactRef } from "#common/maven.ts";
-import { applyLibraryPatches } from "#common/transformation/libraryPatches.ts";
 import {
 	isLWJGL2,
 	isLWJGL2Dependency,
 	isLWJGL3,
 } from "#common/transformation/maven.ts";
+import { applyPatchSet } from "#common/transformation/patchSet.ts";
 import {
 	isPlatformLibrary,
 	transformPistonArtifact,
@@ -161,17 +161,19 @@ function generate(
 	const conflicts: VersionFileDependency[] = conflictUIDs.map((uid) => ({
 		uid,
 	}));
-	const sharedLibs = applyLibraryPatches(
+	const sharedLibs = applyPatchSet(
 		[...sharedDeps.values().flatMap(transformModule)],
 		LWJGL_LIBRARY_PATCHES,
+		(lib) => lib.name,
 	);
 	const result = versions
 		.entries()
 		.filter(([_, version]) => version.used)
 		.map(([versionKey, version]): VersionOutput => {
-			const libs = applyLibraryPatches(
+			const libs = applyPatchSet(
 				[...version.modules.values().flatMap(transformModule)],
 				LWJGL_LIBRARY_PATCHES,
+				(lib) => lib.name,
 			);
 
 			return {

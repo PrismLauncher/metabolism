@@ -3,9 +3,10 @@
 //
 // SPDX-License-Identifier: MS-PL
 
-import type { LibraryPatch } from "#common/transformation/libraryPatches.ts";
+import type { Patch } from "#common/transformation/patchSet.ts";
+import type { VersionFileLibrary } from "#schemas/format/v1/versionFile.ts";
 
-export const MINECRAFT_LIBRARY_PATCHES: LibraryPatch[] = [
+export const MINECRAFT_LIBRARY_PATCHES: Patch<VersionFileLibrary>[] = [
 	{
 		match: [
 			"org.apache.logging.log4j:log4j-core:2.0-beta9",
@@ -92,7 +93,7 @@ export const MINECRAFT_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add additional library just for osx-arm64. No override needed
 		match: ["ca.weblite:java-objc-bridge:1.0.0"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -137,7 +138,7 @@ export const MINECRAFT_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -200,7 +201,7 @@ export const MINECRAFT_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -255,7 +256,7 @@ export const MINECRAFT_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {

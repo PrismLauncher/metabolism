@@ -2,28 +2,32 @@
 //
 // SPDX-License-Identifier: MIT
 
-import type { VersionFile } from "#schemas/format/v1/versionFile.ts";
+import type { Patch } from "#common/transformation/patchSet.ts";
+import type { VersionOutput } from "#index.ts";
 
-export const MINECRAFT_VERSION_PATCHES: Record<string, Partial<VersionFile>> = {
-	"a1.0.5_01": {
-		mainClass: "y",
+export const MINECRAFT_VERSION_PATCHES: Patch<VersionOutput>[] = [
+	{
+		match: ["a1.0.5_01"],
+		override: { mainClass: "y" },
 	},
-	"a1.0.4": {
-		mainClass: "ax",
+	{
+		match: ["a1.0.4"],
+		override: { mainClass: "y" },
 	},
-	"inf-20100618": {
-		mainClass: "net.minecraft.client.d",
+	{
+		match: ["inf-20100618"],
+		override: { mainClass: "net.minecraft.client.d" },
 	},
-	"c0.30_01c": {
-		mainClass: "com.mojang.minecraft.l",
+	{
+		match: ["c0.30_01c"],
+		override: { mainClass: "com.mojang.minecraft.l" },
 	},
-	"c0.0.13a": {
-		mainClass: "com.mojang.minecraft.Minecraft",
+	{
+		match: ["c0.0.11a", "c0.0.13a"],
+		override: { mainClass: "com.mojang.minecraft.Minecraft" },
 	},
-	"c0.0.13a_03": {
-		mainClass: "com.mojang.minecraft.c",
+	{
+		match: ["c0.0.13a_03"],
+		override: { mainClass: "com.mojang.minecraft.c" },
 	},
-	"c0.0.11a": {
-		mainClass: "c0.0.11a",
-	},
-};
+];
