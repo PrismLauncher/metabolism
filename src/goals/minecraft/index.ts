@@ -120,7 +120,7 @@ function transformVersion(version: PistonVersion): VersionOutput {
 	const javaMajors =
 		version.javaVersion ?
 			transformJavaMajor(version.javaVersion?.majorVersion)
-		:	[];
+		:	[8];
 
 	const jvmArgs: string[] = [];
 	if (Math.max(...javaMajors) >= 17) {
@@ -140,7 +140,7 @@ function transformVersion(version: PistonVersion): VersionOutput {
 		"+traits": traits,
 
 		compatibleJavaMajors: javaMajors,
-		compatibleJavaName: version.javaVersion?.component,
+		compatibleJavaName: version.javaVersion?.component ?? "jre-legacy",
 		"+jvmArgs": jvmArgs,
 		mainClass,
 		minecraftArguments:
