@@ -29,6 +29,7 @@ export interface VersionFile {
 	"+jvmArgs"?: string[];
 	"+tweakers"?: string[];
 	mainClass?: string;
+	appletClass?: string;
 	minecraftArguments?: string;
 
 	mainJar?: VersionFileLibrary;

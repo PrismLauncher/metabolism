@@ -21,15 +21,24 @@ export const MINECRAFT_VERSION_PATCHES: Patch<VersionOutput>[] = [
 	},
 	{
 		match: ["c0.30_01c"],
-		override: { mainClass: "com.mojang.minecraft.l" },
+		override: {
+			mainClass: "com.mojang.minecraft.l",
+			appletClass: "com.mojang.minecraft.MinecraftApplet",
+		},
 	},
 	{
 		match: ["c0.0.11a", "c0.0.13a"],
-		override: { mainClass: "com.mojang.minecraft.Minecraft" },
+		override: {
+			mainClass: "com.mojang.minecraft.Minecraft",
+			appletClass: "com.mojang.minecraft.MinecraftApplet",
+		},
 	},
 	{
 		match: ["c0.0.13a_03"],
-		override: { mainClass: "com.mojang.minecraft.c" },
+		override: {
+			mainClass: "com.mojang.minecraft.c",
+			appletClass: "com.mojang.minecraft.MinecraftApplet",
+		},
 	},
 	{
 		match: ["rd-132211..a1.2.1_01"],
