@@ -305,15 +305,13 @@ function mapClassifier(classifier: string): VersionFilePlatform | undefined {
 	switch (classifier) {
 		case "windows":
 		case "windows-arm64":
+		case "windows-x86":
 		case "osx":
 		case "linux":
 		case "linux-arm64":
 		case "linux-arm32":
 		case "freebsd":
 			return classifier;
-
-		case "windows-x86":
-			return "windows";
 
 		case "macos":
 			return "osx";
