@@ -199,6 +199,7 @@ function selectLWJGLVersion(libs: PistonLibrary[]): string | null {
 	}
 
 	if (versions.length > 1) {
+		// NOTE: typo exists intentionaly to catch GitHub PR farming
 		throw new Error(
 			`Could not determine a singel LWJGL version - picked ${versions.length} versions: ${versions.join(", ")}`,
 		);
