@@ -3,9 +3,10 @@
 //
 // SPDX-License-Identifier: MS-PL
 
-import type { LibraryPatch } from "#common/transformation/libraryPatches.ts";
+import { compilePatchSet } from "#common/transformation/patchSet.ts";
+import type { VersionFileLibrary } from "#schemas/format/v1/versionFile.ts";
 
-export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
+export const LWJGL_LIBRARY_PATCHES = compilePatchSet<VersionFileLibrary>([
 	{
 		// Add missing tinyfd natives to LWJGL 3.2.2
 		// NOTE: unlike mmc-meta the only thing missing is macos natives
@@ -89,7 +90,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -156,7 +157,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -259,7 +260,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -433,7 +434,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -607,7 +608,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -781,7 +782,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -955,7 +956,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1128,7 +1129,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1302,7 +1303,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 				},
 			],
 		},
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1446,7 +1447,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-glfw:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1455,7 +1456,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-arm64:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.3.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1470,7 +1471,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-jemalloc:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1479,7 +1480,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://github.com/theofficialgman/lwjgl3-binaries-arm64/raw/lwjgl-3.3.1/lwjgl-jemalloc-patched-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm64:3.3.1-gman64.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.3.1-gman64.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1494,7 +1495,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-openal:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1503,7 +1504,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm64:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.3.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1518,7 +1519,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-opengl:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1527,7 +1528,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm64:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.3.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1542,7 +1543,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-stb:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1551,7 +1552,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm64:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.3.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1566,7 +1567,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-tinyfd:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1575,7 +1576,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm64:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.3.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1590,7 +1591,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1599,7 +1600,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl/lwjgl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm64:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.3.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1614,7 +1615,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-shaderc:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1623,7 +1624,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-shaderc/lwjgl-shaderc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-shaderc-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-shaderc:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1638,7 +1639,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-spvc:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1647,7 +1648,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-spvc/lwjgl-spvc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-spvc-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-spvc:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1662,7 +1663,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-vma:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1671,7 +1672,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-vma/lwjgl-vma-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-vma-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-vma:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1686,7 +1687,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-glfw:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1695,7 +1696,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-arm32:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.3.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -1710,7 +1711,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-jemalloc:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1719,7 +1720,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm32:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.3.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -1734,7 +1735,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-openal:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1743,7 +1744,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm32:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.3.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -1758,7 +1759,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-opengl:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1767,7 +1768,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm32:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.3.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -1782,7 +1783,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-stb:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1791,7 +1792,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm32:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.3.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -1806,7 +1807,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl-tinyfd:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1815,7 +1816,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm32:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.3.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -1830,7 +1831,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.1
 		match: ["org.lwjgl:lwjgl:3.3.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1839,7 +1840,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.1/bin/lwjgl/lwjgl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm32:3.3.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.3.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -1854,7 +1855,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-freetype:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1863,7 +1864,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-arm64:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.3.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1878,7 +1879,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-glfw:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1887,7 +1888,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-arm64:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.3.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1902,7 +1903,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-jemalloc:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1911,7 +1912,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm64:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.3.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1926,7 +1927,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-openal:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1935,7 +1936,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm64:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.3.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1950,7 +1951,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-opengl:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1959,7 +1960,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm64:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.3.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1974,7 +1975,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-stb:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -1983,7 +1984,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm64:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.3.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -1998,7 +1999,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-tinyfd:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2007,7 +2008,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm64:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.3.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2022,7 +2023,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2031,7 +2032,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl/lwjgl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm64:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.3.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2046,7 +2047,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-freetype:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2055,7 +2056,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-arm32:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.3.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2070,7 +2071,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-glfw:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2079,7 +2080,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-arm32:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.3.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2094,7 +2095,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-jemalloc:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2103,7 +2104,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm32:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.3.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2118,7 +2119,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-openal:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2127,7 +2128,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm32:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.3.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2142,7 +2143,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-opengl:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2151,7 +2152,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm32:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.3.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2166,7 +2167,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-stb:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2175,7 +2176,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm32:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.3.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2190,7 +2191,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl-tinyfd:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2199,7 +2200,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm32:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.3.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2214,7 +2215,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.2
 		match: ["org.lwjgl:lwjgl:3.3.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2223,7 +2224,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl/lwjgl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm32:3.3.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.3.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2238,7 +2239,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-freetype:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2247,7 +2248,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-arm64:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.3.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2262,7 +2263,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-glfw:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2271,7 +2272,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-arm64:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.3.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2286,7 +2287,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-jemalloc:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2295,7 +2296,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm64:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.3.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2310,7 +2311,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-openal:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2319,7 +2320,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm64:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.3.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2334,7 +2335,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-opengl:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2343,7 +2344,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm64:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.3.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2358,7 +2359,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-stb:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2367,7 +2368,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm64:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.3.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2382,7 +2383,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-tinyfd:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2391,7 +2392,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm64:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.3.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2406,7 +2407,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2415,7 +2416,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl/lwjgl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm64:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.3.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2430,7 +2431,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-freetype:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2439,7 +2440,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-arm32:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.3.3-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2454,7 +2455,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-glfw:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2463,7 +2464,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-arm32:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.3.3-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2478,7 +2479,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-jemalloc:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2487,7 +2488,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm32:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.3.3-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2502,7 +2503,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-openal:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2511,7 +2512,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm32:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.3.3-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2526,7 +2527,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-opengl:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2535,7 +2536,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm32:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.3.3-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2550,7 +2551,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-stb:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2559,7 +2560,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm32:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.3.3-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2574,7 +2575,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl-tinyfd:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2583,7 +2584,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm32:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.3.3-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2598,7 +2599,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.3
 		match: ["org.lwjgl:lwjgl:3.3.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2607,7 +2608,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.3/bin/lwjgl/lwjgl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm32:3.3.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.3.3-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2622,7 +2623,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-freetype:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2631,7 +2632,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-arm64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.3.6-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2646,7 +2647,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-glfw:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2655,7 +2656,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-arm64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.3.6-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2670,7 +2671,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-jemalloc:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2679,7 +2680,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.3.6-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2694,7 +2695,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-openal:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2703,7 +2704,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.3.6-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2718,7 +2719,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-opengl:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2727,7 +2728,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.3.6-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2742,7 +2743,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-stb:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2751,7 +2752,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.3.6-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2766,7 +2767,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-tinyfd:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2775,7 +2776,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.3.6-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2790,7 +2791,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2799,7 +2800,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl/lwjgl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.3.6-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -2814,7 +2815,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-freetype:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2823,7 +2824,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-arm32:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.3.6-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2838,7 +2839,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-glfw:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2847,7 +2848,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-arm32:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.3.6-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2862,7 +2863,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-jemalloc:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2871,7 +2872,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm32:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.3.6-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2886,7 +2887,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-openal:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2895,7 +2896,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm32:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.3.6-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2910,7 +2911,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-opengl:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2919,7 +2920,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm32:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.3.6-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2934,7 +2935,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-stb:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2943,7 +2944,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm32:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.3.6-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2958,7 +2959,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-tinyfd:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2967,7 +2968,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm32:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.3.6-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -2982,7 +2983,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -2991,7 +2992,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl/lwjgl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm32:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.3.6-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3006,7 +3007,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-freetype:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3015,7 +3016,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-riscv64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.3.6-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3030,7 +3031,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-glfw:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3039,7 +3040,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-riscv64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.3.6-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3054,7 +3055,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-jemalloc:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3063,7 +3064,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-riscv64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.3.6-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3078,7 +3079,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-openal:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3087,7 +3088,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-openal/lwjgl-openal-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-riscv64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.3.6-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3102,7 +3103,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-opengl:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3111,7 +3112,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-riscv64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.3.6-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3126,7 +3127,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-stb:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3135,7 +3136,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-stb/lwjgl-stb-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-riscv64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.3.6-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3150,7 +3151,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl-tinyfd:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3159,7 +3160,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-riscv64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.3.6-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3174,7 +3175,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.3.6
 		match: ["org.lwjgl:lwjgl:3.3.6"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3183,7 +3184,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.3.6/bin/lwjgl/lwjgl-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-riscv64:3.3.6-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.3.6-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3198,7 +3199,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-freetype:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3207,7 +3208,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -3222,7 +3223,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-sdl:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3231,7 +3232,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-sdl/lwjgl-sdl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-sdl-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-sdl:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -3246,7 +3247,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-glfw:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3255,7 +3256,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -3270,7 +3271,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-jemalloc:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3279,7 +3280,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -3294,7 +3295,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-openal:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3303,7 +3304,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -3318,7 +3319,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-opengl:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3327,7 +3328,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -3342,7 +3343,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-stb:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3351,7 +3352,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -3366,7 +3367,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-tinyfd:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3375,7 +3376,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -3390,7 +3391,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl:3.4.1", "org.lwjgl:lwjgl:3.4.1:unsafe"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3399,7 +3400,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl/lwjgl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.4.1-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -3414,7 +3415,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-freetype:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3423,7 +3424,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3438,7 +3439,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-sdl:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3447,7 +3448,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-sdl/lwjgl-sdl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-sdl-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-sdl:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3462,7 +3463,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-glfw:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3471,7 +3472,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3486,7 +3487,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-jemalloc:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3495,7 +3496,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3510,7 +3511,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-openal:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3519,7 +3520,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3534,7 +3535,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-opengl:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3543,7 +3544,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3558,7 +3559,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-stb:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3567,7 +3568,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3582,7 +3583,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-tinyfd:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3591,7 +3592,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3606,7 +3607,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl:3.4.1", "org.lwjgl:lwjgl:3.4.1:unsafe"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3615,7 +3616,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl/lwjgl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3630,7 +3631,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-shaderc:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3639,7 +3640,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-shaderc/lwjgl-shaderc-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-shaderc-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-shaderc:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3654,7 +3655,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-spvc:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3663,7 +3664,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-spvc/lwjgl-spvc-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-spvc-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-spvc:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3678,7 +3679,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-vma:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3687,7 +3688,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-vma/lwjgl-vma-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-vma-natives-linux-arm32:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-vma:3.4.1-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -3702,7 +3703,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-freetype:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3711,7 +3712,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3726,7 +3727,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-sdl:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3735,7 +3736,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-sdl/lwjgl-sdl-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-sdl-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-sdl:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3750,7 +3751,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-glfw:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3759,7 +3760,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-glfw/lwjgl-glfw-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-glfw:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3774,7 +3775,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-jemalloc:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3783,7 +3784,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3798,7 +3799,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-openal:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3807,7 +3808,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-openal/lwjgl-openal-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3822,7 +3823,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-opengl:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3831,7 +3832,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3846,7 +3847,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-stb:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3855,7 +3856,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-stb/lwjgl-stb-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3870,7 +3871,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-shaderc:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3879,7 +3880,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-shaderc/lwjgl-shaderc-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-shaderc-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-shaderc:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3894,7 +3895,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-spvc:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3903,7 +3904,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-spvc/lwjgl-spvc-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-spvc-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-spvc:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3918,7 +3919,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-vma:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3927,7 +3928,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-vma/lwjgl-vma-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-vma-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-vma:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3942,7 +3943,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl-tinyfd:3.4.1"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3951,7 +3952,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3966,7 +3967,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.1
 		match: ["org.lwjgl:lwjgl:3.4.1", "org.lwjgl:lwjgl:3.4.1:unsafe"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3975,7 +3976,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.1/bin/lwjgl/lwjgl-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-riscv64:3.4.1-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.4.1-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -3990,7 +3991,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-freetype:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -3999,7 +4000,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-arm64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.4.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -4014,7 +4015,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-shaderc:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4023,7 +4024,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-shaderc/lwjgl-shaderc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-shaderc-natives-linux-arm64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-shaderc:3.4.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -4038,7 +4039,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-spvc:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4047,7 +4048,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-spvc/lwjgl-spvc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-spvc-natives-linux-arm64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-spvc:3.4.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -4062,7 +4063,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-vma:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4071,7 +4072,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-vma/lwjgl-vma-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-vma-natives-linux-arm64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-vma:3.4.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -4086,7 +4087,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-sdl:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4095,7 +4096,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-sdl/lwjgl-sdl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-sdl-natives-linux-arm64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-sdl:3.4.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -4110,7 +4111,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-jemalloc:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4119,7 +4120,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.4.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -4134,7 +4135,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-openal:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4143,7 +4144,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.4.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -4158,7 +4159,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-opengl:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4167,7 +4168,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.4.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -4182,7 +4183,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-stb:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4191,7 +4192,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.4.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -4206,7 +4207,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-tinyfd:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4215,7 +4216,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.4.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -4230,7 +4231,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4239,7 +4240,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl/lwjgl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.4.2-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -4254,7 +4255,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-freetype:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4263,7 +4264,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-arm32:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.4.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -4278,7 +4279,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-sdl:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4287,7 +4288,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-sdl/lwjgl-sdl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-sdl-natives-linux-arm32:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-sdl:3.4.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -4302,7 +4303,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-jemalloc:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4311,7 +4312,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm32:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.4.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -4326,7 +4327,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-openal:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4335,7 +4336,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm32:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.4.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -4350,7 +4351,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-opengl:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4359,7 +4360,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm32:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.4.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -4374,7 +4375,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-stb:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4383,7 +4384,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm32:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.4.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -4398,7 +4399,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-tinyfd:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4407,7 +4408,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-arm32:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.4.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -4422,7 +4423,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4431,7 +4432,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl/lwjgl-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm32:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.4.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -4446,7 +4447,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-shaderc:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4455,7 +4456,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-shaderc/lwjgl-shaderc-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-shaderc-natives-linux-arm32:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-shaderc:3.4.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -4470,7 +4471,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-spvc:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4479,7 +4480,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-spvc/lwjgl-spvc-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-spvc-natives-linux-arm32:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-spvc:3.4.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -4494,7 +4495,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm32 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-vma:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4503,7 +4504,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-vma/lwjgl-vma-natives-linux-arm32.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-vma-natives-linux-arm32:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-vma:3.4.2-lwjgl.1:natives-linux-arm32",
 				rules: [
 					{
 						action: "allow",
@@ -4518,7 +4519,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-freetype:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4527,7 +4528,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-riscv64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.4.2-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4542,7 +4543,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-sdl:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4551,7 +4552,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-sdl/lwjgl-sdl-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-sdl-natives-linux-riscv64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-sdl:3.4.2-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4566,7 +4567,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-jemalloc:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4575,7 +4576,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-riscv64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.4.2-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4590,7 +4591,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-openal:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4599,7 +4600,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-openal/lwjgl-openal-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-riscv64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.4.2-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4614,7 +4615,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-opengl:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4623,7 +4624,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-riscv64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.4.2-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4638,7 +4639,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-stb:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4647,7 +4648,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-stb/lwjgl-stb-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-riscv64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.4.2-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4662,7 +4663,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-shaderc:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4671,7 +4672,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-shaderc/lwjgl-shaderc-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-shaderc-natives-linux-riscv64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-shaderc:3.4.2-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4686,7 +4687,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-spvc:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4695,7 +4696,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-spvc/lwjgl-spvc-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-spvc-natives-linux-riscv64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-spvc:3.4.2-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4710,7 +4711,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-vma:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4719,7 +4720,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-vma/lwjgl-vma-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-vma-natives-linux-riscv64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-vma:3.4.2-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4734,7 +4735,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl-tinyfd:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4743,7 +4744,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl-tinyfd/lwjgl-tinyfd-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-tinyfd-natives-linux-riscv64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl-tinyfd:3.4.2-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4758,7 +4759,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.2
 		match: ["org.lwjgl:lwjgl:3.4.2"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4767,7 +4768,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.2/bin/lwjgl/lwjgl-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-riscv64:3.4.2-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.4.2-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4782,7 +4783,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-freetype:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4791,7 +4792,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-riscv64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.4.3-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4806,7 +4807,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-sdl:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4815,7 +4816,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-sdl/lwjgl-sdl-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-sdl-natives-linux-riscv64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-sdl:3.4.3-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4830,7 +4831,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-jemalloc:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4839,7 +4840,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-riscv64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.4.3-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4854,7 +4855,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-openal:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4863,7 +4864,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-openal/lwjgl-openal-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-riscv64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.4.3-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4878,7 +4879,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-opengl:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4887,7 +4888,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-riscv64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.4.3-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4902,7 +4903,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-stb:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4911,7 +4912,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-stb/lwjgl-stb-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-riscv64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.4.3-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4926,7 +4927,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-shaderc:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4935,7 +4936,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-shaderc/lwjgl-shaderc-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-shaderc-natives-linux-riscv64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-shaderc:3.4.3-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4950,7 +4951,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-spvc:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4959,7 +4960,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-spvc/lwjgl-spvc-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-spvc-natives-linux-riscv64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-spvc:3.4.3-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4974,7 +4975,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-vma:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -4983,7 +4984,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-vma/lwjgl-vma-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-vma-natives-linux-riscv64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-vma:3.4.3-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -4998,7 +4999,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-riscv64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5007,7 +5008,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl/lwjgl-natives-linux-riscv64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-riscv64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.4.3-lwjgl.1:natives-linux-riscv64",
 				rules: [
 					{
 						action: "allow",
@@ -5021,7 +5022,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	},
 	{
 		// Replace glfw from 3.3.1 with version from 3.3.2 to prevent stack smashing
-		match: ["org.lwjgl:lwjgl-glfw-natives-linux:3.3.1"],
+		match: ["org.lwjgl:lwjgl-glfw:3.3.1:natives-linux"],
 		override: {
 			downloads: {
 				artifact: {
@@ -5030,13 +5031,13 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 					url: "https://build.lwjgl.org/release/3.3.2/bin/lwjgl-glfw/lwjgl-glfw-natives-linux.jar",
 				},
 			},
-			name: "org.lwjgl:lwjgl-glfw-natives-linux:3.3.2-lwjgl.1",
+			name: "org.lwjgl:lwjgl-glfw:3.3.2-lwjgl.1:natives-linux",
 		},
 	},
 	{
 		// Add GLFW to LWJGL 3.4.1 for older versions
 		match: ["org.lwjgl:lwjgl:3.4.1", "org.lwjgl:lwjgl:3.4.1:unsafe"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5045,7 +5046,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://libraries.minecraft.net/org/lwjgl/lwjgl-glfw/3.4.1/lwjgl-glfw-3.4.1-natives-linux.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-linux:3.4.1",
+				name: "org.lwjgl:lwjgl-glfw:3.4.1:natives-linux",
 				rules: [
 					{
 						action: "allow",
@@ -5063,7 +5064,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://libraries.minecraft.net/org/lwjgl/lwjgl-glfw/3.4.1/lwjgl-glfw-3.4.1-natives-macos-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-macos-arm64:3.4.1",
+				name: "org.lwjgl:lwjgl-glfw:3.4.1:natives-macos-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5081,7 +5082,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://libraries.minecraft.net/org/lwjgl/lwjgl-glfw/3.4.1/lwjgl-glfw-3.4.1-natives-macos.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-macos:3.4.1",
+				name: "org.lwjgl:lwjgl-glfw:3.4.1:natives-macos",
 				rules: [
 					{
 						action: "allow",
@@ -5099,7 +5100,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://libraries.minecraft.net/org/lwjgl/lwjgl-glfw/3.4.1/lwjgl-glfw-3.4.1-natives-windows-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-windows-arm64:3.4.1",
+				name: "org.lwjgl:lwjgl-glfw:3.4.1:natives-windows-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5117,7 +5118,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://libraries.minecraft.net/org/lwjgl/lwjgl-glfw/3.4.1/lwjgl-glfw-3.4.1-natives-windows-x86.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-windows-x86:3.4.1",
+				name: "org.lwjgl:lwjgl-glfw:3.4.1:natives-windows-x86",
 				rules: [
 					{
 						action: "allow",
@@ -5135,7 +5136,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://libraries.minecraft.net/org/lwjgl/lwjgl-glfw/3.4.1/lwjgl-glfw-3.4.1-natives-windows.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-glfw-natives-windows:3.4.1",
+				name: "org.lwjgl:lwjgl-glfw:3.4.1:natives-windows",
 				rules: [
 					{
 						action: "allow",
@@ -5156,12 +5157,12 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 				name: "org.lwjgl:lwjgl-glfw:3.4.1",
 			},
 		],
-		patchAdditionalLibraries: true,
+		patchAdded: true,
 	},
 	{
 		// Add linux-arm64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-freetype:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5170,7 +5171,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-freetype/lwjgl-freetype-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-freetype-natives-linux-arm64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-freetype:3.4.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5185,7 +5186,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-shaderc:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5194,7 +5195,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-shaderc/lwjgl-shaderc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-shaderc-natives-linux-arm64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-shaderc:3.4.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5209,7 +5210,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-spvc:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5218,7 +5219,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-spvc/lwjgl-spvc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-spvc-natives-linux-arm64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-spvc:3.4.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5233,7 +5234,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-vma:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5242,7 +5243,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-vma/lwjgl-vma-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-vma-natives-linux-arm64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-vma:3.4.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5257,7 +5258,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-sdl:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5266,7 +5267,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-sdl/lwjgl-sdl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-sdl-natives-linux-arm64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-sdl:3.4.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5281,7 +5282,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-jemalloc:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5290,7 +5291,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-jemalloc/lwjgl-jemalloc-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-jemalloc-natives-linux-arm64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-jemalloc:3.4.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5305,7 +5306,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-openal:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5314,7 +5315,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-openal/lwjgl-openal-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-openal-natives-linux-arm64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-openal:3.4.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5329,7 +5330,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-opengl:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5338,7 +5339,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-opengl/lwjgl-opengl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-opengl-natives-linux-arm64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-opengl:3.4.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5353,7 +5354,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-stb:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5362,7 +5363,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-stb/lwjgl-stb-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-stb-natives-linux-arm64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-stb:3.4.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5377,7 +5378,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl-spng:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5386,7 +5387,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl-spng/lwjgl-spng-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-spng-natives-linux-arm64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl-spng:3.4.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5401,7 +5402,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 	{
 		// Add linux-arm64 support for LWJGL 3.4.3
 		match: ["org.lwjgl:lwjgl:3.4.3"],
-		additionalLibraries: [
+		add: [
 			{
 				downloads: {
 					artifact: {
@@ -5410,7 +5411,7 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 						url: "https://build.lwjgl.org/release/3.4.3/bin/lwjgl/lwjgl-natives-linux-arm64.jar",
 					},
 				},
-				name: "org.lwjgl:lwjgl-natives-linux-arm64:3.4.3-lwjgl.1",
+				name: "org.lwjgl:lwjgl:3.4.3-lwjgl.1:natives-linux-arm64",
 				rules: [
 					{
 						action: "allow",
@@ -5422,4 +5423,4 @@ export const LWJGL_LIBRARY_PATCHES: LibraryPatch[] = [
 			},
 		],
 	},
-];
+]);

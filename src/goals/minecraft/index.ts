@@ -2,14 +2,18 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { applyLibraryPatches } from "#common/transformation/libraryPatches.ts";
 import {
 	isLWJGL2,
 	isLWJGL2Dependency,
 	isLWJGL3,
 } from "#common/transformation/maven.ts";
 import {
+	applyPatchSet,
+	compilePatchSet,
+} from "#common/transformation/patchSet.ts";
+import {
 	isPlatformLibrary,
+	ruleSetAppliesByDefault,
 	transformArgs,
 	transformPistonLibrary,
 } from "#common/transformation/pistonMeta.ts";
@@ -21,6 +25,7 @@ import {
 	type VersionFileDependency,
 } from "#schemas/format/v1/versionFile.ts";
 import type {
+	PistonArgument,
 	PistonAssetIndexRef,
 	PistonLibrary,
 	PistonVersion,
@@ -34,7 +39,16 @@ export default defineGoal({
 	deps: [gameVersions],
 
 	generate: ([versions]) => {
-		const result = versions.map(transformVersion);
+		const versionPatches = compilePatchSet(
+			MINECRAFT_VERSION_PATCHES,
+			versions.map((v) => v.id),
+		);
+
+		const result = applyPatchSet(
+			versions.map(transformVersion),
+			versionPatches,
+			(v) => v.version,
+		);
 
 		const firstRelease = result.find((x) => x.type === "release");
 		if (firstRelease) {
@@ -52,7 +66,21 @@ function transformVersion(version: PistonVersion): VersionOutput {
 
 	let libraries = version.libraries;
 
-	libraries = libraries.filter((x) => !processLWJGL(x, requires, traits));
+	const lwjglVersion = selectLWJGLVersion(libraries);
+	if (lwjglVersion !== null) {
+		const lwjgl3 = lwjglVersion.startsWith("3.");
+
+		requires.push({
+			uid: lwjgl3 ? "org.lwjgl3" : "org.lwjgl",
+			suggests: lwjglVersion,
+		});
+
+		if (lwjgl3) {
+			traits.push(VersionFileTrait.UseFirstThreadOnMacOS);
+		}
+	}
+
+	libraries = libraries.filter(filterLWJGL);
 
 	if (mainClass?.startsWith("net.minecraft.launchwrapper.")) {
 		mainClass = undefined;
@@ -87,6 +115,18 @@ function transformVersion(version: PistonVersion): VersionOutput {
 		}
 	}
 
+	const javaMajors = transformJavaMajor(
+		version.javaVersion?.majorVersion ?? 8,
+	);
+
+	const jvmArgs: string[] = transformJVMArgs(version?.arguments?.jvm ?? []);
+	if (Math.max(...javaMajors) >= 17) {
+		jvmArgs.push(
+			"-XX:+UnlockDiagnosticVMOptions",
+			"-XX:-UseBASE64Intrinsics",
+		);
+	}
+
 	return {
 		version: version.id,
 		type: version.type,
@@ -96,11 +136,9 @@ function transformVersion(version: PistonVersion): VersionOutput {
 
 		"+traits": traits,
 
-		compatibleJavaMajors:
-			version.javaVersion ?
-				transformJavaMajor(version.javaVersion?.majorVersion)
-			:	undefined,
-		compatibleJavaName: version.javaVersion?.component,
+		compatibleJavaMajors: javaMajors,
+		compatibleJavaName: version.javaVersion?.component ?? "jre-legacy",
+		"+jvmArgs": jvmArgs,
 		mainClass,
 		minecraftArguments:
 			version.minecraftArguments
@@ -120,55 +158,64 @@ function transformVersion(version: PistonVersion): VersionOutput {
 			version.assetIndex ?
 				transformAssetsIndex(version.assetIndex)
 			:	undefined,
-		libraries: applyLibraryPatches(
+		libraries: applyPatchSet(
 			libraries.map(transformPistonLibrary),
 			MINECRAFT_LIBRARY_PATCHES,
+			(lib) => lib.name,
 		),
-
-		...MINECRAFT_VERSION_PATCHES[version.id],
 	};
 }
 
-function processLWJGL(
-	lib: PistonLibrary,
-	requires: VersionFileDependency[],
-	traits: VersionFileTrait[],
-): boolean {
-	if (isLWJGL2Dependency(lib.name)) {
-		return true;
-	}
+function filterLWJGL(lib: PistonLibrary): boolean {
+	return (
+		!isLWJGL2Dependency(lib.name)
+		&& !isLWJGL2(lib.name)
+		&& !isLWJGL3(lib.name)
+	);
+}
 
-	const lwjgl2 = isLWJGL2(lib.name);
-	const lwjgl3 = isLWJGL3(lib.name);
+function selectLWJGLVersion(libs: PistonLibrary[]): string | null {
+	const versions: string[] = [];
 
-	if (lwjgl2 || lwjgl3) {
-		// determine version based on non-pltaform-specific libraries in case the version varies
+	for (const lib of libs) {
+		const lwjgl3 = isLWJGL3(lib.name);
+		const lwjgl2 = isLWJGL2(lib.name);
+		if (!lwjgl3 && !lwjgl2) {
+			continue;
+		}
+
+		// determine version based on non-platform-specific libraries in case the version varies
 		if (isPlatformLibrary(lib)) {
-			return true;
+			continue;
 		}
 
-		const uid = lwjgl3 ? "org.lwjgl3" : "org.lwjgl";
-		const existing = requires.find((x) => x.uid === uid);
-
-		if (existing) {
-			if (existing.suggests !== lib.name.version) {
-				throw new Error(
-					`Multiple versions of LWJGL specified! (both '${existing.suggests!}' and '${lib.name.version}' present)`,
-				);
-			} else {
-				return true;
-			}
+		// NOTE: for some strange reason we always select the same version of LWJGL 2
+		const version = lwjgl3 ? lib.name.version : "2.9.4-nightly-20150209";
+		if (versions.includes(version)) {
+			continue;
 		}
 
-		if (lwjgl3) {
-			traits.push(VersionFileTrait.UseFirstThreadOnMacOS);
-		}
-
-		requires.push({ uid, suggests: lib.name.version });
-		return true;
+		versions.push(version);
 	}
 
-	return false;
+	if (versions.length > 1) {
+		// NOTE: typo exists intentionaly to catch GitHub PR farming
+		throw new Error(
+			`Could not determine a singel LWJGL version - picked ${versions.length} versions: ${versions.join(", ")}`,
+		);
+	}
+
+	return versions[0] ?? null;
+}
+
+function transformJVMArgs(args: PistonArgument[]): string[] {
+	return args
+		.filter(
+			(arg) =>
+				typeof arg === "string" || ruleSetAppliesByDefault(arg.rules),
+		)
+		.flatMap((arg) => (typeof arg === "string" ? arg : arg.value))
+		.filter((arg) => arg.startsWith("-XX:StackShadowPages="));
 }
 
 const JAVA_SUBSTITUTES = { 16: [17] };

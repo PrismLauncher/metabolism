@@ -2,33 +2,25 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { z } from "zod";
+interface MavenArtifactComponents {
+	group: string;
+	artifact: string;
+	version: string;
+	classifier?: string;
+}
 
-// TODO: make more general purpose?
+export class MavenArtifactRef implements MavenArtifactComponents {
+	group: string;
+	artifact: string;
+	version: string;
+	classifier?: string;
 
-export const MavenArtifactRef = z.string().transform((name, context) => {
-	const [groupID, artifactID, version, classifier] = name.split(":", 4);
-
-	if (!groupID || !artifactID || !version) {
-		context.addIssue("Required: <groupID>:<artifactID>:<version>");
-		return z.NEVER;
+	constructor(components: MavenArtifactComponents) {
+		this.group = components.group;
+		this.artifact = components.artifact;
+		this.version = components.version;
+		this.classifier = components.classifier;
 	}
-
-	return new MavenArtifactRef_(
-		groupID,
-		artifactID,
-		version,
-		classifier,
-	) as MavenArtifactRef;
-});
-
-class MavenArtifactRef_ {
-	constructor(
-		public group: string,
-		public artifact: string,
-		public version: string,
-		public classifier?: string,
-	) {}
 
 	get value(): string {
 		if (this.classifier) {
@@ -58,19 +50,6 @@ class MavenArtifactRef_ {
 		return result;
 	}
 
-	withClassifier(classifier?: string): MavenArtifactRef {
-		return new MavenArtifactRef_(
-			this.group,
-			this.artifact,
-			this.version,
-			classifier,
-		);
-	}
-
-	withoutClassifier(): MavenArtifactRef {
-		return new MavenArtifactRef_(this.group, this.artifact, this.version);
-	}
-
 	url(base: string | URL, extension: string = "jar"): URL {
 		const group = encodeURIComponent(this.group).replaceAll(".", "/");
 		const artifact = encodeURIComponent(this.artifact);
@@ -89,6 +68,3 @@ class MavenArtifactRef_ {
 		return `[MavenArtifactRef ${this.value}]`;
 	}
 }
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface MavenArtifactRef extends MavenArtifactRef_ {}

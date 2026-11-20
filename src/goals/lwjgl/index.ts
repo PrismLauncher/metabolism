@@ -2,12 +2,13 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { applyLibraryPatches } from "#common/transformation/libraryPatches.ts";
+import { MavenArtifactRef } from "#common/maven.ts";
 import {
 	isLWJGL2,
 	isLWJGL2Dependency,
 	isLWJGL3,
 } from "#common/transformation/maven.ts";
+import { applyPatchSet } from "#common/transformation/patchSet.ts";
 import {
 	isPlatformLibrary,
 	transformPistonArtifact,
@@ -22,7 +23,6 @@ import type {
 	VersionFileLibrary,
 	VersionFilePlatform,
 } from "#schemas/format/v1/versionFile.ts";
-import { MavenArtifactRef } from "#schemas/mavenArtifactRef.ts";
 import { PistonVersion } from "#schemas/pistonMeta/pistonVersion.ts";
 import { omit } from "es-toolkit";
 import { isEmpty } from "es-toolkit/compat";
@@ -103,7 +103,9 @@ function generate(
 				target,
 				lib.name.format(["group", "artifact"]), // org.lwjgl:lwjgl-thing
 				{
-					baseName: lib.name.withoutClassifier(),
+					baseName: new MavenArtifactRef(
+						omit(lib.name, ["classifier"]),
+					),
 					nativeCode: new Map(),
 				},
 			);
@@ -159,17 +161,19 @@ function generate(
 	const conflicts: VersionFileDependency[] = conflictUIDs.map((uid) => ({
 		uid,
 	}));
-	const sharedLibs = applyLibraryPatches(
+	const sharedLibs = applyPatchSet(
 		[...sharedDeps.values().flatMap(transformModule)],
 		LWJGL_LIBRARY_PATCHES,
+		(lib) => lib.name,
 	);
 	const result = versions
 		.entries()
 		.filter(([_, version]) => version.used)
 		.map(([versionKey, version]): VersionOutput => {
-			const libs = applyLibraryPatches(
+			const libs = applyPatchSet(
 				[...version.modules.values().flatMap(transformModule)],
 				LWJGL_LIBRARY_PATCHES,
+				(lib) => lib.name,
 			);
 
 			return {
@@ -199,8 +203,10 @@ function transformModuleMerged(module: LWJGLModule): VersionFileLibrary[] {
 	let javaCodeLib: VersionFileLibrary | null = null;
 	if (module.javaCode !== undefined) {
 		javaCodeLib = {
-			name: module.baseName.withClassifier(module.javaCode.classifier)
-				.value,
+			name: new MavenArtifactRef({
+				...module.baseName,
+				classifier: module.javaCode.classifier,
+			}).value,
 			downloads: { artifact: omit(module.javaCode, ["classifier"]) },
 		};
 	}
@@ -254,20 +260,20 @@ function transformModuleSplit(module: LWJGLModule): VersionFileLibrary[] {
 
 	if (module.javaCode !== undefined) {
 		result.push({
-			name: module.baseName.withClassifier(module.javaCode.classifier)
-				.value,
+			name: new MavenArtifactRef({
+				...module.baseName,
+				classifier: module.javaCode.classifier,
+			}).value,
 			downloads: { artifact: omit(module.javaCode, ["classifier"]) },
 		});
 	}
 
 	for (const [platform, artifact] of module.nativeCode) {
 		result.push({
-			name:
-				module.baseName.format(["group", "artifact"])
-				+ "-"
-				+ artifact.classifier
-				+ ":"
-				+ module.baseName.version, // workaround
+			name: new MavenArtifactRef({
+				...module.baseName,
+				classifier: artifact.classifier,
+			}).value,
 			downloads: { artifact: omit(artifact, ["classifier"]) },
 			rules: [
 				{
@@ -299,15 +305,13 @@ function mapClassifier(classifier: string): VersionFilePlatform | undefined {
 	switch (classifier) {
 		case "windows":
 		case "windows-arm64":
+		case "windows-x86":
 		case "osx":
 		case "linux":
 		case "linux-arm64":
 		case "linux-arm32":
 		case "freebsd":
 			return classifier;
-
-		case "windows-x86":
-			return "windows";
 
 		case "macos":
 			return "osx";

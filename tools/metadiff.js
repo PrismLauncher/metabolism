@@ -2,8 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { sortBy } from "es-toolkit";
-import { mkdir, readdir, readFile, writeFile } from "fs/promises";
+import { mkdir, readdir, readFile, rm, writeFile } from "fs/promises";
 import { create as createDiffPatcher } from "jsondiffpatch";
 import { basename, dirname, join as joinPath } from "path";
 import { pathToFileURL } from "url";
@@ -16,6 +15,7 @@ if (!left || !right) {
 }
 
 const output = joinPath(dirname(script), "metadiff");
+await rm(output, { recursive: true, force: true });
 
 async function walkEntries(dir, visitor) {
 	await Promise.all(
@@ -50,17 +50,32 @@ function preprocess(json) {
 	// ignored by launcher
 	delete json.order;
 
+	// the launcher defaults to this anyway
+	if (json.appletClass === "net.minecraft.client.MinecraftApplet") {
+		delete json.appletClass;
+	}
+
+	if (json["+jvmArgs"]?.length === 0) {
+		delete json["+jvmArgs"];
+	}
+
 	if (json["+traits"]) {
 		// ignored by launcher
 		json["+traits"] = json["+traits"].filter((x) => x !== "XR:Initial");
 	}
 
 	if (json.libraries) {
-		json.libraries = sortBy(json.libraries, ["name"]);
 		for (const lib of json.libraries) {
 			// ignored by launcher
 			delete lib.extract;
 		}
+		// HACK: for now add a length to differentiate libraries with the same name
+		json.libraries = Object.fromEntries(
+			json.libraries.map((l) => [
+				l.name + "#" + JSON.stringify(l).length,
+				l,
+			]),
+		);
 	}
 }
 
@@ -100,6 +115,11 @@ await Promise.all(
 		preprocess(rightObj);
 
 		const delta = jsonDiff.diff(leftObj, rightObj, { propertyFilter });
+		if (delta === undefined) {
+			// NOTE: don't bother to write files which are the same
+			// since we delete everything to start with, all that remains will be the differing files
+			return;
+		}
 
 		const outputPath = joinPath(output, entry + ".html");
 		await mkdir(dirname(outputPath), { recursive: true });

@@ -3,10 +3,10 @@
 // SPDX-License-Identifier: MIT
 
 import { z } from "zod";
-import { MavenArtifactRef } from "../mavenArtifactRef.ts";
+import { MavenArtifactString } from "../maven.ts";
 
 export const FabricMetaVersion = z.object({
-	maven: MavenArtifactRef,
+	maven: MavenArtifactString,
 	version: z.string(),
 	separator: z.string().optional(),
 });

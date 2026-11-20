@@ -2,28 +2,82 @@
 //
 // SPDX-License-Identifier: MIT
 
-import type { VersionFile } from "#schemas/format/v1/versionFile.ts";
+import type { Patch } from "#common/transformation/patchSet.ts";
+import type { VersionOutput } from "#index.ts";
+import { VersionFileTrait } from "#schemas/format/v1/versionFile.ts";
 
-export const MINECRAFT_VERSION_PATCHES: Record<string, Partial<VersionFile>> = {
-	"a1.0.5_01": {
-		mainClass: "y",
+export const MINECRAFT_VERSION_PATCHES: Patch<VersionOutput>[] = [
+	{
+		match: ["a1.0.5_01"],
+		override: { mainClass: "y" },
 	},
-	"a1.0.4": {
-		mainClass: "ax",
+	{
+		match: ["a1.0.4"],
+		override: { mainClass: "y" },
 	},
-	"inf-20100618": {
-		mainClass: "net.minecraft.client.d",
+	{
+		match: ["inf-20100618"],
+		override: { mainClass: "net.minecraft.client.d" },
 	},
-	"c0.30_01c": {
-		mainClass: "com.mojang.minecraft.l",
+	{
+		match: ["c0.30_01c"],
+		override: {
+			mainClass: "com.mojang.minecraft.l",
+			appletClass: "com.mojang.minecraft.MinecraftApplet",
+		},
 	},
-	"c0.0.13a": {
-		mainClass: "com.mojang.minecraft.Minecraft",
+	{
+		match: ["c0.0.11a", "c0.0.13a"],
+		override: {
+			mainClass: "com.mojang.minecraft.Minecraft",
+			appletClass: "com.mojang.minecraft.MinecraftApplet",
+		},
 	},
-	"c0.0.13a_03": {
-		mainClass: "com.mojang.minecraft.c",
+	{
+		match: ["c0.0.13a_03"],
+		override: {
+			mainClass: "com.mojang.minecraft.c",
+			appletClass: "com.mojang.minecraft.MinecraftApplet",
+		},
 	},
-	"c0.0.11a": {
-		mainClass: "c0.0.11a",
+	{
+		match: ["rd-132211..a1.2.1_01"],
+		override: { "+traits": [VersionFileTrait.NoTexturePacks] },
 	},
-};
+	{
+		match: ["a1.2.2a..13w23b"],
+		override: { "+traits": [VersionFileTrait.TexturePacks] },
+	},
+	{
+		match: ["c0.30_01c..14w11a"],
+		override: { "+traits": [VersionFileTrait.LegacyServices] },
+	},
+	{
+		match: [
+			"13w23a",
+			"13w22a",
+			"13w21b",
+			"13w21a",
+			"13w19a",
+			"13w18c",
+			"13w18b",
+			"13w18a",
+			"13w17a",
+			"13w16b",
+			"13w16a",
+		],
+		override: {
+			"+traits": [
+				VersionFileTrait.LegacyLaunch,
+				VersionFileTrait.LegacyServices,
+			],
+		},
+	},
+	{
+		// See https://github.com/PrismLauncher/meta/issues/6
+		match: ["inf-20100618..a1.1.2_01"],
+		override: {
+			"+jvmArgs": ["-Djava.util.Arrays.useLegacyMergeSort=true"],
+		},
+	},
+];

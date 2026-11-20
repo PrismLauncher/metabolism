@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import { string, z } from "zod";
-import { MavenArtifactRef } from "../mavenArtifactRef.ts";
+import { MavenArtifactString } from "../maven.ts";
 
 export const PistonRule = z.object({
 	action: z.enum(["allow", "disallow"]),
@@ -38,7 +38,7 @@ export const PistonArtifact = z.object({
 export type PistonArtifact = z.output<typeof PistonArtifact>;
 
 export const PistonLibrary = z.object({
-	name: MavenArtifactRef,
+	name: MavenArtifactString,
 	url: z.string().optional(),
 
 	downloads: z

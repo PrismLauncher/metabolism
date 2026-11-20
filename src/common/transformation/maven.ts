@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import type { MavenArtifactRef } from "#schemas/mavenArtifactRef.ts";
+import type { MavenArtifactRef } from "#common/maven.ts";
 
 export function isLWJGL3(name: MavenArtifactRef): boolean {
 	return name.group === "org.lwjgl" && name.version.startsWith("3.");
