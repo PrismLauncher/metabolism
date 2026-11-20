@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 # Metabolism
 
 Generation for Minecraft game and loader metadata - possible future implementation in TypeScript.
-The [current implementation](https://github.com/PrismLauncher/meta) (which shall be referred to as mmc-meta) is an entirely different python codebase forked from MultiMC.
+The [current implementation](https://github.com/PrismLauncher/meta) (which shall be referred to as mmc-meta) is an entirely different Python codebase forked from MultiMC's meta scripts. Unlike [mcmeta](https://github.com/PrismLauncher/mcmeta), the goal of metabolism is to keep the output more-or-less the same.
 
 For the time being [this repo](https://github.com/TheKodeToad/metabolism-test) mirrors the latest commit - and you can use the generated output by setting your Metadata URL to https://thekodetoad.github.io/metabolism-test/output/.
 
@@ -15,9 +15,9 @@ For the time being [this repo](https://github.com/TheKodeToad/metabolism-test) m
 
 ## Usage
 
-Requires [Node.js](https://nodejs.org/en) (other runtimes are not tested) and [PNPM](https://pnpm.io/).
+Requires [Node.js](https://nodejs.org/en) (other runtimes are not tested) and [pnpm](https://pnpm.io/).
 
-After you have cloned this repository, run `pnpm install`. 
+After you have cloned this repository, run `pnpm install`.
 
 Once you have done that, `pnpm start` can be used to invoke the tool. If no arguments are supplied, an overview of the usage will appear.
 
@@ -36,10 +36,3 @@ Prepare data from the specified providers, or all if none are specified.
 Builds the output of the specified goals, or all if none are specified.
 
 There is also an assortment of tools in the [tools](tools) folder.
-
-## Why
-
-[The Rust rewrite (mcmeta)](https://github.com/PrismLauncher/mcmeta) has been in the works for over two years - it can continue to coexist as a future alternative - but as of May 2025 something to replace mmc-meta feels long overdue.
-I (TheKodeToad) chose TypeScript as I am more familiar with it. But the main difference is that this rewrite is less ambition - this only intends to generate metadata in the existing format simply with (hopefully) more maintainable code.
-
-Licensing should not be a concern as no code is taken from the original project.
