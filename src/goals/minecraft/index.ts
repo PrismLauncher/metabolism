@@ -115,10 +115,9 @@ function transformVersion(version: PistonVersion): VersionOutput {
 		}
 	}
 
-	const javaMajors =
-		version.javaVersion ?
-			transformJavaMajor(version.javaVersion?.majorVersion)
-		:	[8];
+	const javaMajors = transformJavaMajor(
+		version.javaVersion?.majorVersion ?? 8,
+	);
 
 	const jvmArgs: string[] = transformJVMArgs(version?.arguments?.jvm ?? []);
 	if (Math.max(...javaMajors) >= 17) {
