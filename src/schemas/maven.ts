@@ -5,8 +5,6 @@
 import { MavenArtifactRef } from "#common/maven.ts";
 import { z } from "zod";
 
-// TODO: make more general purpose?
-
 export const MavenArtifactString = z.string().transform((name, context) => {
 	const [group, artifact, version, classifier] = name.split(":", 4);
 

@@ -59,7 +59,7 @@ async function provide(
 				group,
 				artifact,
 				version,
-				classifier: ":installer",
+				classifier: "installer",
 			});
 			const prefix = `${artifact}-${version}`;
 
