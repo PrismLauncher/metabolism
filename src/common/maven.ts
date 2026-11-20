@@ -30,7 +30,7 @@ export class MavenArtifactRef implements MavenArtifactComponents {
 		}
 	}
 
-	format(keys: ("group" | "artifact" | "version" | "classifier")[]): string {
+	format(keys: (keyof MavenArtifactComponents)[]): string {
 		let result = "";
 
 		for (const key of keys) {
