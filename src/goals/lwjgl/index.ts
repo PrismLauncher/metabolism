@@ -269,12 +269,10 @@ function transformModuleSplit(module: LWJGLModule): VersionFileLibrary[] {
 	}
 
 	for (const [platform, artifact] of module.nativeCode) {
-		// FIXME: for some reason the classifier is still moved as a workaround for a launcher bug
 		result.push({
 			name: new MavenArtifactRef({
-				group: module.baseName.group,
-				artifact: module.baseName.artifact + "-" + artifact.classifier,
-				version: module.baseName.version,
+				...module.baseName,
+				classifier: artifact.classifier,
 			}).value,
 			downloads: { artifact: omit(artifact, ["classifier"]) },
 			rules: [
