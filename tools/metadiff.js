@@ -70,7 +70,12 @@ function preprocess(json) {
 			delete lib.extract;
 		}
 		// HACK: for now add a length to differentiate libraries with the same name
-		json.libraries = Object.fromEntries(json.libraries.map(l => ([l.name + "#" + JSON.stringify(l).length, l])));
+		json.libraries = Object.fromEntries(
+			json.libraries.map((l) => [
+				l.name + "#" + JSON.stringify(l).length,
+				l,
+			]),
+		);
 	}
 }
 

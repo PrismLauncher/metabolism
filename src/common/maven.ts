@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 metabolism contributors
+//
+// SPDX-License-Identifier: MIT
+
 interface MavenArtifactComponents {
 	group: string;
 	artifact: string;
