@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { MavenArtifactRef } from "#common/maven.ts";
 import {
 	isLWJGL2,
 	isLWJGL2Dependency,
@@ -31,7 +30,6 @@ import type {
 	PistonLibrary,
 	PistonVersion,
 } from "#schemas/pistonMeta/pistonVersion.ts";
-import { omit } from "es-toolkit";
 import { MINECRAFT_LIBRARY_PATCHES } from "./libraryPatches.ts";
 import { MINECRAFT_VERSION_PATCHES } from "./versionPatches.ts";
 
@@ -100,8 +98,6 @@ function transformVersion(version: PistonVersion): VersionOutput {
 				&& x.name.group !== "org.ow2.asm",
 		);
 	}
-
-	libraries = libraries.map(classifierHackDeletThis);
 
 	if (version.arguments?.game) {
 		const featureObjects = version.arguments.game
@@ -220,21 +216,6 @@ function transformJVMArgs(args: PistonArgument[]): string[] {
 		)
 		.flatMap((arg) => (typeof arg === "string" ? arg : arg.value))
 		.filter((arg) => arg.startsWith("-XX:StackShadowPages="));
-}
-
-function classifierHackDeletThis(lib: PistonLibrary): PistonLibrary {
-	// FIXME: for some reason this still exists for a workaround for a launcher bug
-	if (lib.name.classifier && lib.name.classifier.startsWith("natives-")) {
-		return {
-			...lib,
-			name: new MavenArtifactRef({
-				...omit(lib.name, ["classifier"]),
-				artifact: lib.name.artifact + "-" + lib.name.classifier,
-			}),
-		};
-	}
-
-	return lib;
 }
 
 const JAVA_SUBSTITUTES = { 16: [17] };
