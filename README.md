@@ -15,13 +15,15 @@ For the time being [this repo](https://github.com/TheKodeToad/metabolism-test) m
 
 ## Usage
 
-Run `pnpm install` then `pnpm start`.
+Requires [Node.js](https://nodejs.org/en) (other runtimes are not tested) and [PNPM](https://pnpm.io/).
+
+After you have cloned this repository, run `pnpm install`. 
+
+Once you have done that, `pnpm start` can be used to invoke the tool. If no arguments are supplied, an overview of the usage will appear.
 
 There are two key concepts - providers and goals. Providers are metadata sources, and goals are metadata targets.
 For example, the `game-versions` provider sources versions mainly from piston-meta and provides data to the `net.minecraft` goal.
 Goals specify one or more dependencies on providers.
-
-Pass nothing to see full usage with a list of providers and goals.
 
 Available commands:
 
