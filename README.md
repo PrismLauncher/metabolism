@@ -18,7 +18,7 @@ For the time being [this repo](https://github.com/TheKodeToad/metabolism-test) m
 Run `pnpm install` then `pnpm start`.
 
 There are two key concepts - providers and goals. Providers are metadata sources, and goals are metadata targets.
-For example, the `piston-meta` provider provides data to the `net.minecraft` goal.
+For example, the `game-versions` provider sources versions mainly from piston-meta and provides data to the `net.minecraft` goal.
 Goals specify one or more dependencies on providers.
 
 Pass nothing to see full usage with a list of providers and goals.
