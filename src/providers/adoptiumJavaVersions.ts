@@ -18,36 +18,35 @@ const logger = moduleLogger();
 export default defineProvider({
 	id: "adoptium-java",
 
-	async provide(http): Promise<AdoptiumJavaRuntimeEntry[]> {
+	async provide(): Promise<AdoptiumJavaRuntimeEntry[]> {
 		const releases = AdoptiumJavaReleases.parse(
-			(
-				await http.get(new URL("info/available_releases", RUNTIMES_URL))
-			).json(),
+			await fetch(new URL("info/available_releases", RUNTIMES_URL)).then(
+				(x) => x.json(),
+			),
 		);
 
 		return Promise.all(
 			releases.available_releases.map(async (version) => {
-				const response = await http
-					.get(
-						new URL(
-							`assets/feature_releases/${version}/ga?image_type=jre`,
-							RUNTIMES_URL,
-						),
-					)
+				const response = await fetch(
+					new URL(
+						`assets/feature_releases/${version}/ga?image_type=jre`,
+						RUNTIMES_URL,
+					),
+				)
 					.catch(() => {
+						// FIXME: better (more granular) error handling here
 						logger.error(
 							`Failed to get Adoptium JRE ${version} with General Access Version`,
 						);
 						return null;
-					});
+					})
+					.then((x) => x?.json());
 
 				if (!response) {
 					return [];
 				}
 
-				return z
-					.array(AdoptiumJavaRuntimeEntry)
-					.parse(response?.json());
+				return z.array(AdoptiumJavaRuntimeEntry).parse(response);
 			}),
 		).then((x) => x.flat());
 	},
