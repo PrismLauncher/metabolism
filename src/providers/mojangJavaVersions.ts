@@ -14,9 +14,9 @@ const RUNTIMES_URL = new URL(
 export default defineProvider({
 	id: "mojang-java",
 
-	async provide(http) {
+	async provide() {
 		const info = PistonJavaRuntimeInfo.parse(
-			(await http.get(RUNTIMES_URL)).json(),
+			await fetch(RUNTIMES_URL).then((x) => x.json()),
 		);
 
 		return info;
