@@ -47,13 +47,13 @@ export function concurrencyLimit(max: number) {
 	};
 }
 
-export async function digestStringToBuf(
+export async function digestStringToHex(
 	algorithm: string,
 	data: string,
-): Promise<Buffer> {
+): Promise<string> {
 	return Buffer.from(
 		await crypto.subtle.digest(algorithm, Buffer.from(data)),
-	);
+	).toString("hex");
 }
 
 export function getErrorCode(error: unknown): string | undefined {

@@ -8,8 +8,8 @@ import {
 	QUILT_MAVEN,
 	QUILT_META,
 } from "#common/constants/urls.ts";
-import { HTTPCacheMode, type HTTPClient } from "#httpClient.ts";
-import { defineProvider } from "#index.ts";
+import { throwError } from "#common/util.ts";
+import { defineProvider, type Cache } from "#index.ts";
 import { FabricInstallerData } from "#schemas/fabric/fabricInstallerData.ts";
 import {
 	FabricMetaVersion,
@@ -19,13 +19,14 @@ import {
 export const fabricLoaderVersions = defineProvider({
 	id: "fabric-loader-versions",
 
-	provide: (http) => provide(http, new URL("v2/", FABRIC_META), FABRIC_MAVEN),
+	provide: (cache) =>
+		provide(cache, new URL("v2/", FABRIC_META), FABRIC_MAVEN),
 });
 
 export const quiltLoaderVersions = defineProvider({
 	id: "quilt-loader-versions",
 
-	provide: (http) => provide(http, new URL("v3/", QUILT_META), QUILT_MAVEN),
+	provide: (cache) => provide(cache, new URL("v3/", QUILT_META), QUILT_MAVEN),
 });
 
 export default [fabricLoaderVersions, quiltLoaderVersions];
@@ -36,33 +37,39 @@ export interface FabricLoaderVersion extends FabricMetaVersion {
 }
 
 async function provide(
-	http: HTTPClient,
+	cache: Cache,
 	meta: string | URL,
 	maven: string | URL,
 ): Promise<FabricLoaderVersion[]> {
 	const list = FabricMetaVersions.parse(
-		(await http.get(new URL("versions/loader", meta))).json(),
+		await fetch(new URL("versions/loader", meta)).then((x) => x.json()),
 	);
 
 	return await Promise.all(
 		list.map(async (version): Promise<FabricLoaderVersion> => {
-			const installerDataResponse = await http.getCached(
-				version.maven.url(maven, "json"),
-				version.version + ".json",
-				{ mode: HTTPCacheMode.Eternal },
+			const installerDataURL = version.maven.url(maven, "json");
+			const installerData = FabricInstallerData.parse(
+				JSON.parse(
+					await cache.getOrCompute(version.version + ".json", () =>
+						fetch(installerDataURL).then((x) => x.text()),
+					),
+				),
 			);
 
-			if (!installerDataResponse.lastModified) {
-				throw new Error("Missing Last-Modified header");
-			}
-
-			const installerData = FabricInstallerData.parse(
-				installerDataResponse.json(),
+			const loaderURL = version.maven.url(maven, "jar");
+			const loaderLastModified = new Date(
+				await cache.getOrCompute(version.version + "-date.txt", () =>
+					fetch(loaderURL, { method: "HEAD" }).then(
+						(x) =>
+							x.headers.get("Last-Modified")
+							?? throwError("Last-Modified header missing"),
+					),
+				),
 			);
 
 			return {
 				installerData,
-				lastModified: installerDataResponse.lastModified,
+				lastModified: loaderLastModified,
 				...version,
 			};
 		}),

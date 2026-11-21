@@ -3,11 +3,11 @@
 // SPDX-License-Identifier: MIT
 
 import {
-	digestStringToBuf,
+	digestStringToHex,
 	readFileIfExists,
 	setIfAbsent,
 } from "#common/util.ts";
-import type { Provider } from "#index.ts";
+import type { Cache, CacheChecksum, Provider } from "#index.ts";
 import { type Goal, type VersionOutput } from "#index.ts";
 import { moduleLogger } from "#logger.ts";
 import type {
@@ -22,15 +22,12 @@ import type { VersionFile } from "#schemas/format/v1/versionFile.ts";
 import { omit, pick, sortBy } from "es-toolkit";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { DiskCachedClient } from "./diskCachedClient.ts";
 
 const logger = moduleLogger();
 
 export interface RunnerOptions {
-	userAgent: string;
 	cacheDir: string;
 	outputDir: string;
-	assumeUpToDate: boolean;
 	minify: boolean;
 }
 
@@ -163,17 +160,90 @@ async function run(
 	logger.info(`Done in ${formattedTime}!`);
 }
 
+class ProviderCache implements Cache {
+	#baseDir: string;
+
+	constructor(baseDir: string) {
+		this.#baseDir = path.join(baseDir, "/");
+	}
+
+	#resolve(key: string): [contentPath: string, sha1Path: string] {
+		const resolved = path.join(this.#baseDir, key);
+		if (!resolved.startsWith(this.#baseDir)) {
+			throw new Error(
+				`Cache key '${key}' escapes base dir '${this.#baseDir}'`,
+			);
+		}
+
+		return [resolved, resolved + ".sha1"];
+	}
+
+	async getOrCompute(
+		key: string,
+		compute: () => string | Promise<string>,
+		checksum?: CacheChecksum,
+	): Promise<string> {
+		const existing = await this.get(key, checksum);
+		if (existing !== null) {
+			return existing;
+		}
+
+		const newContent = await compute();
+		await this.set(key, newContent);
+		return newContent;
+	}
+
+	async get(key: string, checksum?: CacheChecksum): Promise<string | null> {
+		const [contentPath, sha1Path] = this.#resolve(key);
+
+		const content = await readFileIfExists(contentPath, "utf-8");
+		if (content === null) {
+			return null;
+		}
+
+		const cachedSha1 = await readFileIfExists(sha1Path, "utf-8");
+		if (cachedSha1 === null) {
+			return null;
+		}
+
+		const actualSha1 = await digestStringToHex("sha-1", content);
+		if (cachedSha1.toLowerCase() !== actualSha1) {
+			return null;
+		}
+
+		if (checksum !== undefined) {
+			const actualChecksum =
+				checksum.algorithm === "sha-1" ?
+					actualSha1
+				:	await digestStringToHex(checksum.algorithm, content);
+			if (checksum.expected.toLowerCase() !== actualChecksum) {
+				return null;
+			}
+		}
+
+		return content;
+	}
+
+	async set(key: string, value: string): Promise<void> {
+		const [contentPath, sha1Path] = this.#resolve(key);
+		await mkdir(path.dirname(contentPath), { recursive: true });
+
+		await writeFile(
+			sha1Path,
+			await digestStringToHex("sha-1", value),
+			"utf-8",
+		);
+		await writeFile(contentPath, value, "utf-8");
+	}
+}
+
 async function runProvider(
 	provider: Provider,
 	options: RunnerOptions,
 ): Promise<unknown> {
-	const http = new DiskCachedClient({
-		dir: path.join(options.cacheDir, provider.id),
-		userAgent: options.userAgent,
-		assumeUpToDate: options.assumeUpToDate,
-	});
-
-	return await provider.provide(http);
+	return await provider.provide(
+		new ProviderCache(path.join(options.cacheDir, provider.id)),
+	);
 }
 
 async function runGoal(
@@ -218,9 +288,7 @@ async function runGoal(
 
 			logger.debug(`Wrote '${outputPath}'`);
 
-			const sha256 = await digestStringToBuf("sha-256", outputData).then(
-				(sum) => sum.toString("hex"),
-			);
+			const sha256 = await digestStringToHex("sha-256", outputData);
 
 			logger.debug(`sha-256 of '${outputPath}' is ${sha256}`);
 
@@ -252,9 +320,7 @@ async function runGoal(
 
 	logger.debug(`Wrote '${indexPath}'`);
 
-	const indexSha256 = await digestStringToBuf("sha-256", indexData).then(
-		(sum) => sum.toString("hex"),
-	);
+	const indexSha256 = await digestStringToHex("sha-256", indexData);
 
 	logger.debug(`sha-256 of '${indexPath}' index is ${indexSha256}`);
 

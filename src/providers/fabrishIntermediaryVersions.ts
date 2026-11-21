@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 import { FABRIC_MAVEN, FABRIC_META } from "#common/constants/urls.ts";
-import type { HTTPClient } from "#httpClient.ts";
-import { defineProvider } from "#index.ts";
+import { throwError } from "#common/util.ts";
+import { defineProvider, type Cache } from "#index.ts";
 import {
 	FabricMetaVersion,
 	FabricMetaVersions,
@@ -12,7 +12,8 @@ import {
 
 export const fabricIntermediaryVersions = defineProvider({
 	id: "fabric-intermediary-versions",
-	provide: (http) => provide(http, new URL("v2/", FABRIC_META), FABRIC_MAVEN),
+	provide: (cache) =>
+		provide(cache, new URL("v2/", FABRIC_META), FABRIC_MAVEN),
 });
 
 export default [fabricIntermediaryVersions];
@@ -22,29 +23,30 @@ export interface FabricIntermediaryVersion extends FabricMetaVersion {
 }
 
 async function provide(
-	http: HTTPClient,
+	cache: Cache,
 	meta: string | URL,
 	maven: string | URL,
 ): Promise<FabricIntermediaryVersion[]> {
 	const list = FabricMetaVersions.parse(
-		(await http.get(new URL("versions/intermediary", meta))).json(),
+		await fetch(new URL("versions/intermediary", meta)).then((x) =>
+			x.json(),
+		),
 	);
 
 	return await Promise.all(
 		list.map(async (version): Promise<FabricIntermediaryVersion> => {
-			const infoResponse = await http.headCached(
-				version.maven.url(maven, "jar"),
-				version.version + ".jar",
+			const jarURL = version.maven.url(maven, "jar");
+			const lastModified = new Date(
+				await cache.getOrCompute(version.version + "-date.txt", () =>
+					fetch(jarURL, { method: "HEAD" }).then(
+						(x) =>
+							x.headers.get("Last-Modified")
+							?? throwError("Last-Modified header missing"),
+					),
+				),
 			);
 
-			if (!infoResponse.lastModified) {
-				throw new Error("Missing Last-Modified header");
-			}
-
-			return {
-				...version,
-				lastModified: infoResponse.lastModified,
-			};
+			return { ...version, lastModified };
 		}),
 	);
 }
