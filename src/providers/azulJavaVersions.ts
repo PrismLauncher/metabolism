@@ -11,7 +11,7 @@ const RUNTIMES_URL = new URL("v1/", AZUL_API);
 export default defineProvider({
 	id: "azul-java",
 
-	async provide(http): Promise<AzulJavaPackage[]> {
+	async provide(): Promise<AzulJavaPackage[]> {
 		const versionsOptions = new URLSearchParams({
 			release_status: "ga",
 			latest: "true",
@@ -28,14 +28,12 @@ export default defineProvider({
 		});
 
 		const versions = AzulJavaPackage.array().parse(
-			(
-				await http.get(
-					new URL(
-						"zulu/packages?" + versionsOptions.toString(),
-						RUNTIMES_URL,
-					),
-				)
-			).json(),
+			await fetch(
+				new URL(
+					"zulu/packages?" + versionsOptions.toString(),
+					RUNTIMES_URL,
+				),
+			).then((x) => x.json()),
 		);
 
 		return versions;
