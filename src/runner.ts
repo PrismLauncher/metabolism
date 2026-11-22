@@ -144,10 +144,11 @@ async function run(
 	}
 
 	for (const { goal, sha256 } of goalResults) {
-		packages.splice(
-			packages.findIndex((x) => x.uid === goal.id),
-			1,
-		);
+		const existingIndex = packages.findIndex((x) => x.uid === goal.id);
+		if (existingIndex !== -1) {
+			packages.splice(existingIndex, 1);
+		}
+
 		packages.push({ uid: goal.id, name: goal.name, sha256 });
 	}
 	const index: IndexFile = {
