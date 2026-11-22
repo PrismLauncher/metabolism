@@ -4,24 +4,16 @@
 
 import { NEOFORGE_MAVEN } from "#common/constants/urls.ts";
 import {
+	FORGEWRAPPER_LIBRARY,
+	FORGEWRAPPER_MAIN_CLASS,
+} from "#common/transformation/forge.ts";
+import {
 	transformArgs,
 	transformPistonLibrary,
 } from "#common/transformation/pistonMeta.ts";
 import { defineGoal, type VersionOutput } from "#index.ts";
 import gameVersions from "#providers/gameVersions/index.ts";
 import neoForgeLoaderVersions from "#providers/neoForgeLoaderVersions.ts";
-import type { VersionFileLibrary } from "#schemas/format/v1/versionFile.ts";
-
-const FORGEWRAPPER: VersionFileLibrary = {
-	downloads: {
-		artifact: {
-			sha1: "4c4653d80409e7e968d3e3209196ffae778b7b4e",
-			size: 29731,
-			url: "https://files.prismlauncher.org/maven/io/github/zekerzhayard/ForgeWrapper/prism-2025-12-07/ForgeWrapper-prism-2025-12-07.jar",
-		},
-	},
-	name: "io.github.zekerzhayard:ForgeWrapper:prism-2025-12-07",
-};
 
 export default defineGoal({
 	id: "net.neoforged",
@@ -41,7 +33,7 @@ export default defineGoal({
 
 				if (versionData.arguments?.game) {
 					const baseArgs =
-						mcVersionsById.get(versionData.inheritsFrom)?.arguments
+						mcVersionsById.get(installProfile.minecraft)?.arguments
 							?.game ?? [];
 					minecraftArguments = transformArgs([
 						...baseArgs,
@@ -64,16 +56,15 @@ export default defineGoal({
 					requires: [
 						{
 							uid: "net.minecraft",
-							equals: versionData.inheritsFrom,
+							equals: installProfile.minecraft,
 						},
 					],
 
-					mainClass:
-						"io.github.zekerzhayard.forgewrapper.installer.Main",
+					mainClass: FORGEWRAPPER_MAIN_CLASS,
 					minecraftArguments,
 
 					libraries: [
-						FORGEWRAPPER,
+						FORGEWRAPPER_LIBRARY,
 						...versionData.libraries.map(transformPistonLibrary),
 					],
 					mavenFiles: [

@@ -7,6 +7,9 @@ export const PISTON_META = "https://piston-meta.mojang.com/";
 export const FABRIC_META = "https://meta.fabricmc.net/";
 export const FABRIC_MAVEN = "https://maven.fabricmc.net/";
 
+export const FORGE_FILES = "https://files.minecraftforge.net/";
+export const FORGE_MAVEN = "https://maven.minecraftforge.net/";
+
 export const NEOFORGE_MAVEN = "https://maven.neoforged.net/releases/";
 export const NEOFORGE_MAVEN_API = "https://maven.neoforged.net/api/maven/";
 
