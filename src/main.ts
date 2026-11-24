@@ -36,7 +36,7 @@ async function setUpHTTP({
 					...options,
 					headers: {
 						...options.headers,
-						"User-Agent": userAgent,
+						"user-agent": userAgent,
 					},
 				},
 				handler,
