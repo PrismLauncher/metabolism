@@ -200,18 +200,18 @@ function transformModule(module: LWJGLModule): VersionFileLibrary[] {
 }
 
 function transformModuleMerged(module: LWJGLModule): VersionFileLibrary[] {
-	let javaCodeLib: VersionFileLibrary | null = null;
+	const result: VersionFileLibrary[] = [];
+
 	if (module.javaCode !== undefined) {
-		javaCodeLib = {
+		result.push({
 			name: new MavenArtifactRef({
 				...module.baseName,
 				classifier: module.javaCode.classifier,
 			}).value,
 			downloads: { artifact: omit(module.javaCode, ["classifier"]) },
-		};
+		});
 	}
 
-	let nativeCodeLib: VersionFileLibrary | null = null;
 	if (!isEmpty(module.nativeCode)) {
 		const classifiers = Object.fromEntries(
 			module.nativeCode
@@ -228,31 +228,14 @@ function transformModuleMerged(module: LWJGLModule): VersionFileLibrary[] {
 				.map(([platform, artifact]) => [platform, artifact.classifier]),
 		);
 
-		nativeCodeLib = {
+		result.push({
 			name: module.baseName.value,
 			downloads: { classifiers },
 			natives,
-		};
+		});
 	}
 
-	if (
-		javaCodeLib
-		&& nativeCodeLib
-		&& javaCodeLib.name === nativeCodeLib.name
-	) {
-		return [
-			{
-				name: javaCodeLib.name,
-				downloads: {
-					...javaCodeLib.downloads,
-					...nativeCodeLib.downloads,
-				},
-				natives: nativeCodeLib.natives,
-			},
-		];
-	}
-
-	return [javaCodeLib, nativeCodeLib].filter((x) => x !== null);
+	return result;
 }
 
 function transformModuleSplit(module: LWJGLModule): VersionFileLibrary[] {
