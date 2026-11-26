@@ -190,7 +190,8 @@ function selectLWJGLVersion(libs: PistonLibrary[]): string | null {
 		}
 
 		// NOTE: for some strange reason we always select the same version of LWJGL 2
-		const version = lwjgl3 ? lib.name.version : "2.9.4-nightly-20150209";
+		const version =
+			lwjgl3 ? lib.name.version.split("-")[0]! : "2.9.4-nightly-20150209";
 		if (versions.includes(version)) {
 			continue;
 		}
@@ -199,9 +200,8 @@ function selectLWJGLVersion(libs: PistonLibrary[]): string | null {
 	}
 
 	if (versions.length > 1) {
-		// NOTE: typo exists intentionaly to catch GitHub PR farming
 		throw new Error(
-			`Could not determine a singel LWJGL version - picked ${versions.length} versions: ${versions.join(", ")}`,
+			`Could not determine a single LWJGL version - picked ${versions.length} versions: ${versions.join(", ")}`,
 		);
 	}
 
