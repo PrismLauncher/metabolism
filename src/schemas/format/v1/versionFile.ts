@@ -33,6 +33,7 @@ export interface VersionFile {
 	minecraftArguments?: string;
 
 	mainJar?: VersionFileLibrary;
+	jarMods?: VersionFileLibrary[];
 	logging?: PistonLoggingAsset;
 	libraries?: VersionFileLibrary[];
 	mavenFiles?: VersionFileLibrary[];
@@ -83,6 +84,7 @@ export enum VersionFileTrait {
 	LegacyServices = "legacyServices",
 	NoTexturePacks = "no-texturepacks",
 	TexturePacks = "texturepacks",
+	LegacyFML = "legacyFML",
 }
 
 export interface VersionFileRuntime {
